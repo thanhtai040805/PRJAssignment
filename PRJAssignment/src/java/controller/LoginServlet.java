@@ -88,9 +88,6 @@ public class LoginServlet extends HttpServlet {
         }
     }
     
-    /**
-     * Chuyển hướng người dùng dựa trên role
-     */
     private void redirectByRole(User user, HttpServletRequest request, HttpServletResponse response) 
             throws IOException {
         String contextPath = request.getContextPath();
