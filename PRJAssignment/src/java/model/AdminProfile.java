@@ -20,7 +20,7 @@ public class AdminProfile {
     public int getMaUser() {
         return maUser;
     }
-
+    
     public void setMaUser(int maUser) {
         this.maUser = maUser;
     }
