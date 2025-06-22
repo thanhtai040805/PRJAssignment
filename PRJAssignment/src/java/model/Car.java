@@ -22,9 +22,11 @@ public class Car {
     private int soLuongTon;
     private Date ngayNhap;
     private String trangThai;
-    private String hinhAnh;
-    private String albumAnh;
     private String moTa;
+    private String linkAnh; // Đổi từ hinhAnh thành linkAnh theo database
+    private String globalKey; // Thêm thuộc tính globalKey
+    
+    // Loại bỏ albumAnh vì không có trong database
     
     // Thông tin từ bảng liên kết
     private String tenHang;
@@ -37,12 +39,12 @@ public class Car {
     // Constructors
     public Car() {}
 
-    public Car(int maXe, String tenXe, BigDecimal giaBan, String tinhTrang, String hinhAnh) {
+    public Car(int maXe, String tenXe, BigDecimal giaBan, String tinhTrang, String linkAnh) {
         this.maXe = maXe;
         this.tenXe = tenXe;
         this.giaBan = giaBan;
         this.tinhTrang = tinhTrang;
-        this.hinhAnh = hinhAnh;
+        this.linkAnh = linkAnh;
     }
 
     // Getters and Setters
@@ -190,22 +192,6 @@ public class Car {
         this.trangThai = trangThai;
     }
 
-    public String getHinhAnh() {
-        return hinhAnh;
-    }
-
-    public void setHinhAnh(String hinhAnh) {
-        this.hinhAnh = hinhAnh;
-    }
-
-    public String getAlbumAnh() {
-        return albumAnh;
-    }
-
-    public void setAlbumAnh(String albumAnh) {
-        this.albumAnh = albumAnh;
-    }
-
     public String getMoTa() {
         return moTa;
     }
@@ -214,6 +200,24 @@ public class Car {
         this.moTa = moTa;
     }
 
+    public String getLinkAnh() {
+        return linkAnh;
+    }
+
+    public void setLinkAnh(String linkAnh) {
+        this.linkAnh = linkAnh;
+    }
+
+    // Getter/Setter cho GlobalKey
+    public String getGlobalKey() {
+        return globalKey;
+    }
+
+    public void setGlobalKey(String globalKey) {
+        this.globalKey = globalKey;
+    }
+
+    // Getter/Setter cho thông tin từ bảng liên kết
     public String getTenHang() {
         return tenHang;
     }
@@ -274,6 +278,43 @@ public class Car {
         return dungTichDongCo + "cc - " + congSuat + "HP";
     }
 
+    // Thêm method để tương thích với code cũ sử dụng hinhAnh
+    public String getHinhAnh() {
+        return this.linkAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.linkAnh = hinhAnh;
+    }
+
+    // Method kiểm tra xe có ảnh không
+    public boolean hasImage() {
+        return linkAnh != null && !linkAnh.trim().isEmpty();
+    }
+
+    // Method lấy ảnh mặc định nếu không có ảnh
+    public String getImageOrDefault() {
+        if (hasImage()) {
+            return linkAnh;
+        }
+        return "/images/cars/default-car.jpg";
+    }
+
+    // Method kiểm tra xe có sẵn không
+    public boolean isAvailable() {
+        return "Có sẵn".equals(trangThai) && soLuongTon > 0;
+    }
+
+    // Method kiểm tra xe mới
+    public boolean isNew() {
+        return "Mới".equals(tinhTrang);
+    }
+
+    // Method kiểm tra xe cũ
+    public boolean isUsed() {
+        return "Cũ".equals(tinhTrang);
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -285,6 +326,8 @@ public class Car {
                 ", mauSac='" + mauSac + '\'' +
                 ", giaBan=" + giaBan +
                 ", tinhTrang='" + tinhTrang + '\'' +
+                ", trangThai='" + trangThai + '\'' +
+                ", globalKey='" + globalKey + '\'' +
                 '}';
     }
 }

@@ -23,9 +23,9 @@ import util.DBConnection;
 public class HomeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Các câu lệnh SQL được tách ra làm biến toàn cục
+    // Các câu lệnh SQL được cập nhật với cột LinkAnh
     private static final String SQL_GET_SHOWCASE_CARS = """
-        SELECT TOP 7 x.MaXe, x.TenXe, x.HinhAnh, h.TenHang, d.TenDong
+        SELECT TOP 7 x.MaXe, x.TenXe, x.LinkAnh, h.TenHang, d.TenDong
         FROM XeOTo x
         INNER JOIN DongXe d ON x.MaDong = d.MaDong
         INNER JOIN HangXe h ON d.MaHang = h.MaHang
@@ -35,14 +35,14 @@ public class HomeServlet extends HttpServlet {
 
     private static final String SQL_GET_BEST_SELLER_CARS = """
         SELECT TOP 2 x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                       x.GiaBan, x.HinhAnh, h.TenHang, d.TenDong, d.LoaiXe
+                       x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe
         FROM XeOTo x
         INNER JOIN DongXe d ON x.MaDong = d.MaDong
         INNER JOIN HangXe h ON d.MaHang = h.MaHang
         LEFT JOIN ChiTietHoaDon ct ON x.MaXe = ct.MaXe
         WHERE x.TrangThai = N'Có sẵn'
         GROUP BY x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                 x.GiaBan, x.HinhAnh, h.TenHang, d.TenDong, d.LoaiXe
+                 x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe
         ORDER BY COUNT(ct.MaXe) DESC, x.GiaBan DESC
         """;
 
@@ -56,7 +56,7 @@ public class HomeServlet extends HttpServlet {
         """;
 
     private static final String SQL_GET_RECOMMEND_CARS = """
-        SELECT TOP 4 x.MaXe, x.TenXe, x.GiaBan, x.TinhTrang, x.HinhAnh
+        SELECT TOP 4 x.MaXe, x.TenXe, x.GiaBan, x.TinhTrang, x.LinkAnh
         FROM XeOTo x
         WHERE x.TrangThai = N'Có sẵn'
         ORDER BY x.NgayNhap DESC
@@ -98,6 +98,9 @@ public class HomeServlet extends HttpServlet {
         doGet(request, response);
     }
 
+    /**
+     * Lấy danh sách xe để hiển thị trong phần showcase
+     */
     private List<Car> getShowcaseCars() {
         List<Car> cars = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
@@ -108,7 +111,7 @@ public class HomeServlet extends HttpServlet {
                 Car car = new Car();
                 car.setMaXe(rs.getInt("MaXe"));
                 car.setTenXe(rs.getString("TenXe"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
+                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
                 car.setTenHang(rs.getString("TenHang"));
                 car.setTenDong(rs.getString("TenDong"));
                 cars.add(car);
@@ -121,6 +124,9 @@ public class HomeServlet extends HttpServlet {
         return cars;
     }
 
+    /**
+     * Lấy danh sách xe bán chạy nhất
+     */
     private List<Car> getBestSellerCars() {
         List<Car> cars = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
@@ -135,7 +141,7 @@ public class HomeServlet extends HttpServlet {
                 car.setMauSac(rs.getString("MauSac"));
                 car.setTinhTrang(rs.getString("TinhTrang"));
                 car.setGiaBan(rs.getBigDecimal("GiaBan"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
+                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
                 car.setTenHang(rs.getString("TenHang"));
                 car.setTenDong(rs.getString("TenDong"));
                 car.setLoaiXe(rs.getString("LoaiXe"));
@@ -149,6 +155,9 @@ public class HomeServlet extends HttpServlet {
         return cars;
     }
 
+    /**
+     * Lấy danh sách xe xếp hạng
+     */
     private List<Car> getRankingCars() {
         List<Car> cars = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
@@ -171,6 +180,9 @@ public class HomeServlet extends HttpServlet {
         return cars;
     }
 
+    /**
+     * Lấy danh sách xe được đề xuất
+     */
     private List<Car> getRecommendCars() {
         List<Car> cars = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
@@ -183,7 +195,7 @@ public class HomeServlet extends HttpServlet {
                 car.setTenXe(rs.getString("TenXe"));
                 car.setGiaBan(rs.getBigDecimal("GiaBan"));
                 car.setTinhTrang(rs.getString("TinhTrang"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
+                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
                 cars.add(car);
             }
 
@@ -194,6 +206,9 @@ public class HomeServlet extends HttpServlet {
         return cars;
     }
 
+    /**
+     * Lấy danh sách nhà cung cấp cho filter
+     */
     private List<Map<String, Object>> getProviders() {
         List<Map<String, Object>> providers = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
