@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>DriveDreams - Showroom Ô Tô Hàng Đầu</title>
         <style>
+            /* (Giữ nguyên CSS của bạn) */
             * {
                 margin: 0;
                 padding: 0;
@@ -499,7 +500,6 @@
         </style>
     </head>
     <body>
-        <!-- Header -->
         <header class="header">
             <div class="header-content">
                 <div class="logo">
@@ -521,7 +521,6 @@
             </div>
         </header>
 
-        <!-- Search Section -->
         <section class="search-section">
             <div class="search-container">
                 <form class="search-form" action="${pageContext.request.contextPath}/search" method="get">
@@ -535,15 +534,15 @@
             </div>
         </section>
 
-        <!-- Car Showcase -->
         <section class="car-showcase">
             <div class="showcase-container">
                 <div class="car-gallery">
                     <c:forEach var="car" items="${showcaseCars}" begin="0" end="6">
+                        <%-- Thay đổi đường dẫn đến /detail/globalKey --%>
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-item">
                             <c:choose>
-                                <c:when test="${not empty car.hinhAnh}">
-                                    <img src="${pageContext.request.contextPath}${car.hinhAnh}" alt="${car.tenXe}">
+                                <c:when test="${car.hasImage()}">
+                                    <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}" alt="${car.tenXe}">
                                 </c:when>
                                 <c:otherwise>
                                     <div class="car-placeholder">${car.tenHang}<br>${car.tenDong}</div>
@@ -555,17 +554,17 @@
             </div>
         </section>
 
-        <!-- Best Seller Section -->
         <section class="best-seller">
             <div class="section-container">
                 <h2 class="section-title">BEST SELLER</h2>
                 <div class="best-seller-grid">
                     <c:forEach var="car" items="${bestSellerCars}" begin="0" end="1">
+                        <%-- Thay đổi đường dẫn đến /detail/globalKey --%>
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-card">
                             <div class="car-image">
                                 <c:choose>
-                                    <c:when test="${not empty car.linkAnh}">
-                                        <img src="${pageContext.request.contextPath}${car.linkAnh}" 
+                                    <c:when test="${car.hasImage()}">
+                                        <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}"
                                              alt="${car.tenXe}" class="card-img-top">
                                     </c:when>
                                     <c:otherwise>
@@ -590,7 +589,6 @@
                     </c:forEach>
                 </div>
 
-                <!-- Ranking Section -->
                 <div class="ranking-section">
                     <div class="ranking-title">
                         <span>📊</span>
@@ -611,17 +609,17 @@
             </div>
         </section>
 
-        <!-- Recommend Section -->
         <section class="recommend-section">
             <div class="section-container">
                 <h2 class="section-title">Recommend Car</h2>
                 <div class="recommend-grid">
                     <c:forEach var="car" items="${recommendCars}">
+                        <%-- Thay đổi đường dẫn đến /detail/globalKey --%>
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="recommend-card">
                             <div class="recommend-image">
                                 <c:choose>
-                                    <c:when test="${not empty car.hinhAnh}">
-                                        <img src="${pageContext.request.contextPath}${car.hinhAnh}" alt="${car.tenXe}">
+                                    <c:when test="${car.hasImage()}">
+                                        <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}" alt="${car.tenXe}">
                                     </c:when>
                                     <c:otherwise>
                                         <div class="car-placeholder">Hình ảnh xe</div>
@@ -641,7 +639,6 @@
             </div>
         </section>
 
-        <!-- Filter Section -->
         <section class="filter-section">
             <form class="filter-form" action="${pageContext.request.contextPath}/filter" method="get">
                 <div class="filter-group">
@@ -718,7 +715,6 @@
             </form>
         </section>
 
-        <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-section">

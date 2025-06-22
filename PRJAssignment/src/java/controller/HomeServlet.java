@@ -23,9 +23,9 @@ import util.DBConnection;
 public class HomeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Các câu lệnh SQL được cập nhật với cột LinkAnh
+    // --- Cập nhật các câu lệnh SQL để SELECT GlobalKey ---
     private static final String SQL_GET_SHOWCASE_CARS = """
-        SELECT TOP 7 x.MaXe, x.TenXe, x.LinkAnh, h.TenHang, d.TenDong
+        SELECT TOP 7 x.MaXe, x.TenXe, x.LinkAnh, h.TenHang, d.TenDong, x.GlobalKey -- <<< THÊM GlobalKey
         FROM XeOTo x
         INNER JOIN DongXe d ON x.MaDong = d.MaDong
         INNER JOIN HangXe h ON d.MaHang = h.MaHang
@@ -35,19 +35,19 @@ public class HomeServlet extends HttpServlet {
 
     private static final String SQL_GET_BEST_SELLER_CARS = """
         SELECT TOP 2 x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                       x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe
+                     x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe, x.GlobalKey -- <<< THÊM GlobalKey
         FROM XeOTo x
         INNER JOIN DongXe d ON x.MaDong = d.MaDong
         INNER JOIN HangXe h ON d.MaHang = h.MaHang
         LEFT JOIN ChiTietHoaDon ct ON x.MaXe = ct.MaXe
         WHERE x.TrangThai = N'Có sẵn'
         GROUP BY x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                 x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe
+                 x.GiaBan, x.LinkAnh, h.TenHang, d.TenDong, d.LoaiXe, x.GlobalKey -- <<< THÊM GlobalKey vào GROUP BY
         ORDER BY COUNT(ct.MaXe) DESC, x.GiaBan DESC
         """;
 
     private static final String SQL_GET_RANKING_CARS = """
-        SELECT TOP 4 x.MaXe, x.TenXe, h.TenHang, d.TenDong
+        SELECT TOP 4 x.MaXe, x.TenXe, h.TenHang, d.TenDong, x.GlobalKey -- <<< THÊM GlobalKey
         FROM XeOTo x
         INNER JOIN DongXe d ON x.MaDong = d.MaDong
         INNER JOIN HangXe h ON d.MaHang = h.MaHang
@@ -56,7 +56,7 @@ public class HomeServlet extends HttpServlet {
         """;
 
     private static final String SQL_GET_RECOMMEND_CARS = """
-        SELECT TOP 4 x.MaXe, x.TenXe, x.GiaBan, x.TinhTrang, x.LinkAnh
+        SELECT TOP 4 x.MaXe, x.TenXe, x.GiaBan, x.TinhTrang, x.LinkAnh, x.GlobalKey -- <<< THÊM GlobalKey
         FROM XeOTo x
         WHERE x.TrangThai = N'Có sẵn'
         ORDER BY x.NgayNhap DESC
@@ -76,6 +76,15 @@ public class HomeServlet extends HttpServlet {
             List<Car> rankingCars = getRankingCars();
             List<Car> recommendCars = getRecommendCars();
             List<Map<String, Object>> providers = getProviders();
+
+            // --- THÊM DEBUG LOG VÀO ĐÂY (NHƯ ĐÃ HƯỚNG DẪN TRƯỚC ĐÓ) ---
+            if (!showcaseCars.isEmpty()) {
+                Car firstCar = showcaseCars.get(0);
+                System.out.println("DEBUG: GlobalKey của xe đầu tiên (trước khi gửi đến JSP): " + firstCar.getGlobalKey());
+            } else {
+                System.out.println("DEBUG: Không có xe nào trong showcase.");
+            }
+            // -----------------------------------------------------
 
             request.setAttribute("showcaseCars", showcaseCars);
             request.setAttribute("bestSellerCars", bestSellerCars);
@@ -111,16 +120,16 @@ public class HomeServlet extends HttpServlet {
                 Car car = new Car();
                 car.setMaXe(rs.getInt("MaXe"));
                 car.setTenXe(rs.getString("TenXe"));
-                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
+                car.setLinkAnh(rs.getString("LinkAnh"));
                 car.setTenHang(rs.getString("TenHang"));
                 car.setTenDong(rs.getString("TenDong"));
+                car.setGlobalKey(rs.getString("GlobalKey")); // <<< THÊM DÒNG NÀY
                 cars.add(car);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return cars;
     }
 
@@ -141,17 +150,17 @@ public class HomeServlet extends HttpServlet {
                 car.setMauSac(rs.getString("MauSac"));
                 car.setTinhTrang(rs.getString("TinhTrang"));
                 car.setGiaBan(rs.getBigDecimal("GiaBan"));
-                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
+                car.setLinkAnh(rs.getString("LinkAnh"));
                 car.setTenHang(rs.getString("TenHang"));
                 car.setTenDong(rs.getString("TenDong"));
                 car.setLoaiXe(rs.getString("LoaiXe"));
+                car.setGlobalKey(rs.getString("GlobalKey")); // <<< THÊM DÒNG NÀY
                 cars.add(car);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return cars;
     }
 
@@ -170,13 +179,13 @@ public class HomeServlet extends HttpServlet {
                 car.setTenXe(rs.getString("TenXe"));
                 car.setTenHang(rs.getString("TenHang"));
                 car.setTenDong(rs.getString("TenDong"));
+                car.setGlobalKey(rs.getString("GlobalKey")); // <<< THÊM DÒNG NÀY
                 cars.add(car);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return cars;
     }
 
@@ -195,14 +204,14 @@ public class HomeServlet extends HttpServlet {
                 car.setTenXe(rs.getString("TenXe"));
                 car.setGiaBan(rs.getBigDecimal("GiaBan"));
                 car.setTinhTrang(rs.getString("TinhTrang"));
-                car.setLinkAnh(rs.getString("LinkAnh")); // Đổi từ setHinhAnh thành setLinkAnh
+                car.setLinkAnh(rs.getString("LinkAnh"));
+                car.setGlobalKey(rs.getString("GlobalKey")); // <<< THÊM DÒNG NÀY
                 cars.add(car);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return cars;
     }
 
@@ -225,7 +234,6 @@ public class HomeServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return providers;
     }
 }
