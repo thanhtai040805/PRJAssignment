@@ -326,6 +326,56 @@
                 color: #666;
             }
 
+            .rank-gold {
+                background: linear-gradient(135deg, #FFD700, #FFA500); /* Vàng */
+            }
+
+            .rank-silver {
+                background: linear-gradient(135deg, #C0C0C0, #A9A9A9); /* Bạc */
+            }
+
+            .rank-bronze {
+                background: linear-gradient(135deg, #CD7F32, #B87333); /* Đồng */
+            }
+
+            .rank-purple {
+                background: linear-gradient(135deg, #8A2BE2, #9932CC); /* Tím */
+            }
+
+            /* Đảm bảo link ranking có kiểu dáng tương tự item */
+            .ranking-item-link {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 10px 0;
+                border-bottom: 1px solid #e0e0e0;
+                text-decoration: none; /* Bỏ gạch chân mặc định của link */
+                color: inherit; /* Giữ màu chữ mặc định */
+                transition: background-color 0.2s ease; /* Hiệu ứng hover */
+            }
+
+            .ranking-item-link:last-child {
+                border-bottom: none;
+            }
+
+            .ranking-item-link:hover {
+                background-color: #f0f0f0; /* Màu nền khi hover */
+            }
+
+            /* Giữ nguyên các style khác của .rank-number, .rank-car-info, v.v. */
+            .rank-number {
+                /* Background sẽ được ghi đè bởi các lớp màu mới */
+                color: white;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
             /* Recommend Section */
             .recommend-section {
                 padding: 50px 0;
@@ -546,8 +596,8 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="car-placeholder">${car.tenHang}<br>${car.tenDong}</div>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                         </a>
                     </c:forEach>
                 </div>
@@ -559,7 +609,6 @@
                 <h2 class="section-title">BEST SELLER</h2>
                 <div class="best-seller-grid">
                     <c:forEach var="car" items="${bestSellerCars}" begin="0" end="1">
-                        <%-- Thay đổi đường dẫn đến /detail/globalKey --%>
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-card">
                             <div class="car-image">
                                 <c:choose>
@@ -596,13 +645,25 @@
                     </div>
                     <ul class="ranking-list">
                         <c:forEach var="car" items="${rankingCars}" varStatus="status">
-                            <li class="ranking-item">
-                                <div class="rank-number">${status.index + 1}</div>
+                            <%-- Thay đổi từ <li> sang <a> và thêm class màu sắc --%>
+                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="ranking-item-link">
+                                <div class="rank-number
+                                     <c:choose>
+                                         <c:when test="${status.index eq 0}">rank-gold</c:when>
+                                         <c:when test="${status.index eq 1}">rank-silver</c:when>
+                                         <c:when test="${status.index eq 2}">rank-bronze</c:when>
+                                         <c:when test="${status.index eq 3}">rank-purple</c:when>
+                                         <c:when test="${status.index eq 4}">rank-purple</c:when>
+                                         <c:otherwise>rank-default</c:otherwise> <%-- Hoặc một màu mặc định khác nếu có hơn 5 xe --%>
+                                     </c:choose>
+                                     ">
+                                    ${status.index + 1}
+                                </div>
                                 <div class="rank-car-info">
                                     <div class="rank-car-name">${car.tenXe}</div>
-                                    <div class="rank-car-detail">Rank ${status.index + 1}</div>
+                                    <div class="rank-car-detail">Top ${status.index + 1}</div> <%-- Đổi 'Rank' thành 'Top' cho tự nhiên hơn --%>
                                 </div>
-                            </li>
+                            </a>
                         </c:forEach>
                     </ul>
                 </div>
