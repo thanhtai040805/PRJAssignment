@@ -56,7 +56,7 @@
                 display: grid;
                 grid-template-columns: 1fr 1.5fr;
                 gap: 40px;
-                align-items: flex-start;
+                align-items: center;
             }
 
             .car-image {
