@@ -379,7 +379,7 @@ INSERT INTO LoaiDichVu (TenLoaiDV, MoTa) VALUES
 (N'Kiểm tra kỹ thuật', N'Kiểm tra tổng thể tình trạng xe');
 GO
 
-
+	
 -- ===============================
 -- 12. BẢNG BẢO HÀNH
 -- ===============================

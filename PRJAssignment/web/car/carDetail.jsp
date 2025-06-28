@@ -10,7 +10,7 @@
     List<Car> suggestionCars = (List<Car>) request.getAttribute("suggestionCars");
 
     if (car == null) {
-        response.sendRedirect(request.getContextPath() + "/error.jsp"); // Or /home
+        response.sendRedirect(request.getContextPath() + "/error.jsp");
         return;
     }
     if (suggestionCars == null) {
@@ -270,7 +270,7 @@
                     font-size: 1.5em;
                 }
                 .suggestion-grid {
-                    grid-template-columns: 1fr; 
+                    grid-template-columns: 1fr;
                 }
                 .car-suggestion img {
                     height: 200px; /* Adjust height for single column */
@@ -298,7 +298,7 @@
 
                 <div class="buttons">
                     <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=<%= car.getMaXe()%>'">Làm khoản vay</button>
-                    <button onclick="location.href = '${pageContext.request.contextPath}/buyCar?carId=<%= car.getMaXe()%>'">Mua xe</button>
+                    <button onclick="location.href = '${pageContext.request.contextPath}/payment/<%= car.getGlobalKey()%>'">Mua xe</button>
                     <button onclick="location.href = '${pageContext.request.contextPath}/addFavorite?carId=<%= car.getMaXe()%>'">Thêm vào yêu thích</button>
                 </div>
             </div>

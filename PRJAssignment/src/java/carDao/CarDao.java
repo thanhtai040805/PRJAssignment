@@ -105,7 +105,7 @@ public class CarDao implements ICarDao {
     // Method extractCarFromResultSet được sửa lại hoàn chỉnh
     private Car extractCarFromResultSet(ResultSet rs) throws SQLException {
         Car car = new Car();
-        
+
         // Thông tin cơ bản từ bảng XeOTo
         car.setMaXe(rs.getInt("MaXe"));
         car.setMaDong(rs.getInt("MaDong"));
@@ -135,31 +135,31 @@ public class CarDao implements ICarDao {
         } catch (SQLException e) {
             car.setTenHang(null);
         }
-        
+
         try {
             car.setTenDong(rs.getString("TenDong"));
         } catch (SQLException e) {
             car.setTenDong(null);
         }
-        
+
         try {
             car.setLoaiXe(rs.getString("LoaiXe"));
         } catch (SQLException e) {
             car.setLoaiXe(null);
         }
-        
+
         try {
             car.setNhienLieu(rs.getString("NhienLieu"));
         } catch (SQLException e) {
             car.setNhienLieu(null);
         }
-        
+
         try {
             car.setSoChoNgoi(rs.getInt("SoChoNgoi"));
         } catch (SQLException e) {
             car.setSoChoNgoi(0);
         }
-        
+
         try {
             car.setTenNCC(rs.getString("TenNCC"));
         } catch (SQLException e) {
@@ -172,9 +172,7 @@ public class CarDao implements ICarDao {
     @Override
     public List<Car> getShowcaseCars() {
         List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_SHOWCASE_CARS); 
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(SQL_GET_SHOWCASE_CARS); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Car car = new Car();
@@ -196,9 +194,7 @@ public class CarDao implements ICarDao {
     @Override
     public List<Car> getBestSellerCars() {
         List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_BEST_SELLER_CARS); 
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(SQL_GET_BEST_SELLER_CARS); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Car car = new Car();
@@ -225,9 +221,7 @@ public class CarDao implements ICarDao {
     @Override
     public List<Car> getRankingCars() {
         List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_RANKING_CARS); 
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(SQL_GET_RANKING_CARS); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Car car = new Car();
@@ -248,9 +242,7 @@ public class CarDao implements ICarDao {
     @Override
     public List<Car> getRecommendCars() {
         List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_RECOMMEND_CARS); 
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(SQL_GET_RECOMMEND_CARS); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Car car = new Car();
@@ -272,9 +264,7 @@ public class CarDao implements ICarDao {
     @Override
     public List<Map<String, Object>> getActiveProviders() {
         List<Map<String, Object>> providers = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_PROVIDERS); 
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(SQL_GET_PROVIDERS); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Map<String, Object> provider = new HashMap<>();
@@ -291,8 +281,7 @@ public class CarDao implements ICarDao {
 
     @Override
     public void addCar(Car car) {
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_INSERT_CAR)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_INSERT_CAR)) {
 
             ps.setInt(1, car.getMaDong());
             ps.setInt(2, car.getMaNCC());
@@ -324,8 +313,7 @@ public class CarDao implements ICarDao {
 
     @Override
     public boolean removeCar(int maXe) {
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_DELETE_CAR)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_DELETE_CAR)) {
             ps.setInt(1, maXe);
             int result = ps.executeUpdate();
             LOGGER.log(Level.INFO, "Car removal result for ID {0}: {1}", new Object[]{maXe, result > 0});
@@ -338,8 +326,7 @@ public class CarDao implements ICarDao {
 
     @Override
     public boolean updateCar(Car car) {
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_CAR)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_CAR)) {
 
             ps.setInt(1, car.getMaDong());
             ps.setInt(2, car.getMaNCC());
@@ -375,8 +362,7 @@ public class CarDao implements ICarDao {
     @Override
     public Car getCarById(int maXe) {
         Car car = null;
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_GET_CAR_BY_ID)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_GET_CAR_BY_ID)) {
             ps.setInt(1, maXe);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -395,8 +381,7 @@ public class CarDao implements ICarDao {
     @Override
     public Car getCarByGlobalKey(String globalKey) {
         Car car = null;
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_GET_CAR_BY_GLOBAL_KEY)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_GET_CAR_BY_GLOBAL_KEY)) {
             ps.setString(1, globalKey);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -415,17 +400,15 @@ public class CarDao implements ICarDao {
     @Override
     public List<Car> getAllCars() {
         List<Car> list = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_GET_ALL_CARS); 
-             ResultSet rs = ps.executeQuery()) {
-            
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_GET_ALL_CARS); ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 Car car = extractCarFromResultSet(rs);
                 list.add(car);
             }
-            
+
             LOGGER.log(Level.INFO, "Retrieved {0} cars from database", list.size());
-            
+
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting all cars", e);
         }
@@ -448,10 +431,8 @@ public class CarDao implements ICarDao {
     // Method để đếm số lượng xe trong database
     public int getCarCount() {
         String sql = "SELECT COUNT(*) FROM XeOTo WHERE TrangThai = N'Có sẵn'";
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql); 
-             ResultSet rs = ps.executeQuery()) {
-            
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
             if (rs.next()) {
                 int count = rs.getInt(1);
                 LOGGER.log(Level.INFO, "Total available cars in database: {0}", count);
@@ -461,5 +442,24 @@ public class CarDao implements ICarDao {
             LOGGER.log(Level.SEVERE, "Error counting cars", e);
         }
         return 0;
+    }
+
+    @Override
+    public boolean updateSoLuongTon(Integer maXe, int soLuongGiam) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String sql = "UPDATE XeOTo SET SoLuongTon = SoLuongTon - ? WHERE MaXe = ? AND SoLuongTon >= ?";
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, soLuongGiam);
+            ps.setInt(2, maXe);
+            ps.setInt(3, soLuongGiam); // Ensure quantity doesn't go negative
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } finally {
+            DBConnection.close(conn, ps);
+        }
     }
 }
