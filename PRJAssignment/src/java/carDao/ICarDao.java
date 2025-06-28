@@ -3,6 +3,7 @@ package carDao;
 import java.util.List;
 import java.util.Map;
 import model.Car;
+import java.sql.*;
 
 public interface ICarDao {
 
@@ -28,4 +29,5 @@ public interface ICarDao {
 
     List<Map<String, Object>> getActiveProviders(); 
 
+    boolean updateSoLuongTon(Integer maXe, int soLuongGiam) throws SQLException;
 }
