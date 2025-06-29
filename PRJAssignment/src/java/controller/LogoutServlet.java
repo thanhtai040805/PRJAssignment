@@ -4,10 +4,9 @@ import java.io.IOException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+
+import model.User;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
@@ -24,25 +23,21 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         processLogout(request, response);
     }
-    
+
     private void processLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        
-        // Lấy session hiện tại
         HttpSession session = request.getSession(false);
-        
+
         if (session != null) {
-            // Log logout activity
-            Object username = session.getAttribute("username");
-            if (username != null) {
-                System.out.println("User logged out: " + username);
+            User user = (User) session.getAttribute("currentUser");
+            if (user != null) {
+                System.out.println("[LOGOUT] User: " + user.getUsername() + " (ID: " + user.getMaUser() + ") logged out.");
             }
-            
-            // Hủy session
+
             session.invalidate();
         }
-        
-        // Chuyển hướng về trang chủ
-        response.sendRedirect(request.getContextPath() + "/home");
+
+        // ✅ Điều hướng về servlet login thay vì file login.jsp
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }

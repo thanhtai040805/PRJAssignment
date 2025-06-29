@@ -279,7 +279,7 @@
         </style>
     </head>
     <body>
-
+        
         <div class="container">
             <div class="car-image">
                 <img src="${pageContext.request.contextPath}${carDetail.getImageOrDefault()}" alt="Ảnh xe">

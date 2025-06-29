@@ -1,41 +1,28 @@
 package model;
 
-import java.util.Date;
-
 public class User {
+
     private int maUser;
     private String username;
     private String password;
-    private String email;
-    private String hoTen;
-    private Date ngaySinh;
-    private String gioiTinh;
-    private String diaChi;
-    private String soDienThoai;
-    private String cccd;
     private String role;
-    private Date ngayTao;
+    private Integer maKH; // nullable
+    private Integer maNV; // nullable
     private String trangThai;
-    
-    // Profile information
-    private CustomerProfile customerProfile;
-    private EmployeeProfile employeeProfile;
-    private AdminProfile adminProfile;
 
-    // Constructors
-    public User() {}
-
-    public User(String username, String password, String email, String hoTen, String role) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.hoTen = hoTen;
-        this.role = role;
-        this.ngayTao = new Date();
-        this.trangThai = "Hoạt động";
+    public User() {
     }
 
-    // Getters and Setters
+    public User(int maUser, String username, String password, String role, Integer maKH, Integer maNV, String trangThai) {
+        this.maUser = maUser;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.maKH = maKH;
+        this.maNV = maNV;
+        this.trangThai = trangThai;
+    }
+
     public int getMaUser() {
         return maUser;
     }
@@ -60,62 +47,6 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHoTen() {
-        return hoTen;
-    }
-
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
-    }
-
-    public Date getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
-
-    public String getGioiTinh() {
-        return gioiTinh;
-    }
-
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
-    }
-
-    public String getCccd() {
-        return cccd;
-    }
-
-    public void setCccd(String cccd) {
-        this.cccd = cccd;
-    }
-
     public String getRole() {
         return role;
     }
@@ -124,12 +55,20 @@ public class User {
         this.role = role;
     }
 
-    public Date getNgayTao() {
-        return ngayTao;
+    public Integer getMaKH() {
+        return maKH;
     }
 
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setMaKH(Integer maKH) {
+        this.maKH = maKH;
+    }
+
+    public Integer getMaNV() {
+        return maNV;
+    }
+
+    public void setMaNV(Integer maNV) {
+        this.maNV = maNV;
     }
 
     public String getTrangThai() {
@@ -140,54 +79,11 @@ public class User {
         this.trangThai = trangThai;
     }
 
-    public CustomerProfile getCustomerProfile() {
-        return customerProfile;
-    }
-
-    public void setCustomerProfile(CustomerProfile customerProfile) {
-        this.customerProfile = customerProfile;
-    }
-
-    public EmployeeProfile getEmployeeProfile() {
-        return employeeProfile;
-    }
-
-    public void setEmployeeProfile(EmployeeProfile employeeProfile) {
-        this.employeeProfile = employeeProfile;
-    }
-
-    public AdminProfile getAdminProfile() {
-        return adminProfile;
-    }
-
-    public void setAdminProfile(AdminProfile adminProfile) {
-        this.adminProfile = adminProfile;
-    }
-
-    // Utility methods
-    public boolean isAdmin() {
-        return "ADMIN".equals(this.role);
-    }
-
-    public boolean isEmployee() {
-        return "EMPLOYEE".equals(this.role);
-    }
-
-    public boolean isCustomer() {
-        return "CUSTOMER".equals(this.role);
-    }
-
-    public boolean isActive() {
-        return "Hoạt động".equals(this.trangThai);
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "maUser=" + maUser +
                 ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", hoTen='" + hoTen + '\'' +
                 ", role='" + role + '\'' +
                 ", trangThai='" + trangThai + '\'' +
                 '}';
