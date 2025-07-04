@@ -25,29 +25,11 @@ public class PaymentServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/error/500.jsp");
             return;
         }
-
         String globalKey = pathInfo.substring(1);
-
         Car car = carDao.getCarByGlobalKey(globalKey);
+        request.setAttribute("carToBuy", car);
+        request.getRequestDispatcher("/car/carPayment.jsp").forward(request, response);
 
-        if (car != null) {
-            try {
-                boolean updated = carDao.updateSoLuongTon(car.getMaXe(), 1);
-                if (!updated) {
-                    // Nếu không thể giảm số lượng (hết hàng)
-                    request.setAttribute("errorMessage", "Xe này đã hết hàng hoặc không thể mua được lúc này.");
-                    request.getRequestDispatcher("/error.jsp").forward(request, response);
-                    return;
-                }
-            } catch (SQLException e) {
-                throw new ServletException("Lỗi khi cập nhật số lượng tồn kho", e);
-            }
-
-            request.setAttribute("carToBuy", car);
-            request.getRequestDispatcher("/car/carPayment.jsp").forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/error/500.jsp");
-        }
     }
 
 }
