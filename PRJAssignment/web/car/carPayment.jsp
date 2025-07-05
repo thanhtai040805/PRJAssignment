@@ -200,6 +200,7 @@
     </style>
 </head>
 <body>
+    <jsp:include page="/header.jsp" />
     <div class="payment-main-container">
         <div class="car-summary-section">
             <h2>Thông tin xe</h2>
