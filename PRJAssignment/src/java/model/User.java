@@ -1,34 +1,63 @@
-package model;
 
+
+    }
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Users")
 public class User {
 
-    private int maUser;
-    private String username;
-    private String password;
-    private String role;
-    private Integer maKH; // nullable
-    private Integer maNV; // nullable
-    private String trangThai;
+    public User() {
+        @Column(name = "Username", unique = true)
+        private String username;
+
+        @Column(name = "Password")
+        private String password;
+
+        @Column(name = "Role")
+        private String role;
+
+        @Column(name = "MaKH")
+        private Integer customerId;
+
+        @Column(name = "MaNV")
+        private Integer employeeId;
+
+        @Column(name = "TrangThai")
+        private String status;
+
+    
 
     public User() {
     }
 
-    public User(int maUser, String username, String password, String role, Integer maKH, Integer maNV, String trangThai) {
-        this.maUser = maUser;
+    public Integer getUserId() {
+        return userId;
+         >>> >>> > origin / master(29c3a2a
+        ) - Merge pull req
+
+    @Column(name = "TrangThai")
+    private String status;
+
+    public User() {
+    }
+
+    public User(Integer userId, String username, String password, String role, Integer customerId, Integer employeeId,
+            String status) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.maKH = maKH;
-        this.maNV = maNV;
-        this.trangThai = trangThai;
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.status = status;
     }
 
-    public int getMaUser() {
-        return maUser;
-    }
+}
 
-    public void setMaUser(int maUser) {
-        this.maUser = maUser;
+public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -55,37 +84,27 @@ public class User {
         this.role = role;
     }
 
-    public Integer getMaKH() {
-        return maKH;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setMaKH(Integer maKH) {
-        this.maKH = maKH;
     }
 
-    public Integer getMaNV() {
-        return maNV;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setMaNV(Integer maNV) {
-        this.maNV = maNV;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "maUser=" + maUser +
-                ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
-                ", trangThai='" + trangThai + '\'' +
-                '}';
-    }
 }
+

@@ -1,110 +1,124 @@
 package model;
+<<<<<<< HEAD
+import jakarta.persistence.*;
+import java.util.Date;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+@Entity
+@Table(name = "NhanVien")
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaNV")
+    private Integer employeeId;
 
-    private Integer maNV;
-    private String hoTen;
-    private LocalDate ngaySinh;
-    private String gioiTinh;
-    private String diaChi;
-    private String soDienThoai;
+    @Column(name = "HoTen")
+    private String fullName;
+
+    @Column(name = "NgaySinh")
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+
+    @Column(name = "GioiTinh")
+    private String gender;
+
+    @Column(name = "DiaChi")
+    private String address;
+
+    @Column(name = "SoDienThoai")
+    private String phone;
+
+    @Column(name = "Email")
     private String email;
-    private String cccd;
-    private String chucVu;
-    private LocalDate ngayVaoLam;
-    private BigDecimal luongCoBan;
-    private String trangThai; // Ví dụ: "Đang làm việc", "Đã nghỉ việc"
-    private LocalDateTime ngayTao;
-    private LocalDateTime ngayCapNhat;
 
-    public Employee() {
-    }
+    @Column(name = "CCCD")
+    private String identityCard;
 
-    // Constructor đầy đủ cho việc truy xuất từ DB
-    public Employee(Integer maNV, String hoTen, LocalDate ngaySinh, String gioiTinh, String diaChi, String soDienThoai, String email, String cccd, String chucVu, LocalDate ngayVaoLam, BigDecimal luongCoBan, String trangThai, LocalDateTime ngayTao, LocalDateTime ngayCapNhat) {
-        this.maNV = maNV;
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
+    @Column(name = "ChucVu")
+    private String position;
+
+    @Column(name = "PhongBan")
+    private String department;
+
+    @Column(name = "LuongCoBan")
+    private Long baseSalary;
+
+    @Column(name = "HeSoLuong")
+    private Double salaryCoefficient;
+
+    @Column(name = "NgayVaoLam")
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+
+    @Column(name = "TrangThai")
+    private String status;
+
+    public Employee() {}
+
+    public Employee(Integer employeeId, String fullName, Date birthDate, String gender, String address, String phone,
+                    String email, String identityCard, String position, String department, Long baseSalary,
+                    Double salaryCoefficient, Date startDate, String status) {
+        this.employeeId = employeeId;
+        this.fullName = fullName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
         this.email = email;
-        this.cccd = cccd;
-        this.chucVu = chucVu;
-        this.ngayVaoLam = ngayVaoLam;
-        this.luongCoBan = luongCoBan;
-        this.trangThai = trangThai;
-        this.ngayTao = ngayTao;
-        this.ngayCapNhat = ngayCapNhat;
+        this.identityCard = identityCard;
+        this.position = position;
+        this.department = department;
+        this.baseSalary = baseSalary;
+        this.salaryCoefficient = salaryCoefficient;
+        this.startDate = startDate;
+        this.status = status;
     }
 
-    // Constructor cho việc tạo mới (MaNV sẽ do DB tự sinh)
-    public Employee(String hoTen, LocalDate ngaySinh, String gioiTinh, String diaChi, String soDienThoai, String email, String cccd, String chucVu, LocalDate ngayVaoLam, BigDecimal luongCoBan) {
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.cccd = cccd;
-        this.chucVu = chucVu;
-        this.ngayVaoLam = ngayVaoLam;
-        this.luongCoBan = luongCoBan;
-        this.trangThai = "Đang làm việc"; // Default status
-        this.ngayTao = LocalDateTime.now();
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    // Getters and Setters
-    public Integer getMaNV() {
-        return maNV;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public void setMaNV(Integer maNV) {
-        this.maNV = maNV;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getHoTen() {
-        return hoTen;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public LocalDate getNgaySinh() {
-        return ngaySinh;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setNgaySinh(LocalDate ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public String getGender() {
+        return gender;
     }
 
-    public String getGioiTinh() {
-        return gioiTinh;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
+    public String getAddress() {
+        return address;
     }
 
-    public String getDiaChi() {
-        return diaChi;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -115,59 +129,63 @@ public class Employee {
         this.email = email;
     }
 
-    public String getCccd() {
-        return cccd;
+    public String getIdentityCard() {
+        return identityCard;
     }
 
-    public void setCccd(String cccd) {
-        this.cccd = cccd;
+    public void setIdentityCard(String identityCard) {
+        this.identityCard = identityCard;
     }
 
-    public String getChucVu() {
-        return chucVu;
+    public String getPosition() {
+        return position;
     }
 
-    public void setChucVu(String chucVu) {
-        this.chucVu = chucVu;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public LocalDate getNgayVaoLam() {
-        return ngayVaoLam;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setNgayVaoLam(LocalDate ngayVaoLam) {
-        this.ngayVaoLam = ngayVaoLam;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
-    public BigDecimal getLuongCoBan() {
-        return luongCoBan;
+    public Long getBaseSalary() {
+        return baseSalary;
     }
 
-    public void setLuongCoBan(BigDecimal luongCoBan) {
-        this.luongCoBan = luongCoBan;
+    public void setBaseSalary(Long baseSalary) {
+        this.baseSalary = baseSalary;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public Double getSalaryCoefficient() {
+        return salaryCoefficient;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setSalaryCoefficient(Double salaryCoefficient) {
+        this.salaryCoefficient = salaryCoefficient;
     }
 
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getNgayCapNhat() {
-        return ngayCapNhat;
+    public String getStatus() {
+        return status;
     }
 
-    public void setNgayCapNhat(LocalDateTime ngayCapNhat) {
-        this.ngayCapNhat = ngayCapNhat;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+    
+
+>>>>>>> origin/master
 }

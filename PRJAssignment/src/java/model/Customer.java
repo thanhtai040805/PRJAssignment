@@ -1,103 +1,117 @@
 package model;
+<<<<<<< HEAD
+import jakarta.persistence.*;
+import java.util.Date;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+@Entity
+@Table(name = "KhachHang")
 public class Customer {
 
-    private Integer maKH;
-    private String hoTen;
-    private LocalDate ngaySinh;
-    private String gioiTinh;
-    private String diaChi;
-    private String soDienThoai;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaKH")
+    private Integer customerId;
+
+    @Column(name = "HoTen")
+    private String fullName;
+
+    @Column(name = "NgaySinh")
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+
+    @Column(name = "GioiTinh")
+    private String gender;
+
+    @Column(name = "DiaChi")
+    private String address;
+
+    @Column(name = "SoDienThoai")
+    private String phone;
+
+    @Column(name = "Email")
     private String email;
-    private String cccd;
-    private String ngheNghiep;
-    private Long mucThuNhap;
-    private LocalDateTime ngayTao;
-    private String trangThai;
+
+    @Column(name = "CCCD")
+    private String identityCard;
+
+    @Column(name = "NgheNghiep")
+    private String occupation;
+
+    @Column(name = "MucThuNhap")
+    private Long income;
+
+    @Column(name = "NgayTao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Column(name = "TrangThai")
+    private String status;
 
     public Customer() {
     }
 
-    public Customer(Integer maKH, String hoTen, LocalDate ngaySinh, String gioiTinh, String diaChi, String soDienThoai, String email, String cccd, String ngheNghiep, Long mucThuNhap, LocalDateTime ngayTao, String trangThai) {
-        this.maKH = maKH;
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
+    public Customer(Integer customerId, String fullName, Date birthDate, String gender, String address, String phone,
+            String email, String identityCard, String occupation, Long income, Date createdDate, String status) {
+        this.customerId = customerId;
+        this.fullName = fullName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
         this.email = email;
-        this.cccd = cccd;
-        this.ngheNghiep = ngheNghiep;
-        this.mucThuNhap = mucThuNhap;
-        this.ngayTao = ngayTao;
-        this.trangThai = trangThai;
+        this.identityCard = identityCard;
+        this.occupation = occupation;
+        this.income = income;
+        this.createdDate = createdDate;
+        this.status = status;
     }
 
-    // Constructor cho việc tạo mới (ID sẽ được DB tự sinh)
-    public Customer(String hoTen, LocalDate ngaySinh, String gioiTinh, String diaChi, String soDienThoai, String email, String cccd, String ngheNghiep, Long mucThuNhap) {
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.cccd = cccd;
-        this.ngheNghiep = ngheNghiep;
-        this.mucThuNhap = mucThuNhap;
-        this.ngayTao = LocalDateTime.now();
-        this.trangThai = "Hoạt động";
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    // Getters and Setters (tạo đầy đủ cho tất cả các thuộc tính)
-    public Integer getMaKH() {
-        return maKH;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public void setMaKH(Integer maKH) {
-        this.maKH = maKH;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getHoTen() {
-        return hoTen;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public LocalDate getNgaySinh() {
-        return ngaySinh;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setNgaySinh(LocalDate ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public String getGender() {
+        return gender;
     }
 
-    public String getGioiTinh() {
-        return gioiTinh;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
+    public String getAddress() {
+        return address;
     }
 
-    public String getDiaChi() {
-        return diaChi;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -108,43 +122,45 @@ public class Customer {
         this.email = email;
     }
 
-    public String getCccd() {
-        return cccd;
+    public String getIdentityCard() {
+        return identityCard;
     }
 
-    public void setCccd(String cccd) {
-        this.cccd = cccd;
+    public void setIdentityCard(String identityCard) {
+        this.identityCard = identityCard;
     }
 
-    public String getNgheNghiep() {
-        return ngheNghiep;
+    public String getOccupation() {
+        return occupation;
     }
 
-    public void setNgheNghiep(String ngheNghiep) {
-        this.ngheNghiep = ngheNghiep;
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
     }
 
-    public Long getMucThuNhap() {
-        return mucThuNhap;
+    public Long getIncome() {
+        return income;
     }
 
-    public void setMucThuNhap(Long mucThuNhap) {
-        this.mucThuNhap = mucThuNhap;
+    public void setIncome(Long income) {
+        this.income = income;
     }
 
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+>>>>>>> origin/master
 }

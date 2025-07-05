@@ -18,13 +18,13 @@ public class SmartSuggestion {
 
         // Ưu tiên xe đã yêu thích
         for (Car car : favoriteCars) {
-            uniqueSuggestions.put(car.getMaXe(), car);
+            uniqueSuggestions.put(car.getCarId(), car);
         }
 
         // Tiếp theo là xe đã xem, nhưng vẫn ưu tiên các xe được xem gần đây hơn (đầu danh sách)
         for (Car car : viewedCars) {
             // Chỉ thêm nếu chưa có trong danh sách gợi ý (để ưu tiên xe yêu thích)
-            uniqueSuggestions.putIfAbsent(car.getMaXe(), car);
+            uniqueSuggestions.putIfAbsent(car.getCarId(), car);
         }
 
         // Lấy danh sách từ map

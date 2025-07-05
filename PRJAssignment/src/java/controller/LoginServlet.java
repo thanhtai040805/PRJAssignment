@@ -3,7 +3,6 @@ package controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
 
 import model.User;
@@ -12,11 +11,11 @@ import userDao.UserDao;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+
     private static final long serialVersionUID = 1L;
     private UserDao userDao;
 
     @Override
-    public void init() throws ServletException {
         userDao = new UserDao(); // KHÔNG cần gọi super.init()
     }
 
@@ -29,13 +28,12 @@ public class LoginServlet extends HttpServlet {
         } else {
             request.getRequestDispatcher("/user/login.jsp").forward(request, response);
         }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        request.setCharacterEncoding("UTF-8");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");

@@ -1,27 +1,38 @@
+<<<<<<< HEAD
+// CarPaymentConfirmServlet.java
 package controller;
 
 import carDao.CarDao;
+import model.Payment;
+import paymentDAO.PaymentDAO;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import model.Payment;
-import paymentDAO.PaymentDAO;
-import java.util.List;
-import java.util.ArrayList;
-import java.time.LocalDate;
-import java.math.BigDecimal;
-
 import java.io.IOException;
+import java.time.LocalDate;
 
 @WebServlet("/confirm-payment")
 public class CarPaymentConfirmServlet extends HttpServlet {
 
-    private final CarDao carDao = new CarDao();
-    private final PaymentDAO paymentDAO = new PaymentDAO();
+    private EntityManagerFactory emf;
+
+    @Override
+    public void init() {
+        emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        EntityManager em = emf.createEntityManager();
+        CarDao carDao = new CarDao();
+        carDao.setEntityManager(em);
+        PaymentDAO paymentDAO = new PaymentDAO();
+        paymentDAO.setEntityManager(em);
 
         String carIdStr = request.getParameter("carId");
         String carName = request.getParameter("carName");
@@ -33,32 +44,26 @@ public class CarPaymentConfirmServlet extends HttpServlet {
 
         try {
             int carId = Integer.parseInt(carIdStr);
-
-            // Validate dữ liệu (tùy)
             if (customerName == null || phone == null || method == null) {
                 throw new IllegalArgumentException("Missing required fields");
             }
-
-            // Trừ số lượng xe
             carDao.updateSoLuongTon(carId, 1);
 
-            // Tạo payment (nên viết constructor đầy đủ hoặc dùng setter)
             Payment payment = new Payment();
-            payment.setMaHD(carId); // hoặc set theo hoá đơn thực tế
-            payment.setSoTien(new BigDecimal("1000000000")); // test cứng
-            payment.setTrangThai("Đã thanh toán");
-            payment.setNgayThanhToan(LocalDate.now());
-            // ... thêm các trường cần thiết
-
-            paymentDAO.insertPayment(payment);
+            payment.setInvoiceId(carId);
+            payment.setAmount(Long.valueOf("1000000000"));
+            payment.setStatus("Đã thanh toán");
+            payment.setPaymentDate(java.sql.Date.valueOf(LocalDate.now()));
+            paymentDAO.add(payment);
 
             request.setAttribute("message", "Bạn đã mua xe " + carName + " thành công!");
+            em.close();
             request.getRequestDispatcher("/car/paymentConfirm.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            em.close();
             response.sendRedirect(request.getContextPath() + "/error/500.jsp");
         }
     }
-
+>>>>>>> origin/master
 }

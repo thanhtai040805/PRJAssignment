@@ -1,95 +1,90 @@
 package model;
+<<<<<<< HEAD
+import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-
+@Entity
+@Table(name = "ChiTietHoaDon")
 public class InvoiceDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaCTHD")
+    private Integer invoiceDetailId;
 
-    private Integer maCTHD;
-    private Integer maHD; // Foreign key
-    private Integer maXe; // Foreign key
-    private Integer soLuong;
-    private BigDecimal donGia;
-    private BigDecimal thanhTien;
+    @Column(name = "MaXe")
+    private Integer carId;
 
-    // Các đối tượng liên quan để hiển thị đầy đủ thông tin chi tiết
-    private Car xeOto; // Thông tin chi tiết của xe
+    @Column(name = "SoLuong")
+    private Integer quantity;
 
-    public InvoiceDetail() {
+    @Column(name = "DonGia")
+    private Long unitPrice;
+
+    @Column(name = "ThanhTien")
+    private Long totalPrice;
+
+    // Bổ sung quan hệ ManyToOne với Invoice
+    @ManyToOne
+    @JoinColumn(name = "MaHD") // MaHD là khóa ngoại đến Invoice
+    private Invoice invoice;
+
+    public InvoiceDetail() {}
+
+    public InvoiceDetail(Integer invoiceDetailId, Invoice invoice, Integer carId, Integer quantity, Long unitPrice,
+                         Long totalPrice) {
+        this.invoiceDetailId = invoiceDetailId;
+        this.invoice = invoice;
+        this.carId = carId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.totalPrice = totalPrice;
     }
 
-    public InvoiceDetail(Integer maCTHD, Integer maHD, Integer maXe, Integer soLuong, BigDecimal donGia, BigDecimal thanhTien) {
-        this.maCTHD = maCTHD;
-        this.maHD = maHD;
-        this.maXe = maXe;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
+    public Integer getInvoiceDetailId() {
+        return invoiceDetailId;
     }
 
-    // Constructor cho việc tạo mới
-    public InvoiceDetail(Integer maHD, Integer maXe, Integer soLuong, BigDecimal donGia, BigDecimal thanhTien) {
-        this.maHD = maHD;
-        this.maXe = maXe;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
+    public void setInvoiceDetailId(Integer invoiceDetailId) {
+        this.invoiceDetailId = invoiceDetailId;
     }
 
-    // Getters and Setters
-    public Integer getMaCTHD() {
-        return maCTHD;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setMaCTHD(Integer maCTHD) {
-        this.maCTHD = maCTHD;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
-    public Integer getMaHD() {
-        return maHD;
+    public Integer getCarId() {
+        return carId;
     }
 
-    public void setMaHD(Integer maHD) {
-        this.maHD = maHD;
+    public void setCarId(Integer carId) {
+        this.carId = carId;
     }
 
-    public Integer getMaXe() {
-        return maXe;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setMaXe(Integer maXe) {
-        this.maXe = maXe;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
-    public Integer getSoLuong() {
-        return soLuong;
+    public Long getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setSoLuong(Integer soLuong) {
-        this.soLuong = soLuong;
+    public void setUnitPrice(Long unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getDonGia() {
-        return donGia;
+    public Long getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setDonGia(BigDecimal donGia) {
-        this.donGia = donGia;
-    }
-
-    public BigDecimal getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(BigDecimal thanhTien) {
-        this.thanhTien = thanhTien;
-    }
-
-    // Getter/Setter cho đối tượng liên quan
-    public Car getXeOto() {
-        return xeOto;
-    }
-
-    public void setXeOto(Car xeOto) {
-        this.xeOto = xeOto;
+    public void setTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
+>>>>>>> origin/master
     }
 }
