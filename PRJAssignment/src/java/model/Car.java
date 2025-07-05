@@ -1,214 +1,269 @@
 package model;
 
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "XeOTo")
 public class Car {
-    private int maXe;
-    private int maDong;
-    private int maNCC;
-    private String tenXe;
-    private int namSanXuat;
-    private String mauSac;
-    private String soKhung;
-    private String soMay;
-    private int dungTichDongCo;
-    private int congSuat;
-    private String hopSo;
-    private int kmDaDi;
-    private String tinhTrang;
-    private BigDecimal giaNhap;
-    private BigDecimal giaBan;
-    private int soLuongTon;
-    private Date ngayNhap;
-    private String trangThai;
-    private String moTa;
-    private String linkAnh; // Đổi từ hinhAnh thành linkAnh theo database
-    private String globalKey; // Thêm thuộc tính globalKey
-    
-    // Loại bỏ albumAnh vì không có trong database
-    
-    // Thông tin từ bảng liên kết
-    private String tenHang;
-    private String tenDong;
-    private String loaiXe;
-    private String nhienLieu;
-    private int soChoNgoi;
-    private String tenNCC;
 
-    // Constructors
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaXe")
+    private Integer carId;
+
+    // Quan hệ tới CarModel
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MaDong", referencedColumnName = "MaDong")
+    private CarModel carModel;
+
+    @Column(name = "MaNCC")
+    private Integer supplierId;
+
+    @Column(name = "TenXe")
+    private String carName;
+
+    @Column(name = "NamSanXuat")
+    private Integer year;
+
+    @Column(name = "MauSac")
+    private String color;
+
+    @Column(name = "SoKhung")
+    private String chassisNumber;
+
+    @Column(name = "SoMay")
+    private String engineNumber;
+
+    @Column(name = "DungTichDongCo")
+    private Integer engineCapacity;
+
+    @Column(name = "CongSuat")
+    private Integer power;
+
+    @Column(name = "HopSo")
+    private String transmission;
+
+    @Column(name = "KmDaDi")
+    private Integer mileage;
+
+    @Column(name = "TinhTrang")
+    private String condition;
+
+    @Column(name = "GiaNhap")
+    private Long importPrice;
+
+    @Column(name = "GiaBan")
+    private Long salePrice;
+
+    @Column(name = "SoLuongTon")
+    private Integer stockQuantity;
+
+    @Column(name = "NgayNhap")
+    @Temporal(TemporalType.DATE)
+    private Date importDate;
+
+    @Column(name = "TrangThai")
+    private String status;
+
+    @Column(name = "MoTa")
+    private String description;
+
+    @Column(name = "LinkAnh")
+    private String imageLink;
+
+    @Column(name = "GlobalKey")
+    private String globalKey;
+
     public Car() {}
 
-    public Car(int maXe, String tenXe, BigDecimal giaBan, String tinhTrang, String linkAnh) {
-        this.maXe = maXe;
-        this.tenXe = tenXe;
-        this.giaBan = giaBan;
-        this.tinhTrang = tinhTrang;
-        this.linkAnh = linkAnh;
+    public Car(Integer carId, CarModel carModel, Integer supplierId, String carName, Integer year, String color,
+               String chassisNumber, String engineNumber, Integer engineCapacity, Integer power, String transmission,
+               Integer mileage, String condition, Long importPrice, Long salePrice, Integer stockQuantity,
+               Date importDate, String status, String description, String imageLink, String globalKey) {
+        this.carId = carId;
+        this.carModel = carModel;
+        this.supplierId = supplierId;
+        this.carName = carName;
+        this.year = year;
+        this.color = color;
+        this.chassisNumber = chassisNumber;
+        this.engineNumber = engineNumber;
+        this.engineCapacity = engineCapacity;
+        this.power = power;
+        this.transmission = transmission;
+        this.mileage = mileage;
+        this.condition = condition;
+        this.importPrice = importPrice;
+        this.salePrice = salePrice;
+        this.stockQuantity = stockQuantity;
+        this.importDate = importDate;
+        this.status = status;
+        this.description = description;
+        this.imageLink = imageLink;
+        this.globalKey = globalKey;
     }
 
-    // Getters and Setters
-    public int getMaXe() {
-        return maXe;
+    public Integer getCarId() {
+        return carId;
     }
 
-    public void setMaXe(int maXe) {
-        this.maXe = maXe;
+    public void setCarId(Integer carId) {
+        this.carId = carId;
     }
 
-    public int getMaDong() {
-        return maDong;
+    public CarModel getCarModel() {
+        return carModel;
     }
 
-    public void setMaDong(int maDong) {
-        this.maDong = maDong;
+    public void setCarModel(CarModel carModel) {
+        this.carModel = carModel;
     }
 
-    public int getMaNCC() {
-        return maNCC;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setMaNCC(int maNCC) {
-        this.maNCC = maNCC;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
-    public String getTenXe() {
-        return tenXe;
+    public String getCarName() {
+        return carName;
     }
 
-    public void setTenXe(String tenXe) {
-        this.tenXe = tenXe;
+    public void setCarName(String carName) {
+        this.carName = carName;
     }
 
-    public int getNamSanXuat() {
-        return namSanXuat;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setNamSanXuat(int namSanXuat) {
-        this.namSanXuat = namSanXuat;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
-    public String getMauSac() {
-        return mauSac;
+    public String getColor() {
+        return color;
     }
 
-    public void setMauSac(String mauSac) {
-        this.mauSac = mauSac;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public String getSoKhung() {
-        return soKhung;
+    public String getChassisNumber() {
+        return chassisNumber;
     }
 
-    public void setSoKhung(String soKhung) {
-        this.soKhung = soKhung;
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
     }
 
-    public String getSoMay() {
-        return soMay;
+    public String getEngineNumber() {
+        return engineNumber;
     }
 
-    public void setSoMay(String soMay) {
-        this.soMay = soMay;
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
     }
 
-    public int getDungTichDongCo() {
-        return dungTichDongCo;
+    public Integer getEngineCapacity() {
+        return engineCapacity;
     }
 
-    public void setDungTichDongCo(int dungTichDongCo) {
-        this.dungTichDongCo = dungTichDongCo;
+    public void setEngineCapacity(Integer engineCapacity) {
+        this.engineCapacity = engineCapacity;
     }
 
-    public int getCongSuat() {
-        return congSuat;
+    public Integer getPower() {
+        return power;
     }
 
-    public void setCongSuat(int congSuat) {
-        this.congSuat = congSuat;
+    public void setPower(Integer power) {
+        this.power = power;
     }
 
-    public String getHopSo() {
-        return hopSo;
+    public String getTransmission() {
+        return transmission;
     }
 
-    public void setHopSo(String hopSo) {
-        this.hopSo = hopSo;
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
     }
 
-    public int getKmDaDi() {
-        return kmDaDi;
+    public Integer getMileage() {
+        return mileage;
     }
 
-    public void setKmDaDi(int kmDaDi) {
-        this.kmDaDi = kmDaDi;
+    public void setMileage(Integer mileage) {
+        this.mileage = mileage;
     }
 
-    public String getTinhTrang() {
-        return tinhTrang;
+    public String getCondition() {
+        return condition;
     }
 
-    public void setTinhTrang(String tinhTrang) {
-        this.tinhTrang = tinhTrang;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 
-    public BigDecimal getGiaNhap() {
-        return giaNhap;
+    public Long getImportPrice() {
+        return importPrice;
     }
 
-    public void setGiaNhap(BigDecimal giaNhap) {
-        this.giaNhap = giaNhap;
+    public void setImportPrice(Long importPrice) {
+        this.importPrice = importPrice;
     }
 
-    public BigDecimal getGiaBan() {
-        return giaBan;
+    public Long getSalePrice() {
+        return salePrice;
     }
 
-    public void setGiaBan(BigDecimal giaBan) {
-        this.giaBan = giaBan;
+    public void setSalePrice(Long salePrice) {
+        this.salePrice = salePrice;
     }
 
-    public int getSoLuongTon() {
-        return soLuongTon;
+    public Integer getStockQuantity() {
+        return stockQuantity;
     }
 
-    public void setSoLuongTon(int soLuongTon) {
-        this.soLuongTon = soLuongTon;
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 
-    public Date getNgayNhap() {
-        return ngayNhap;
+    public Date getImportDate() {
+        return importDate;
     }
 
-    public void setNgayNhap(Date ngayNhap) {
-        this.ngayNhap = ngayNhap;
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getMoTa() {
-        return moTa;
+    public String getDescription() {
+        return description;
     }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getLinkAnh() {
-        return linkAnh;
+    public String getImageLink() {
+        return imageLink;
     }
 
-    public void setLinkAnh(String linkAnh) {
-        this.linkAnh = linkAnh;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
-    // Getter/Setter cho GlobalKey
     public String getGlobalKey() {
         return globalKey;
     }
@@ -217,117 +272,24 @@ public class Car {
         this.globalKey = globalKey;
     }
 
-    // Getter/Setter cho thông tin từ bảng liên kết
-    public String getTenHang() {
-        return tenHang;
+    // Getter cho JSP dùng trực tiếp
+    public String getCarBrandName() {
+        return (carModel != null && carModel.getCarBrand() != null) ? carModel.getCarBrand().getCarBrandName() : "";
     }
 
-    public void setTenHang(String tenHang) {
-        this.tenHang = tenHang;
+    public String getCarModelName() {
+        return carModel != null ? carModel.getCarModelName() : "";
     }
 
-    public String getTenDong() {
-        return tenDong;
+    public String getFuelType() {
+        return carModel != null ? carModel.getFuelType() : "";
     }
 
-    public void setTenDong(String tenDong) {
-        this.tenDong = tenDong;
+    public Integer getSeatCount() {
+        return carModel != null ? carModel.getSeatCount() : null;
     }
 
-    public String getLoaiXe() {
-        return loaiXe;
-    }
-
-    public void setLoaiXe(String loaiXe) {
-        this.loaiXe = loaiXe;
-    }
-
-    public String getNhienLieu() {
-        return nhienLieu;
-    }
-
-    public void setNhienLieu(String nhienLieu) {
-        this.nhienLieu = nhienLieu;
-    }
-
-    public int getSoChoNgoi() {
-        return soChoNgoi;
-    }
-
-    public void setSoChoNgoi(int soChoNgoi) {
-        this.soChoNgoi = soChoNgoi;
-    }
-
-    public String getTenNCC() {
-        return tenNCC;
-    }
-
-    public void setTenNCC(String tenNCC) {
-        this.tenNCC = tenNCC;
-    }
-
-    // Utility methods
-    public String getFormattedPrice() {
-        if (giaBan != null) {
-            return String.format("%,d VNĐ", giaBan.longValue());
-        }
-        return "Liên hệ";
-    }
-
-    public String getEngineInfo() {
-        return dungTichDongCo + "cc - " + congSuat + "HP";
-    }
-
-    // Thêm method để tương thích với code cũ sử dụng hinhAnh
-    public String getHinhAnh() {
-        return this.linkAnh;
-    }
-
-    public void setHinhAnh(String hinhAnh) {
-        this.linkAnh = hinhAnh;
-    }
-
-    // Method kiểm tra xe có ảnh không
-    public boolean hasImage() {
-        return linkAnh != null && !linkAnh.trim().isEmpty();
-    }
-
-    // Method lấy ảnh mặc định nếu không có ảnh
-    public String getImageOrDefault() {
-        if (hasImage()) {
-            return linkAnh;
-        }
-        return "/images/cars/default-car.jpg";
-    }
-
-    // Method kiểm tra xe có sẵn không
-    public boolean isAvailable() {
-        return "Có sẵn".equals(trangThai) && soLuongTon > 0;
-    }
-
-    // Method kiểm tra xe mới
-    public boolean isNew() {
-        return "Mới".equals(tinhTrang);
-    }
-
-    // Method kiểm tra xe cũ
-    public boolean isUsed() {
-        return "Cũ".equals(tinhTrang);
-    }
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "maXe=" + maXe +
-                ", tenXe='" + tenXe + '\'' +
-                ", tenHang='" + tenHang + '\'' +
-                ", tenDong='" + tenDong + '\'' +
-                ", namSanXuat=" + namSanXuat +
-                ", mauSac='" + mauSac + '\'' +
-                ", giaBan=" + giaBan +
-                ", tinhTrang='" + tinhTrang + '\'' +
-                ", trangThai='" + trangThai + '\'' +
-                ", globalKey='" + globalKey + '\'' +
-                '}';
+    public String getCarType() {
+        return carModel != null ? carModel.getCarType() : "";
     }
 }

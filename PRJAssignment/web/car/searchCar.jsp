@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kết Quả Tìm Kiếm - DriveDreams</title>
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -560,7 +560,6 @@
         </div>
     </header>
 
-    <!-- Search Section tương tự home.jsp -->
     <section class="search-section">
         <div class="search-container">
             <h1 class="search-title">Tìm Kiếm Xe</h1>
@@ -577,16 +576,12 @@
                     </c:otherwise>
                 </c:choose>
             </p>
-            
-            <!-- Simple Search Form - SỬA LẠI ĐỂ TRÁNH LỖI 400 -->
             <form class="search-form" onsubmit="return handleKeywordSearch(event)">
                 <input type="text" class="search-input" name="keyword" id="keywordInput"
                        value="${searchCriteria.keyword != null ? searchCriteria.keyword : keyword}"
                        placeholder="🔍 Tìm kiếm theo tên xe, hãng, dòng xe, giá cả...">
                 <button type="submit" class="search-btn">Tìm Kiếm</button>
             </form>
-            
-            <!-- Advanced Search Form -->
             <div class="advanced-search-form">
                 <h3 class="advanced-search-title">🔧 Tìm Kiếm Nâng Cao</h3>
                 <form id="advancedSearchForm">
@@ -595,108 +590,102 @@
                             <label for="hangXe">Hãng xe</label>
                             <select id="hangXe" name="maker">
                                 <option value="">Chọn hãng xe</option>
-                                <option value="Toyota" ${searchCriteria.maker == 'Toyota' ? 'selected' : ''}>Toyota</option>
-                                <option value="Honda" ${searchCriteria.maker == 'Honda' ? 'selected' : ''}>Honda</option>
-                                <option value="BMW" ${searchCriteria.maker == 'BMW' ? 'selected' : ''}>BMW</option>
-                                <option value="Mercedes" ${searchCriteria.maker == 'Mercedes' ? 'selected' : ''}>Mercedes</option>
-                                <option value="Audi" ${searchCriteria.maker == 'Audi' ? 'selected' : ''}>Audi</option>
-                                <option value="Hyundai" ${searchCriteria.maker == 'Hyundai' ? 'selected' : ''}>Hyundai</option>
-                                <option value="Kia" ${searchCriteria.maker == 'Kia' ? 'selected' : ''}>Kia</option>
-                                <option value="Mazda" ${searchCriteria.maker == 'Mazda' ? 'selected' : ''}>Mazda</option>
-                                <option value="Ford" ${searchCriteria.maker == 'Ford' ? 'selected' : ''}>Ford</option>
-                                <option value="Volkswagen" ${searchCriteria.maker == 'Volkswagen' ? 'selected' : ''}>Volkswagen</option>
+                                <option value="Toyota" <c:if test="${searchCriteria.maker == 'Toyota'}">selected</c:if>>Toyota</option>
+                                <option value="Honda" <c:if test="${searchCriteria.maker == 'Honda'}">selected</c:if>>Honda</option>
+                                <option value="BMW" <c:if test="${searchCriteria.maker == 'BMW'}">selected</c:if>>BMW</option>
+                                <option value="Mercedes" <c:if test="${searchCriteria.maker == 'Mercedes'}">selected</c:if>>Mercedes</option>
+                                <option value="Audi" <c:if test="${searchCriteria.maker == 'Audi'}">selected</c:if>>Audi</option>
+                                <option value="Hyundai" <c:if test="${searchCriteria.maker == 'Hyundai'}">selected</c:if>>Hyundai</option>
+                                <option value="Kia" <c:if test="${searchCriteria.maker == 'Kia'}">selected</c:if>>Kia</option>
+                                <option value="Mazda" <c:if test="${searchCriteria.maker == 'Mazda'}">selected</c:if>>Mazda</option>
+                                <option value="Ford" <c:if test="${searchCriteria.maker == 'Ford'}">selected</c:if>>Ford</option>
+                                <option value="Volkswagen" <c:if test="${searchCriteria.maker == 'Volkswagen'}">selected</c:if>>Volkswagen</option>
                             </select>
                         </div>
-
                         <div class="filter-group">
                             <label for="dongXe">Loại xe</label>
                             <select id="dongXe" name="type">
                                 <option value="">Chọn loại xe</option>
-                                <option value="Sedan" ${searchCriteria.carType == 'Sedan' ? 'selected' : ''}>Sedan</option>
-                                <option value="SUV" ${searchCriteria.carType == 'SUV' ? 'selected' : ''}>SUV</option>
-                                <option value="Hatchback" ${searchCriteria.carType == 'Hatchback' ? 'selected' : ''}>Hatchback</option>
-                                <option value="Pickup" ${searchCriteria.carType == 'Pickup' ? 'selected' : ''}>Pickup</option>
-                                <option value="Coupe" ${searchCriteria.carType == 'Coupe' ? 'selected' : ''}>Coupe</option>
-                                <option value="Convertible" ${searchCriteria.carType == 'Convertible' ? 'selected' : ''}>Convertible</option>
+                                <option value="Sedan" <c:if test="${searchCriteria.carType == 'Sedan'}">selected</c:if>>Sedan</option>
+                                <option value="SUV" <c:if test="${searchCriteria.carType == 'SUV'}">selected</c:if>>SUV</option>
+                                <option value="Hatchback" <c:if test="${searchCriteria.carType == 'Hatchback'}">selected</c:if>>Hatchback</option>
+                                <option value="Pickup" <c:if test="${searchCriteria.carType == 'Pickup'}">selected</c:if>>Pickup</option>
+                                <option value="Coupe" <c:if test="${searchCriteria.carType == 'Coupe'}">selected</c:if>>Coupe</option>
+                                <option value="Convertible" <c:if test="${searchCriteria.carType == 'Convertible'}">selected</c:if>>Convertible</option>
                             </select>
                         </div>
-
                         <div class="filter-group">
                             <label>Năm sản xuất</label>
                             <div class="range-group">
                                 <select name="minYear">
                                     <option value="">Từ năm</option>
-                                    <option value="2020" ${searchCriteria.minYear == 2020 ? 'selected' : ''}>2020</option>
-                                    <option value="2021" ${searchCriteria.minYear == 2021 ? 'selected' : ''}>2021</option>
-                                    <option value="2022" ${searchCriteria.minYear == 2022 ? 'selected' : ''}>2022</option>
-                                    <option value="2023" ${searchCriteria.minYear == 2023 ? 'selected' : ''}>2023</option>
-                                    <option value="2024" ${searchCriteria.minYear == 2024 ? 'selected' : ''}>2024</option>
-                                    <option value="2025" ${searchCriteria.minYear == 2025 ? 'selected' : ''}>2025</option>
+                                    <option value="2020" <c:if test="${searchCriteria.minYear == 2020}">selected</c:if>>2020</option>
+                                    <option value="2021" <c:if test="${searchCriteria.minYear == 2021}">selected</c:if>>2021</option>
+                                    <option value="2022" <c:if test="${searchCriteria.minYear == 2022}">selected</c:if>>2022</option>
+                                    <option value="2023" <c:if test="${searchCriteria.minYear == 2023}">selected</c:if>>2023</option>
+                                    <option value="2024" <c:if test="${searchCriteria.minYear == 2024}">selected</c:if>>2024</option>
+                                    <option value="2025" <c:if test="${searchCriteria.minYear == 2025}">selected</c:if>>2025</option>
                                 </select>
                                 <span class="range-separator">-</span>
                                 <select name="maxYear">
                                     <option value="">Đến năm</option>
-                                    <option value="2021" ${searchCriteria.maxYear == 2021 ? 'selected' : ''}>2021</option>
-                                    <option value="2022" ${searchCriteria.maxYear == 2022 ? 'selected' : ''}>2022</option>
-                                    <option value="2023" ${searchCriteria.maxYear == 2023 ? 'selected' : ''}>2023</option>
-                                    <option value="2024" ${searchCriteria.maxYear == 2024 ? 'selected' : ''}>2024</option>
-                                    <option value="2025" ${searchCriteria.maxYear == 2025 ? 'selected' : ''}>2025</option>
+                                    <option value="2021" <c:if test="${searchCriteria.maxYear == 2021}">selected</c:if>>2021</option>
+                                    <option value="2022" <c:if test="${searchCriteria.maxYear == 2022}">selected</c:if>>2022</option>
+                                    <option value="2023" <c:if test="${searchCriteria.maxYear == 2023}">selected</c:if>>2023</option>
+                                    <option value="2024" <c:if test="${searchCriteria.maxYear == 2024}">selected</c:if>>2024</option>
+                                    <option value="2025" <c:if test="${searchCriteria.maxYear == 2025}">selected</c:if>>2025</option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="filter-group">
                             <label for="mauSac">Màu sắc</label>
                             <select id="mauSac" name="color">
                                 <option value="">Chọn màu sắc</option>
-                                <option value="Trắng" ${searchCriteria.color == 'Trắng' ? 'selected' : ''}>Trắng</option>
-                                <option value="Trắng ngọc trai" ${searchCriteria.color == 'Trắng ngọc trai' ? 'selected' : ''}>Trắng ngọc trai</option>
-                                <option value="Đen" ${searchCriteria.color == 'Đen' ? 'selected' : ''}>Đen</option>
-                                <option value="Bạc" ${searchCriteria.color == 'Bạc' ? 'selected' : ''}>Bạc</option>
-                                <option value="Xám" ${searchCriteria.color == 'Xám' ? 'selected' : ''}>Xám</option>
-                                <option value="Đỏ" ${searchCriteria.color == 'Đỏ' ? 'selected' : ''}>Đỏ</option>
-                                <option value="Xanh" ${searchCriteria.color == 'Xanh' ? 'selected' : ''}>Xanh</option>
-                                <option value="Xanh dương" ${searchCriteria.color == 'Xanh dương' ? 'selected' : ''}>Xanh dương</option>
-                                <option value="Cam" ${searchCriteria.color == 'Cam' ? 'selected' : ''}>Cam</option>
+                                <option value="Trắng" <c:if test="${searchCriteria.color == 'Trắng'}">selected</c:if>>Trắng</option>
+                                <option value="Trắng ngọc trai" <c:if test="${searchCriteria.color == 'Trắng ngọc trai'}">selected</c:if>>Trắng ngọc trai</option>
+                                <option value="Đen" <c:if test="${searchCriteria.color == 'Đen'}">selected</c:if>>Đen</option>
+                                <option value="Bạc" <c:if test="${searchCriteria.color == 'Bạc'}">selected</c:if>>Bạc</option>
+                                <option value="Xám" <c:if test="${searchCriteria.color == 'Xám'}">selected</c:if>>Xám</option>
+                                <option value="Đỏ" <c:if test="${searchCriteria.color == 'Đỏ'}">selected</c:if>>Đỏ</option>
+                                <option value="Xanh" <c:if test="${searchCriteria.color == 'Xanh'}">selected</c:if>>Xanh</option>
+                                <option value="Xanh dương" <c:if test="${searchCriteria.color == 'Xanh dương'}">selected</c:if>>Xanh dương</option>
+                                <option value="Cam" <c:if test="${searchCriteria.color == 'Cam'}">selected</c:if>>Cam</option>
                             </select>
                         </div>
-
                         <div class="filter-group">
                             <label for="tinhTrang">Tình trạng</label>
                             <select id="tinhTrang" name="condition">
                                 <option value="">Chọn tình trạng</option>
-                                <option value="Mới" ${searchCriteria.condition == 'Mới' ? 'selected' : ''}>Xe mới</option>
-                                <option value="Cũ" ${searchCriteria.condition == 'Cũ' ? 'selected' : ''}>Xe cũ</option>
-                                <option value="Tân trang" ${searchCriteria.condition == 'Tân trang' ? 'selected' : ''}>Xe tân trang</option>
+                                <option value="Mới" <c:if test="${searchCriteria.condition == 'Mới'}">selected</c:if>>Xe mới</option>
+                                <option value="Cũ" <c:if test="${searchCriteria.condition == 'Cũ'}">selected</c:if>>Xe cũ</option>
+                                <option value="Tân trang" <c:if test="${searchCriteria.condition == 'Tân trang'}">selected</c:if>>Xe tân trang</option>
                             </select>
                         </div>
-
                         <div class="filter-group">
                             <label>Khoảng giá</label>
                             <div class="range-group">
                                 <select name="minPrice">
                                     <option value="">Giá từ</option>
-                                    <option value="400000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 400000000 ? 'selected' : ''}>400 triệu</option>
-                                    <option value="600000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 600000000 ? 'selected' : ''}>600 triệu</option>
-                                    <option value="800000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 800000000 ? 'selected' : ''}>800 triệu</option>
-                                    <option value="1000000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 1000000000 ? 'selected' : ''}>1 tỷ</option>
-                                    <option value="1500000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 1500000000 ? 'selected' : ''}>1.5 tỷ</option>
-                                    <option value="2000000000" ${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 2000000000 ? 'selected' : ''}>2 tỷ</option>
+                                    <option value="400000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 400000000}">selected</c:if>>400 triệu</option>
+                                    <option value="600000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 600000000}">selected</c:if>>600 triệu</option>
+                                    <option value="800000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 800000000}">selected</c:if>>800 triệu</option>
+                                    <option value="1000000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 1000000000}">selected</c:if>>1 tỷ</option>
+                                    <option value="1500000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 1500000000}">selected</c:if>>1.5 tỷ</option>
+                                    <option value="2000000000" <c:if test="${searchCriteria.minPrice != null && searchCriteria.minPrice.longValue() == 2000000000}">selected</c:if>>2 tỷ</option>
                                 </select>
                                 <span class="range-separator">-</span>
                                 <select name="maxPrice">
                                     <option value="">Giá đến</option>
-                                    <option value="800000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 800000000 ? 'selected' : ''}>800 triệu</option>
-                                    <option value="1000000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 1000000000 ? 'selected' : ''}>1 tỷ</option>
-                                    <option value="1500000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 1500000000 ? 'selected' : ''}>1.5 tỷ</option>
-                                    <option value="2000000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 2000000000 ? 'selected' : ''}>2 tỷ</option>
-                                    <option value="3000000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 3000000000 ? 'selected' : ''}>3 tỷ</option>
-                                    <option value="5000000000" ${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 5000000000 ? 'selected' : ''}>5 tỷ</option>
+                                    <option value="800000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 800000000}">selected</c:if>>800 triệu</option>
+                                    <option value="1000000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 1000000000}">selected</c:if>>1 tỷ</option>
+                                    <option value="1500000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 1500000000}">selected</c:if>>1.5 tỷ</option>
+                                    <option value="2000000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 2000000000}">selected</c:if>>2 tỷ</option>
+                                    <option value="3000000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 3000000000}">selected</c:if>>3 tỷ</option>
+                                    <option value="5000000000" <c:if test="${searchCriteria.maxPrice != null && searchCriteria.maxPrice.longValue() == 5000000000}">selected</c:if>>5 tỷ</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="filter-actions">
                         <button type="button" class="filter-btn" onclick="buildAdvancedSearchUrl()">
                             🔍 Tìm Kiếm
@@ -712,7 +701,6 @@
 
     <section class="search-results-section">
         <div class="container">
-            <!-- Search Results -->
             <c:choose>
                 <c:when test="${not empty searchResults and totalResults > 0}">
                     <div class="results-grid">
@@ -720,51 +708,51 @@
                             <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-card">
                                 <div class="car-image">
                                     <c:choose>
-                                        <c:when test="${car.hasImage()}">
-                                            <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}" alt="${car.tenXe}">
+                                        <c:when test="${not empty car.imageLink}">
+                                            <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
                                         </c:when>
                                         <c:otherwise>
                                             <div class="car-placeholder">Hình ảnh xe</div>
                                         </c:otherwise>
                                     </c:choose>
-                                    <span class="car-badge ${car.isNew() ? 'new' : (car.isUsed() ? 'used' : '')}">${car.tinhTrang}</span>
+                                    <span class="car-badge <c:if test='${car.condition eq "Mới"}'>new</c:if><c:if test='${car.condition eq "Cũ"}'>used</c:if>">${car.condition}</span>
                                 </div>
                                 <div class="car-info">
-                                    <h3 class="car-name">${car.tenXe}</h3>
+                                    <h3 class="car-name">${car.carName}</h3>
                                     <div class="car-price">
-                                        <fmt:formatNumber value="${car.giaBan}" type="currency" currencyCode="VND" pattern="#,###"/> VNĐ
+                                        <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/> VNĐ
                                     </div>
                                     <div class="car-details">
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Hãng:</span> ${car.tenHang}
+                                            <span class="car-detail-label">Hãng:</span> ${car.carBrandName}
                                         </div>
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Dòng:</span> ${car.tenDong}
+                                            <span class="car-detail-label">Dòng:</span> ${car.carModelName}
                                         </div>
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Năm:</span> ${car.namSanXuat}
+                                            <span class="car-detail-label">Năm:</span> ${car.year}
                                         </div>
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Màu:</span> ${car.mauSac}
+                                            <span class="car-detail-label">Màu:</span> ${car.color}
                                         </div>
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Hộp số:</span> ${car.hopSo}
+                                            <span class="car-detail-label">Hộp số:</span> ${car.transmission}
                                         </div>
                                         <div class="car-detail-item">
-                                            <span class="car-detail-label">Km:</span> <fmt:formatNumber value="${car.kmDaDi}" pattern="#,###"/> km
+                                            <span class="car-detail-label">Km:</span> <fmt:formatNumber value="${car.mileage}" pattern="#,###"/> km
                                         </div>
                                     </div>
                                     <div class="car-specs">
                                         <div class="spec-item">
-                                            <div class="spec-value">${car.dungTichDongCo}cc</div>
+                                            <div class="spec-value">${car.engineCapacity}cc</div>
                                             <div class="spec-label">Động cơ</div>
                                         </div>
                                         <div class="spec-item">
-                                            <div class="spec-value">${car.congSuat}HP</div>
+                                            <div class="spec-value">${car.power}HP</div>
                                             <div class="spec-label">Công suất</div>
                                         </div>
                                         <div class="spec-item">
-                                            <div class="spec-value">${car.soChoNgoi}</div>
+                                            <div class="spec-value">${car.seatCount}</div>
                                             <div class="spec-label">Chỗ ngồi</div>
                                         </div>
                                     </div>
@@ -789,50 +777,34 @@
     </section>
 
     <script>
-    // SỬA LẠI JAVASCRIPT ĐỂ TRÁNH LỖI 400
     function handleKeywordSearch(event) {
         event.preventDefault();
         const keyword = document.getElementById('keywordInput').value.trim();
-        
         if (keyword) {
-            // Redirect với URL pattern mới để tránh lỗi 400
             const searchUrl = '${pageContext.request.contextPath}/search/result/Keyword/' + encodeURIComponent(keyword);
-            console.log('Redirecting to:', searchUrl); // Debug log
             window.location.href = searchUrl;
         } else {
-            // Nếu không có keyword, redirect về trang chủ
             window.location.href = '${pageContext.request.contextPath}/';
         }
-        
         return false;
     }
-
     function buildAdvancedSearchUrl() {
         const form = document.getElementById('advancedSearchForm');
         const formData = new FormData(form);
-        
         let urlParts = [];
-        
-        // Thêm keyword hiện tại nếu có
         const currentKeyword = document.getElementById('keywordInput').value.trim();
         if (currentKeyword) {
             urlParts.push('Keyword', encodeURIComponent(currentKeyword));
         }
-        
-        // Build URL với các criteria khác
         if (formData.get('maker')) {
             urlParts.push('Maker', encodeURIComponent(formData.get('maker')));
         }
-        
         if (formData.get('type')) {
             urlParts.push('Type', encodeURIComponent(formData.get('type')));
         }
-        
         if (formData.get('color')) {
             urlParts.push('Color', encodeURIComponent(formData.get('color')));
         }
-        
-        // Year range
         const minYear = formData.get('minYear');
         const maxYear = formData.get('maxYear');
         if (minYear || maxYear) {
@@ -844,8 +816,6 @@
                 urlParts.push('Year', '2020-' + maxYear);
             }
         }
-        
-        // Price range
         const minPrice = formData.get('minPrice');
         const maxPrice = formData.get('maxPrice');
         if (minPrice || maxPrice) {
@@ -857,21 +827,15 @@
                 urlParts.push('Price', '0-' + maxPrice);
             }
         }
-        
         if (formData.get('condition')) {
             urlParts.push('Condition', encodeURIComponent(formData.get('condition')));
         }
-        
-        // Build final URL
         let searchUrl = '${pageContext.request.contextPath}/search/result';
         if (urlParts.length > 0) {
             searchUrl += '/' + urlParts.join('/');
         }
-        
-        console.log('Generated URL:', searchUrl); // Debug log
         window.location.href = searchUrl;
     }
-    
     function resetForm() {
         document.getElementById('advancedSearchForm').reset();
         document.getElementById('keywordInput').value = '';

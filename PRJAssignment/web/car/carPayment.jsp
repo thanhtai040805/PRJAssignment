@@ -1,18 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.Car" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-    Car car = (Car) request.getAttribute("carToBuy");
+    model.Car car = (model.Car) request.getAttribute("carToBuy");
     if (car == null) {
         response.sendRedirect(request.getContextPath() + "/error.jsp");
         return;
     }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh toán - <%= car.getTenXe() %></title>
+    <title>Thanh toán - ${carToBuy.carName}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -26,7 +27,6 @@
             --shadow-light: rgba(0,0,0,0.1);
             --shadow-medium: rgba(0,0,0,0.15);
         }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-light);
@@ -38,51 +38,45 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+            box-sizing: border-box;
         }
-
         .payment-main-container {
-            max-width: 1000px; /* Increased max-width for two columns */
+            max-width: 1000px;
             width: 95%;
             background: var(--card-background);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 10px 30px var(--shadow-medium);
-            display: flex; /* Use flexbox for two columns */
-            gap: 30px; /* Space between columns */
-            flex-wrap: wrap; /* Allow wrapping on small screens */
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
         }
-
         .car-summary-section, .payment-form-section {
-            flex: 1; /* Both sections take equal space */
-            min-width: 300px; /* Minimum width before wrapping */
+            flex: 1;
+            min-width: 300px;
             padding: 20px;
             border-radius: 10px;
         }
-
         .car-summary-section {
-            background-color: var(--background-light); /* Slightly different background for visual separation */
+            background-color: var(--background-light);
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 15px var(--shadow-light);
             text-align: center;
         }
-
         .car-summary-section h2 {
             font-size: 1.8em;
             color: var(--primary-color);
             margin-bottom: 20px;
             font-weight: 700;
         }
-
         .car-summary-section img {
             max-width: 100%;
-            height: 200px; /* Fixed height for consistency */
-            object-fit: cover; /* Cover ensures the image fills the space */
+            height: 200px;
+            object-fit: cover;
             border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
         .car-summary-section p {
             margin: 10px 0;
             font-size: 1.05em;
@@ -92,31 +86,25 @@
             padding-bottom: 5px;
             border-bottom: 1px dashed var(--border-color);
         }
-
         .car-summary-section p:last-child {
-            border-bottom: none; /* No border for the last item */
+            border-bottom: none;
             padding-bottom: 0;
         }
-
         .car-summary-section p strong {
             color: var(--text-muted);
             font-weight: 500;
         }
-
         .car-summary-section p span {
             color: var(--text-dark);
             font-weight: 600;
         }
-
         .car-summary-section .price {
             font-size: 1.5em;
             color: var(--accent-color);
             font-weight: 700;
             margin-top: 20px;
-            justify-content: center; /* Center align price */
+            justify-content: center;
         }
-
-
         .payment-form-section h2 {
             font-size: 2em;
             margin-bottom: 30px;
@@ -124,13 +112,11 @@
             font-weight: 700;
             text-align: center;
         }
-
         .payment-form-section form {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
         .payment-form-section label {
             font-weight: 600;
             margin-bottom: 5px;
@@ -138,7 +124,6 @@
             text-align: left;
             display: block;
         }
-
         .payment-form-section input[type="text"],
         .payment-form-section input[type="email"],
         .payment-form-section select {
@@ -152,7 +137,6 @@
             box-sizing: border-box;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .payment-form-section input[type="text"]:focus,
         .payment-form-section input[type="email"]:focus,
         .payment-form-section select:focus {
@@ -160,7 +144,6 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
             outline: none;
         }
-
         .payment-form-section input[type="submit"] {
             padding: 15px 25px;
             border: none;
@@ -174,23 +157,20 @@
             margin-top: 20px;
             width: 100%;
         }
-
         .payment-form-section input[type="submit"]:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px var(--shadow-medium);
             background: linear-gradient(to right, #00f2fe, #4facfe);
         }
-
-        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .payment-main-container {
-                flex-direction: column; /* Stack columns on smaller screens */
+                flex-direction: column;
                 padding: 20px;
                 gap: 20px;
             }
             .car-summary-section, .payment-form-section {
                 padding: 15px;
-                min-width: unset; /* Remove min-width to allow full stacking */
+                min-width: unset;
             }
             .car-summary-section h2, .payment-form-section h2 {
                 font-size: 1.6em;
@@ -199,7 +179,6 @@
                 height: 180px;
             }
         }
-
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -221,48 +200,52 @@
     </style>
 </head>
 <body>
-
     <div class="payment-main-container">
         <div class="car-summary-section">
             <h2>Thông tin xe</h2>
-            <img src="${pageContext.request.contextPath}${carToBuy.getImageOrDefault()}" alt="Ảnh xe <%= car.getTenXe()%>">
-            <p><strong>Tên xe:</strong> <span><%= car.getTenXe()%></span></p>
-            <p><strong>Năm sản xuất:</strong> <span><%= car.getNamSanXuat()%></span></p>
-            <p><strong>Màu sắc:</strong> <span><%= car.getMauSac()%></span></p>
-            <p><strong>Số chỗ ngồi:</strong> <span><%= car.getSoChoNgoi()%></span></p>
-            <p class="price"><strong>Giá bán:</strong> <span><%= car.getFormattedPrice()%></span></p>
+            <c:choose>
+                <c:when test="${not empty carToBuy.imageLink}">
+                    <img src="${pageContext.request.contextPath}${carToBuy.imageLink}" alt="Ảnh xe ${carToBuy.carName}">
+                </c:when>
+                <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Ảnh xe ${carToBuy.carName}">
+                </c:otherwise>
+            </c:choose>
+            <p><strong>Tên xe:</strong> <span>${carToBuy.carName}</span></p>
+            <p><strong>Hãng xe:</strong> <span>${carToBuy.carBrandName}</span></p>
+            <p><strong>Dòng xe:</strong> <span>${carToBuy.carModelName}</span></p>
+            <p><strong>Năm sản xuất:</strong> <span>${carToBuy.year}</span></p>
+            <p><strong>Màu sắc:</strong> <span>${carToBuy.color}</span></p>
+            <p><strong>Số chỗ ngồi:</strong> <span>${carToBuy.seatCount}</span></p>
+            <p class="price"><strong>Giá bán:</strong>
+                <span>
+                    <fmt:formatNumber value="${carToBuy.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
+                </span>
+            </p>
         </div>
-
         <div class="payment-form-section">
             <h2>Thông tin thanh toán</h2>
-            <form action="<%= request.getContextPath() %>/confirm-payment" method="post">
-                <input type="hidden" name="carId" value="<%= car.getMaXe() %>"/>
-                <input type="hidden" name="price" value="<%= car.getGiaBan() %>"/>
-                <input type="hidden" name="carName" value="<%= car.getTenXe() %>"/>
-
+            <form action="${pageContext.request.contextPath}/confirm-payment" method="post">
+                <input type="hidden" name="carId" value="${carToBuy.carId}"/>
+                <input type="hidden" name="price" value="${carToBuy.salePrice}"/>
+                <input type="hidden" name="carName" value="${carToBuy.carName}"/>
                 <label for="customerName">Họ tên:</label>
                 <input type="text" id="customerName" name="customerName" required>
-
                 <label for="phone">Số điện thoại:</label>
                 <input type="text" id="phone" name="phone" required>
-
                 <label for="address">Địa chỉ:</label>
                 <input type="text" id="address" name="address" required>
-
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-
                 <label for="paymentMethod">Phương thức thanh toán:</label>
                 <select id="paymentMethod" name="paymentMethod" required>
                     <option value="Tiền mặt">Tiền mặt</option>
                     <option value="Chuyển khoản">Chuyển khoản</option>
                     <option value="Qua ngân hàng">Qua ngân hàng</option>
                 </select>
-
                 <input type="submit" value="Xác nhận Thanh toán">
             </form>
         </div>
     </div>
-
 </body>
 </html>

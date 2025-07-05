@@ -1,143 +1,138 @@
 package model;
+import jakarta.persistence.*;
+import java.util.Date;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
+@Entity
+@Table(name = "ThanhToan")
 public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaTT")
+    private Integer paymentId;
 
-    private Integer maTT;              // Mã thanh toán
-    private Integer maHD;              // Mã hóa đơn
-    private Integer maPTTT;            // Mã phương thức thanh toán
-    private BigDecimal soTien;         // Số tiền thanh toán
-    private LocalDate ngayThanhToan;   // Ngày thanh toán
-    private String soTaiKhoan;         // Số tài khoản ngân hàng (nếu có)
-    private String tenNganHang;        // Tên ngân hàng
-    private String maGiaoDich;         // Mã giao dịch
-    private String trangThai;          // Trạng thái thanh toán
-    private String ghiChu;             // Ghi chú
+    @Column(name = "MaHD")
+    private Integer invoiceId;
 
-    // Đối tượng liên quan (tùy chọn)
-    private PaymentMethod phuongThucThanhToan;
+    @Column(name = "MaPTTT")
+    private Integer paymentMethodId;
 
-    // Constructors
-    public Payment() {
+    @Column(name = "SoTien")
+    private Long amount;
+
+    @Column(name = "NgayThanhToan")
+    @Temporal(TemporalType.DATE)
+    private Date paymentDate;
+
+    @Column(name = "SoTaiKhoan")
+    private String accountNumber;
+
+    @Column(name = "TenNganHang")
+    private String bankName;
+
+    @Column(name = "MaGiaoDich")
+    private String transactionCode;
+
+    @Column(name = "TrangThai")
+    private String status;
+
+    @Column(name = "GhiChu")
+    private String note;
+
+    public Payment() {}
+
+    public Payment(Integer paymentId, Integer invoiceId, Integer paymentMethodId, Long amount, Date paymentDate,
+                   String accountNumber, String bankName, String transactionCode, String status, String note) {
+        this.paymentId = paymentId;
+        this.invoiceId = invoiceId;
+        this.paymentMethodId = paymentMethodId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+        this.accountNumber = accountNumber;
+        this.bankName = bankName;
+        this.transactionCode = transactionCode;
+        this.status = status;
+        this.note = note;
     }
 
-    public Payment(Integer maTT, Integer maHD, Integer maPTTT, BigDecimal soTien,
-                   LocalDate ngayThanhToan, String soTaiKhoan, String tenNganHang,
-                   String maGiaoDich, String trangThai, String ghiChu) {
-        this.maTT = maTT;
-        this.maHD = maHD;
-        this.maPTTT = maPTTT;
-        this.soTien = soTien;
-        this.ngayThanhToan = ngayThanhToan;
-        this.soTaiKhoan = soTaiKhoan;
-        this.tenNganHang = tenNganHang;
-        this.maGiaoDich = maGiaoDich;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
+    public Integer getPaymentId() {
+        return paymentId;
     }
 
-    public Payment(Integer maHD, Integer maPTTT, BigDecimal soTien,
-                   LocalDate ngayThanhToan, String soTaiKhoan, String tenNganHang,
-                   String maGiaoDich, String trangThai, String ghiChu) {
-        this.maHD = maHD;
-        this.maPTTT = maPTTT;
-        this.soTien = soTien;
-        this.ngayThanhToan = ngayThanhToan;
-        this.soTaiKhoan = soTaiKhoan;
-        this.tenNganHang = tenNganHang;
-        this.maGiaoDich = maGiaoDich;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
+    public void setPaymentId(Integer paymentId) {
+        this.paymentId = paymentId;
     }
 
-    // Getters and Setters
-    public Integer getMaTT() {
-        return maTT;
+    public Integer getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setMaTT(Integer maTT) {
-        this.maTT = maTT;
+    public void setInvoiceId(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
-    public Integer getMaHD() {
-        return maHD;
+    public Integer getPaymentMethodId() {
+        return paymentMethodId;
     }
 
-    public void setMaHD(Integer maHD) {
-        this.maHD = maHD;
+    public void setPaymentMethodId(Integer paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 
-    public Integer getMaPTTT() {
-        return maPTTT;
+    public Long getAmount() {
+        return amount;
     }
 
-    public void setMaPTTT(Integer maPTTT) {
-        this.maPTTT = maPTTT;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
-    public BigDecimal getSoTien() {
-        return soTien;
+    public Date getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setSoTien(BigDecimal soTien) {
-        this.soTien = soTien;
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
-    public LocalDate getNgayThanhToan() {
-        return ngayThanhToan;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setNgayThanhToan(LocalDate ngayThanhToan) {
-        this.ngayThanhToan = ngayThanhToan;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
-    public String getSoTaiKhoan() {
-        return soTaiKhoan;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setSoTaiKhoan(String soTaiKhoan) {
-        this.soTaiKhoan = soTaiKhoan;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public String getTenNganHang() {
-        return tenNganHang;
+    public String getTransactionCode() {
+        return transactionCode;
     }
 
-    public void setTenNganHang(String tenNganHang) {
-        this.tenNganHang = tenNganHang;
+    public void setTransactionCode(String transactionCode) {
+        this.transactionCode = transactionCode;
     }
 
-    public String getMaGiaoDich() {
-        return maGiaoDich;
+    public String getStatus() {
+        return status;
     }
 
-    public void setMaGiaoDich(String maGiaoDich) {
-        this.maGiaoDich = maGiaoDich;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getNote() {
+        return note;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public String getGhiChu() {
-        return ghiChu;
-    }
 
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
-
-    public PaymentMethod getPhuongThucThanhToan() {
-        return phuongThucThanhToan;
-    }
-
-    public void setPhuongThucThanhToan(PaymentMethod phuongThucThanhToan) {
-        this.phuongThucThanhToan = phuongThucThanhToan;
-    }
 }

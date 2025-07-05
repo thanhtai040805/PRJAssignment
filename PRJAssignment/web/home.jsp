@@ -94,7 +94,7 @@
                 right: 0;
                 bottom: 0;
                 background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
+                    radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
                 pointer-events: none;
             }
 
@@ -761,47 +761,47 @@
                 .search-section {
                     padding: 40px 0;
                 }
-                
+
                 .search-title {
                     font-size: 32px;
                 }
-                
+
                 .search-subtitle {
                     font-size: 16px;
                     margin-bottom: 30px;
                 }
-                
+
                 .search-form {
                     flex-direction: column;
                     border-radius: 20px;
                     max-width: 95%;
                 }
-                
+
                 .search-input {
                     border-radius: 20px 20px 0 0;
                     padding: 18px 25px;
                 }
-                
+
                 .search-btn {
                     border-radius: 0 0 20px 20px;
                     padding: 18px 25px;
                 }
-                
+
                 .stats {
                     flex-direction: column;
                     gap: 15px;
                     align-items: center;
                 }
-                
+
                 .stat-item {
                     padding: 15px 25px;
                 }
-                
+
                 .quick-tags {
                     justify-content: center;
                     gap: 8px;
                 }
-                
+
                 .quick-tag {
                     padding: 8px 16px;
                     font-size: 13px;
@@ -813,22 +813,22 @@
                     padding: 25px;
                     margin: 0 15px;
                 }
-                
+
                 .filter-actions {
                     flex-direction: column;
                     align-items: center;
                 }
-                
+
                 .filter-btn, .reset-btn {
                     width: 100%;
                     justify-content: center;
                 }
-                
+
                 .year-range, .price-range, .engine-range, .power-range {
                     flex-direction: column;
                     gap: 10px;
                 }
-                
+
                 .range-separator {
                     display: none;
                 }
@@ -838,19 +838,19 @@
                 .search-container {
                     padding: 0 15px;
                 }
-                
+
                 .search-title {
                     font-size: 28px;
                 }
-                
+
                 .search-subtitle {
                     font-size: 15px;
                 }
-                
+
                 .stats {
                     gap: 12px;
                 }
-                
+
                 .stat-item {
                     padding: 12px 20px;
                     font-size: 14px;
@@ -859,12 +859,12 @@
                 .filter-section {
                     padding: 30px 0;
                 }
-                
+
                 .filter-form {
                     padding: 20px;
                     margin: 0 10px;
                 }
-                
+
                 .filter-btn, .reset-btn {
                     padding: 12px 30px;
                     font-size: 14px;
@@ -898,14 +898,11 @@
             <div class="search-container">
                 <h1 class="search-title">Tìm Kiếm Xe Mơ Ước</h1>
                 <p class="search-subtitle">Khám phá hàng nghìn mẫu xe chất lượng cao với công nghệ tìm kiếm thông minh</p>
-                
-                <!-- Simple Search Form - Gửi trực tiếp đến SearchServlet -->
                 <form class="search-form" action="${pageContext.request.contextPath}/search" method="get">
                     <input type="text" class="search-input" name="keyword" 
                            placeholder="🔍 Tìm kiếm theo tên xe, hãng, dòng xe, giá cả...">
                     <button type="submit" class="search-btn">Tìm Kiếm</button>
                 </form>
-                
                 <div class="stats">
                     <div class="stat-item">
                         <span class="stat-icon">🚗</span>
@@ -920,7 +917,6 @@
                         <span>4.8/5 đánh giá</span>
                     </div>
                 </div>
-                
                 <div class="quick-search">
                     <p class="quick-search-title">Tìm kiếm nhanh:</p>
                     <div class="quick-tags">
@@ -932,7 +928,6 @@
                         <a href="${pageContext.request.contextPath}/search/result/Type/Sedan" class="quick-tag">Sedan</a>
                     </div>
                 </div>
-                
                 <div class="advanced-search-toggle">
                     <a href="#filter-section" class="toggle-btn">🔧 Tìm kiếm nâng cao</a>
                 </div>
@@ -945,11 +940,14 @@
                     <c:forEach var="car" items="${showcaseCars}" begin="0" end="6">
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-item">
                             <c:choose>
-                                <c:when test="${car.hasImage()}">
-                                    <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}" alt="${car.tenXe}">
+                                <c:when test="${not empty car.imageLink}">
+                                    <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="car-placeholder">${car.tenHang}<br>${car.tenDong}</div>
+                                    <div class="car-placeholder">
+                                        <c:out value="${car.carBrandName}" default="Hãng xe"/><br>
+                                        <c:out value="${car.carModelName}" default="Dòng xe"/>
+                                    </div>
                                 </c:otherwise>
                             </c:choose>
                         </a>
@@ -966,9 +964,9 @@
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-card">
                             <div class="car-image">
                                 <c:choose>
-                                    <c:when test="${car.hasImage()}">
-                                        <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}"
-                                             alt="${car.tenXe}" class="card-img-top">
+                                    <c:when test="${not empty car.imageLink}">
+                                        <img src="${pageContext.request.contextPath}${car.imageLink}"
+                                             alt="${car.carName}" class="card-img-top">
                                     </c:when>
                                     <c:otherwise>
                                         <div class="car-placeholder">Hình ảnh xe</div>
@@ -976,22 +974,21 @@
                                 </c:choose>
                             </div>
                             <div class="car-info">
-                                <h3>${car.tenXe}</h3>
+                                <h3>${car.carName}</h3>
                                 <div class="car-price">
-                                    <fmt:formatNumber value="${car.giaBan}" type="currency" currencyCode="VND" pattern="#,###"/>
+                                    <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
                                 </div>
                                 <div class="car-details">
-                                    <p><strong>Hãng:</strong> ${car.tenHang}</p>
-                                    <p><strong>Dòng xe:</strong> ${car.tenDong}</p>
-                                    <p><strong>Năm:</strong> ${car.namSanXuat}</p>
-                                    <p><strong>Màu sắc:</strong> ${car.mauSac}</p>
-                                    <p><strong>Tình trạng:</strong> ${car.tinhTrang}</p>
+                                    <p><strong>Hãng:</strong> <c:out value="${car.carBrandName}" default=""/></p>
+                                    <p><strong>Dòng xe:</strong> <c:out value="${car.carModelName}" default=""/></p>
+                                    <p><strong>Năm:</strong> ${car.year}</p>
+                                    <p><strong>Màu sắc:</strong> ${car.color}</p>
+                                    <p><strong>Tình trạng:</strong> ${car.condition}</p>
                                 </div>
                             </div>
                         </a>
                     </c:forEach>
                 </div>
-
                 <div class="ranking-section">
                     <div class="ranking-title">
                         <span>📊</span>
@@ -1013,7 +1010,7 @@
                                     ${status.index + 1}
                                 </div>
                                 <div class="rank-car-info">
-                                    <div class="rank-car-name">${car.tenXe}</div>
+                                    <div class="rank-car-name">${car.carName}</div>
                                     <div class="rank-car-detail">Top ${status.index + 1}</div>
                                 </div>
                             </a>
@@ -1031,8 +1028,8 @@
                         <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="recommend-card">
                             <div class="recommend-image">
                                 <c:choose>
-                                    <c:when test="${car.hasImage()}">
-                                        <img src="${pageContext.request.contextPath}${car.getImageOrDefault()}" alt="${car.tenXe}">
+                                    <c:when test="${not empty car.imageLink}">
+                                        <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
                                     </c:when>
                                     <c:otherwise>
                                         <div class="car-placeholder">Hình ảnh xe</div>
@@ -1040,11 +1037,11 @@
                                 </c:choose>
                             </div>
                             <div class="recommend-info">
-                                <div class="recommend-name">${car.tenXe}</div>
+                                <div class="recommend-name">${car.carName}</div>
                                 <div class="recommend-price">
-                                    <fmt:formatNumber value="${car.giaBan}" type="currency" currencyCode="VND" pattern="#,###"/>
+                                    <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
                                 </div>
-                                <div class="recommend-type">Type: ${car.tinhTrang}</div>
+                                <div class="recommend-type">Type: ${car.condition}</div>
                             </div>
                         </a>
                     </c:forEach>
@@ -1052,7 +1049,6 @@
             </div>
         </section>
 
-        <!-- Advanced Search Form - Gửi trực tiếp đến SearchServlet -->
         <section class="filter-section" id="filter-section">
             <div class="section-container">
                 <h2 class="section-title">🔧 Tìm Kiếm Nâng Cao</h2>
@@ -1073,7 +1069,6 @@
                             <option value="Volkswagen">Volkswagen</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
                         <label for="dongXe">Loại xe</label>
                         <select id="dongXe" name="type">
@@ -1088,7 +1083,6 @@
                             <option value="Wagon">Wagon</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
                         <label for="namSanXuat">Năm sản xuất</label>
                         <div class="year-range">
@@ -1112,7 +1106,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="filter-group">
                         <label for="mauSac">Màu sắc</label>
                         <select id="mauSac" name="color">
@@ -1129,7 +1122,6 @@
                             <option value="Cam">Cam</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
                         <label for="hopSo">Hộp số</label>
                         <select id="hopSo" name="transmission">
@@ -1139,7 +1131,6 @@
                             <option value="CVT">CVT</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
                         <label for="tinhTrang">Tình trạng</label>
                         <select id="tinhTrang" name="condition">
@@ -1149,7 +1140,6 @@
                             <option value="Tân trang">Xe tân trang</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
                         <label for="dungTichDongCo">Dung tích động cơ (cc)</label>
                         <div class="engine-range">
@@ -1174,7 +1164,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="filter-group">
                         <label for="congSuat">Công suất (HP)</label>
                         <div class="power-range">
@@ -1195,7 +1184,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="filter-group price-group">
                         <label for="giaBan">Khoảng giá bán</label>
                         <div class="price-range">
@@ -1222,7 +1210,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="filter-group">
                         <label for="kmDaDi">Số km đã đi</label>
                         <select id="kmDaDi" name="maxKm">
@@ -1235,7 +1222,6 @@
                             <option value="100000">Dưới 100,000 km</option>
                         </select>
                     </div>
-
                     <div class="filter-actions">
                         <button type="submit" class="filter-btn">
                             <span class="search-icon">🔍</span>
@@ -1259,14 +1245,12 @@
                     </div>
                     <p>Chúng tôi là showroom ô tô uy tín hàng đầu, cung cấp các dòng xe chất lượng cao với dịch vụ tốt nhất.</p>
                 </div>
-
                 <div class="footer-section">
                     <h3>Liên hệ</h3>
                     <p>Email: drivedreams@gmail.com</p>
                     <p>Phone: 0123456789.OK</p>
                     <p>Address: 112 Trần Duy Hưng</p>
                 </div>
-
                 <div class="footer-section">
                     <h3>Giới thiệu</h3>
                     <p>Group 4 SE119405</p>
