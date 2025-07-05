@@ -100,6 +100,30 @@
                 box-shadow: 0 6px 15px rgba(0,0,0,0.2);
                 background: linear-gradient(to right, #00f2fe, #4facfe);
             }
+            /* Thêm style cho favorite button */
+            .favorite-btn {
+                background: #fff;
+                color: #ff6b6b;
+                border: 1px solid #ff6b6b;
+                border-radius: 20px;
+                padding: 8px 18px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: background 0.2s, color 0.2s;
+            }
+            .favorite-btn:hover {
+                background: #ff6b6b;
+                color: #fff;
+            }
+            .favorite-status {
+                margin-left: 10px;
+                font-size: 15px;
+                color: #28a745;
+                font-weight: 600;
+                display: none;
+            }
             .suggestions {
                 max-width: 1200px;
                 margin: 50px auto;
@@ -239,6 +263,7 @@
         </style>
     </head>
     <body>
+        <jsp:include page="/header.jsp" />
         <div class="container">
             <div class="car-image">
                 <c:choose>
@@ -272,7 +297,10 @@
                 <div class="buttons">
                     <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${carDetail.carId}'">Làm khoản vay</button>
                     <button onclick="location.href = '${pageContext.request.contextPath}/payment/${carDetail.globalKey}'">Mua xe</button>
-                    <button onclick="location.href = '${pageContext.request.contextPath}/addFavorite?carId=${carDetail.carId}'">Thêm vào yêu thích</button>
+                    <button type="button" class="favorite-btn" onclick="addToFavorite('${carDetail.globalKey}', this)">
+                        Thêm vào yêu thích
+                    </button>
+                    <span class="favorite-status">Đã thêm!</span>
                 </div>
             </div>
         </div>
@@ -299,5 +327,29 @@
                 </c:forEach>
             </div>
         </div>
+        <!-- Script AJAX cho nút yêu thích -->
+        <script>
+        function addToFavorite(globalKey, btn) {
+            fetch('${pageContext.request.contextPath}/addFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'globalKey=' + encodeURIComponent(globalKey)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    btn.style.display = 'none';
+                    btn.nextElementSibling.style.display = 'inline';
+                } else {
+                    alert('Thêm vào yêu thích thất bại!');
+                }
+            })
+            .catch(() => {
+                alert('Có lỗi xảy ra!');
+            });
+        }
+        </script>
     </body>
 </html>

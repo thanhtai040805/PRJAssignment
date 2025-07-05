@@ -539,26 +539,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">🚗</div>
-                <h1><a href="${pageContext.request.contextPath}/" style="color: white; text-decoration: none;">DriveDreams</a></h1>
-            </div>
-            <div class="auth-links">
-                <c:choose>
-                    <c:when test="${sessionScope.isLoggedIn}">
-                        <span>Xin chào, ${sessionScope.username}!</span>
-                        <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/login">Login</a>
-                        <a href="${pageContext.request.contextPath}/register">Register</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
-    </header>
+    <jsp:include page="/header.jsp" />
 
     <section class="search-section">
         <div class="search-container">
