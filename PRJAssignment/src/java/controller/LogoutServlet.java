@@ -38,6 +38,6 @@ public class LogoutServlet extends HttpServlet {
         }
 
         // ✅ Điều hướng về servlet login thay vì file login.jsp
-        response.sendRedirect(request.getContextPath() + "/login");
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 }
