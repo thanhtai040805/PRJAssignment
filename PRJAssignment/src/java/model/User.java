@@ -1,9 +1,11 @@
 package model;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")
@@ -27,10 +29,11 @@ public class User {
     @Column(name = "TrangThai")
     private String status;
 
-    public User() {}
+    public User() {
+    }
 
     public User(Integer userId, String username, String password, String role, Integer customerId, Integer employeeId,
-                String status) {
+            String status) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -95,5 +98,4 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

@@ -12,8 +12,8 @@ import java.util.Properties;
 
 public class Email {
     public static void sendEmail(String toEmail, String subject, String messageText) throws MessagingException {
-        String fromEmail = "thwaan1309@gmail.com";
-        String password = "yjac ktdf tpsg mopx"; 
+        String fromEmail = "phamtanhai2912@gmail.com";
+        String password = "ikkm ymba fmds wozk"; 
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

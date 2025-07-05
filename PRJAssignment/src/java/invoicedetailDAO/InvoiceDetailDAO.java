@@ -15,6 +15,9 @@ public class InvoiceDetailDAO extends GenericDAO<InvoiceDetail, Integer> {
         return InvoiceDetail.class;
     }
 
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
 
     public InvoiceDetail getInvoiceDetailById(Integer maCTHD) {
         String jpql = "SELECT id FROM InvoiceDetail id "

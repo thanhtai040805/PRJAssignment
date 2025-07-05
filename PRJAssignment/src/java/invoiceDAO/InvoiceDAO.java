@@ -16,6 +16,10 @@ public class InvoiceDAO {
         return em.find(Invoice.class, invoiceId);
     }
 
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
+
     public Invoice getInvoiceFullInfo(Integer invoiceId) {
         String jpql = "SELECT hd FROM Invoice hd "
                 + "LEFT JOIN FETCH hd.khachHang kh "
