@@ -1,17 +1,15 @@
 package controller;
 
-import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+
+import model.User;
+
+import java.io.IOException;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,25 +22,17 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         processLogout(request, response);
     }
-    
+
     private void processLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        
-        // Lấy session hiện tại
         HttpSession session = request.getSession(false);
-        
         if (session != null) {
-            // Log logout activity
-            Object username = session.getAttribute("username");
-            if (username != null) {
-                System.out.println("User logged out: " + username);
+            User user = (User) session.getAttribute("currentUser");
+            if (user != null) {
+                System.out.println("[LOGOUT] User: " + user.getUsername() + " (ID: " + user.getUserId() + ") logged out.");
             }
-            
-            // Hủy session
             session.invalidate();
         }
-        
-        // Chuyển hướng về trang chủ
-        response.sendRedirect(request.getContextPath() + "/home");
+        response.sendRedirect(request.getContextPath() + "/login"); // Điều hướng về trang login
     }
 }

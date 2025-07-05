@@ -34,7 +34,6 @@
             padding: 20px;
             color: var(--text-dark);
             line-height: 1.6;
-            display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
