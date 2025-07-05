@@ -1,143 +1,45 @@
 package model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List; // Sử dụng List thay vì Set cho các chi tiết
+import jakarta.persistence.*;
+import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(name = "HoaDonBan")
 public class Invoice {
 
-    private Integer maHD;
-    private Integer maKH; // Foreign key
-    private Integer maNV; // Foreign key
-    private LocalDate ngayLap;
-    private BigDecimal tongTien;
-    private BigDecimal tienGiam;
-    private BigDecimal thanhTien;
-    private String trangThai;
-    private String ghiChu;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaHD")
+    private Integer invoiceId;
 
-    // Các đối tượng liên quan để hiển thị đầy đủ thông tin hóa đơn
-    private Customer khachHang;
-    private Employee nhanVien;
-    private List<InvoiceDetail> chiTietHoaDons; // Danh sách các xe trong hóa đơn
-    private Payment thanhToan; // Thông tin thanh toán
+    @Column(name = "MaKH")
+    private Integer customerId;
 
-    public Invoice() {
-    }
+    @Column(name = "MaNV")
+    private Integer employeeId;
 
-    public Invoice(Integer maHD, Integer maKH, Integer maNV, LocalDate ngayLap, BigDecimal tongTien, BigDecimal tienGiam, BigDecimal thanhTien, String trangThai, String ghiChu) {
-        this.maHD = maHD;
-        this.maKH = maKH;
-        this.maNV = maNV;
-        this.ngayLap = ngayLap;
-        this.tongTien = tongTien;
-        this.tienGiam = tienGiam;
-        this.thanhTien = thanhTien;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
-    }
+    @Column(name = "NgayLap")
+    @Temporal(TemporalType.DATE)
+    private Date invoiceDate;
 
-    // Constructor cho việc tạo mới
-    public Invoice(Integer maKH, Integer maNV, BigDecimal tongTien, BigDecimal tienGiam, BigDecimal thanhTien, String trangThai, String ghiChu) {
-        this.maKH = maKH;
-        this.maNV = maNV;
-        this.ngayLap = LocalDate.now();
-        this.tongTien = tongTien;
-        this.tienGiam = tienGiam;
-        this.thanhTien = thanhTien;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
-    }
+    @Column(name = "TongTien")
+    private Long totalAmount;
 
-    // Getters and Setters (tạo đầy đủ)
-    public Integer getMaHD() {
-        return maHD;
-    }
+    @Column(name = "TienGiam")
+    private Long discountAmount;
 
-    public void setMaHD(Integer maHD) {
-        this.maHD = maHD;
-    }
+    @Column(name = "ThanhTien")
+    private Long finalAmount;
 
-    public Integer getMaKH() {
-        return maKH;
-    }
+    @Column(name = "TrangThai")
+    private String status;
 
-    public void setMaKH(Integer maKH) {
-        this.maKH = maKH;
-    }
+    @Column(name = "GhiChu")
+    private String note;
 
-    public Integer getMaNV() {
-        return maNV;
-    }
-
-    public void setMaNV(Integer maNV) {
-        this.maNV = maNV;
-    }
-
-    public LocalDate getNgayLap() {
-        return ngayLap;
-    }
-
-    public void setNgayLap(LocalDate ngayLap) {
-        this.ngayLap = ngayLap;
-    }
-
-    public BigDecimal getTongTien() {
-        return tongTien;
-    }
-
-    public void setTongTien(BigDecimal tongTien) {
-        this.tongTien = tongTien;
-    }
-
-    public BigDecimal getTienGiam() {
-        return tienGiam;
-    }
-
-    public void setTienGiam(BigDecimal tienGiam) {
-        this.tienGiam = tienGiam;
-    }
-
-    public BigDecimal getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(BigDecimal thanhTien) {
-        this.thanhTien = thanhTien;
-    }
-
-    public String getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
-
-    // Getters/Setters cho các đối tượng liên quan
-    public Customer getKhachHang() {
-        return khachHang;
-    }
-
-    public void setKhachHang(Customer khachHang) {
-        this.khachHang = khachHang;
-    }
-
-    public Employee getNhanVien() {
-        return nhanVien;
-    }
-
-    public void setNhanVien(Employee nhanVien) {
-        this.nhanVien = nhanVien;
-    }
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<InvoiceDetail> chiTietHoaDons;
 
     public List<InvoiceDetail> getChiTietHoaDons() {
         return chiTietHoaDons;
@@ -147,11 +49,92 @@ public class Invoice {
         this.chiTietHoaDons = chiTietHoaDons;
     }
 
-    public Payment getThanhToan() {
-        return thanhToan;
+    public Invoice() {
     }
 
-    public void setThanhToan(Payment thanhToan) {
-        this.thanhToan = thanhToan;
+    public Invoice(Integer invoiceId, Integer customerId, Integer employeeId, Date invoiceDate, Long totalAmount,
+            Long discountAmount, Long finalAmount, String status, String note) {
+        this.invoiceId = invoiceId;
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.invoiceDate = invoiceDate;
+        this.totalAmount = totalAmount;
+        this.discountAmount = discountAmount;
+        this.finalAmount = finalAmount;
+        this.status = status;
+        this.note = note;
     }
+
+    public Integer getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Integer invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Long getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Long discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public Long getFinalAmount() {
+        return finalAmount;
+    }
+
+    public void setFinalAmount(Long finalAmount) {
+        this.finalAmount = finalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
 }
