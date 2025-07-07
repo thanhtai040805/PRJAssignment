@@ -1,23 +1,22 @@
-// CarPaymentConfirmServlet.java
 package controller;
 
 import carDao.CarDao;
 import invoiceDAO.InvoiceDAO;
 import invoicedetailDAO.InvoiceDetailDAO;
-import model.Payment;
+import model.*;
 import paymentDAO.PaymentDAO;
+import paymentmethodDAO.PaymentMethodDAO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import java.io.IOException;
-import java.time.LocalDate;
-import model.Invoice;
-import model.InvoiceDetail;
 
-@WebServlet("/invoice/*")
+import java.io.IOException;
+import utils.Email;
+
+@WebServlet("/invoice")
 public class CarPaymentConfirmServlet extends HttpServlet {
 
     private EntityManagerFactory emf;
@@ -31,12 +30,43 @@ public class CarPaymentConfirmServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        EntityManager em = emf.createEntityManager();
+        String confirm = request.getParameter("confirm");
 
+        if (confirm == null) {
+            // ===== BƯỚC 1: HIỂN THỊ TRANG XÁC NHẬN carPaymentConfirm.jsp =====
+            EntityManager em = emf.createEntityManager();
+            try {
+                int paymentMethodId = Integer.parseInt(request.getParameter("paymentMethodId"));
+                PaymentMethodDAO paymentMethodDAO = new PaymentMethodDAO();
+                paymentMethodDAO.setEntityManager(em);
+                PaymentMethod paymentMethod = paymentMethodDAO.findById(paymentMethodId);
+                if (paymentMethod == null) {
+                    throw new RuntimeException("Phương thức thanh toán không tồn tại.");
+                }
+
+                // Truyền thông tin sang trang xác nhận
+                request.setAttribute("carId", request.getParameter("carId"));
+                request.setAttribute("carName", request.getParameter("carName"));
+                request.setAttribute("price", request.getParameter("price"));
+                request.setAttribute("customerName", request.getParameter("customerName"));
+                request.setAttribute("phone", request.getParameter("phone"));
+                request.setAttribute("email", request.getParameter("email"));
+                request.setAttribute("address", request.getParameter("address"));
+                request.setAttribute("paymentMethodId", paymentMethodId);
+                request.setAttribute("paymentMethodName", paymentMethod.getPaymentMethodName());
+
+                request.getRequestDispatcher("/car/carPaymentConfirm.jsp").forward(request, response);
+            } finally {
+                em.close();
+            }
+            return;
+        }
+
+        // ===== BƯỚC 2: XỬ LÝ & LƯU DB =====
+        EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
 
-            // Lấy thông tin từ form
             int carId = Integer.parseInt(request.getParameter("carId"));
             String carName = request.getParameter("carName");
             long price = Long.parseLong(request.getParameter("price"));
@@ -44,9 +74,9 @@ public class CarPaymentConfirmServlet extends HttpServlet {
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             String email = request.getParameter("email");
-            String paymentMethodName = request.getParameter("paymentMethod");
+            int paymentMethodId = Integer.parseInt(request.getParameter("paymentMethodId"));
 
-            // ===== DAO khởi tạo và gán EntityManager =====
+            // ===== DAO khởi tạo =====
             CarDao carDao = new CarDao();
             carDao.setEntityManager(em);
             InvoiceDAO invoiceDAO = new InvoiceDAO();
@@ -55,11 +85,13 @@ public class CarPaymentConfirmServlet extends HttpServlet {
             detailDAO.setEntityManager(em);
             PaymentDAO paymentDAO = new PaymentDAO();
             paymentDAO.setEntityManager(em);
+            PaymentMethodDAO paymentMethodDAO = new PaymentMethodDAO();
+            paymentMethodDAO.setEntityManager(em);
 
-            // 1. Giảm tồn kho xe
+            // 1. Giảm số lượng xe
             boolean updated = carDao.updateSoLuongTon(carId, 1);
             if (!updated) {
-                throw new RuntimeException("Không thể giảm số lượng xe");
+                throw new RuntimeException("Không thể giảm số lượng xe tồn kho.");
             }
 
             // 2. Tạo hóa đơn
@@ -75,10 +107,10 @@ public class CarPaymentConfirmServlet extends HttpServlet {
 
             Integer invoiceId = invoiceDAO.addInvoice(invoice);
             if (invoiceId == null) {
-                throw new RuntimeException("Không thể tạo hóa đơn");
+                throw new RuntimeException("Không thể tạo hóa đơn.");
             }
 
-            // 3. Tạo chi tiết hóa đơn
+            // 3. Thêm chi tiết hóa đơn
             InvoiceDetail detail = new InvoiceDetail();
             detail.setCarId(carId);
             detail.setQuantity(1);
@@ -88,13 +120,10 @@ public class CarPaymentConfirmServlet extends HttpServlet {
 
             boolean addedDetail = detailDAO.addInvoiceDetail(detail);
             if (!addedDetail) {
-                throw new RuntimeException("Không thể thêm chi tiết hóa đơn");
+                throw new RuntimeException("Không thể thêm chi tiết hóa đơn.");
             }
 
-            // 4. Lấy mã phương thức thanh toán
-            int paymentMethodId = getPaymentMethodIdByName(em, paymentMethodName);
-
-            // 5. Tạo thanh toán
+            // 4. Thêm thanh toán
             Payment payment = new Payment();
             payment.setInvoiceId(invoiceId);
             payment.setPaymentMethodId(paymentMethodId);
@@ -105,28 +134,36 @@ public class CarPaymentConfirmServlet extends HttpServlet {
 
             boolean addedPayment = paymentDAO.add(payment);
             if (!addedPayment) {
-                throw new RuntimeException("Không thể thêm thanh toán");
+                throw new RuntimeException("Không thể thêm thanh toán.");
             }
 
-            // ===== Commit =====
             em.getTransaction().commit();
 
-            request.setAttribute("message", "Bạn đã mua xe " + carName + " thành công!");
-            request.getRequestDispatcher("/car/paymentConfirm.jsp").forward(request, response);
+            // 5. Gửi email xác nhận
+            String subject = "Xác nhận mua xe " + carName;
+            String content = "Cảm ơn quý khách " + customerName + " đã đặt mua xe " + carName + " trị giá " + price + " VND.\n"
+                    + "Chúng tôi sẽ sớm liên hệ để hoàn tất thủ tục.\n"
+                    + "Thông tin liên hệ: " + phone + " | " + email + "\n\n"
+                    + "Trân trọng,\nShowroom ABC";
+
+            try {
+                Email.sendEmail(email, subject, content);
+            } catch (Exception e) {
+                e.printStackTrace(); // không rollback nếu chỉ lỗi gửi email
+            }
+
+            request.setAttribute("carName", carName);
+            request.setAttribute("customerName", customerName);
+            request.getRequestDispatcher("/car/success.jsp").forward(request, response);
 
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/error/500.jsp");
         } finally {
             em.close();
         }
-    }
-
-    private int getPaymentMethodIdByName(EntityManager em, String methodName) {
-        String jpql = "SELECT p.paymentMethodId FROM PaymentMethod p WHERE p.paymentMethodName = :name";
-        return em.createQuery(jpql, Integer.class)
-                .setParameter("name", methodName)
-                .getSingleResult();
     }
 }

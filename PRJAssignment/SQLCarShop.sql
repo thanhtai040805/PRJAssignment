@@ -321,9 +321,7 @@ INSERT INTO PhuongThucThanhToan (TenPTTT, MoTa) VALUES
 (N'Tiền mặt', N'Thanh toán bằng tiền mặt tại showroom'),
 (N'Chuyển khoản', N'Chuyển khoản qua ngân hàng'),
 (N'Thẻ tín dụng', N'Thanh toán qua thẻ tín dụng Visa/MasterCard'),
-(N'Trả góp ngân hàng', N'Vay mua xe trả góp qua ngân hàng'),
-(N'Trả góp công ty tài chính', N'Vay qua công ty tài chính đối tác'),
-(N'Combo tiền mặt + vay', N'Một phần tiền mặt, một phần vay ngân hàng');
+(N'Trả góp vay ngân hàng', N'Vay mua xe trả góp qua ngân hàng');
 GO
 
 -- ===============================

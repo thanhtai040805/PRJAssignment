@@ -16,11 +16,11 @@ public class CarDao extends GenericDAO<Car, Integer> {
 
     // Lấy danh sách xe nổi bật (showcase)
     public List<Car> getShowcaseCars() {
-        String jpql = "SELECT c FROM Car c " +
-                      "JOIN FETCH c.carModel m " +
-                      "JOIN FETCH m.carBrand " +
-                      "WHERE c.status = :status " +
-                      "ORDER BY c.importDate DESC";
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.status = :status "
+                + "ORDER BY c.importDate DESC";
         return em.createQuery(jpql, Car.class)
                 .setParameter("status", "Có sẵn")
                 .setMaxResults(7)
@@ -29,11 +29,11 @@ public class CarDao extends GenericDAO<Car, Integer> {
 
     // Lấy danh sách xe bán chạy nhất
     public List<Car> getBestSellerCars() {
-        String jpql = "SELECT c FROM Car c " +
-                      "JOIN FETCH c.carModel m " +
-                      "JOIN FETCH m.carBrand " +
-                      "WHERE c.status = :status " +
-                      "ORDER BY c.salePrice DESC";
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.status = :status "
+                + "ORDER BY c.salePrice DESC";
         return em.createQuery(jpql, Car.class)
                 .setParameter("status", "Có sẵn")
                 .setMaxResults(5)
@@ -42,11 +42,11 @@ public class CarDao extends GenericDAO<Car, Integer> {
 
     // Lấy danh sách xe xếp hạng cao
     public List<Car> getRankingCars() {
-        String jpql = "SELECT c FROM Car c " +
-                      "JOIN FETCH c.carModel m " +
-                      "JOIN FETCH m.carBrand " +
-                      "WHERE c.status = :status " +
-                      "ORDER BY c.salePrice DESC";
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.status = :status "
+                + "ORDER BY c.salePrice DESC";
         return em.createQuery(jpql, Car.class)
                 .setParameter("status", "Có sẵn")
                 .setMaxResults(4)
@@ -55,11 +55,11 @@ public class CarDao extends GenericDAO<Car, Integer> {
 
     // Lấy danh sách xe gợi ý
     public List<Car> getRecommendCars() {
-        String jpql = "SELECT c FROM Car c " +
-                      "JOIN FETCH c.carModel m " +
-                      "JOIN FETCH m.carBrand " +
-                      "WHERE c.status = :status " +
-                      "ORDER BY c.importDate DESC";
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.status = :status "
+                + "ORDER BY c.importDate DESC";
         return em.createQuery(jpql, Car.class)
                 .setParameter("status", "Có sẵn")
                 .setMaxResults(4)
@@ -95,13 +95,17 @@ public class CarDao extends GenericDAO<Car, Integer> {
 
     // Lấy xe theo globalKey
     public Car getCarByGlobalKey(String globalKey) {
-        String jpql = "SELECT c FROM Car c " +
-                      "JOIN FETCH c.carModel m " +
-                      "JOIN FETCH m.carBrand " +
-                      "WHERE c.globalKey = :globalKey";
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.globalKey = :globalKey";
         TypedQuery<Car> query = em.createQuery(jpql, Car.class);
         query.setParameter("globalKey", globalKey);
         List<Car> result = query.getResultList();
         return result.isEmpty() ? null : result.get(0);
+    }
+
+    public Car findById(int carId) {
+        return em.find(Car.class, carId);
     }
 }
