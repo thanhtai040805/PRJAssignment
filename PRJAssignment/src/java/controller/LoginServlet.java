@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
         if (emf == null) {
             try {
                 LOGGER.warning("EntityManagerFactory not found in ServletContext. Creating a new one in LoginServlet.init(). " +
-                               "Consider using a ServletContextListener for EMF lifecycle management.");
+                        "Consider using a ServletContextListener for EMF lifecycle management.");
                 emf = Persistence.createEntityManagerFactory("PRJPU");
                 getServletContext().setAttribute("emf", emf);
             } catch (Exception e) {
@@ -91,11 +91,11 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userId", authenticatedUser.getUserId());
 
                 LOGGER.log(Level.INFO, "User logged in successfully: {0} with role {1}. Redirecting to home.",
-                           new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
-                
+                        new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
+
                 // Chuyển hướng tất cả về trang chủ
                 response.sendRedirect(request.getContextPath() + "/");
-
+                
             } else {
                 request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không đúng hoặc tài khoản không hoạt động!");
                 request.setAttribute("username", username);
