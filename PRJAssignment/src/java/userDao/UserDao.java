@@ -1,14 +1,11 @@
 package userDao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 import model.User;
-import util.GenericDAO; // Giữ nguyên GenericDAO nếu bạn vẫn dùng
+import util.GenericDAO;
 import java.util.List;
-// import org.mindrot.jbcrypt.BCrypt; // <-- Bỏ import này
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,9 +129,4 @@ public class UserDao extends GenericDAO<User, Integer> {
         return count > 0;
     }
 
-    /**
-     * Hàm main để kiểm tra độc lập chức năng của UserDao.authenticate. CHỈ SỬ
-     * DỤNG CHO MỤC ĐÍCH KIỂM THỬ VÀ GỠ LỖI. HÃY XÓA HOẶC VÔ HIỆU HÓA TRƯỚC KHI
-     * TRIỂN KHAI SẢN PHẨM.
-     */
 }
