@@ -160,7 +160,6 @@
 
             <div class="btn-group">
                 <form action="${pageContext.request.contextPath}/invoice" method="post">
-                    <!-- Các input ẩn để giữ lại dữ liệu -->
                     <input type="hidden" name="confirm" value="1"/>
                     <input type="hidden" name="carId" value="${carId}" />
                     <input type="hidden" name="carName" value="${carName}" />
@@ -169,7 +168,7 @@
                     <input type="hidden" name="email" value="${email}" />
                     <input type="hidden" name="phone" value="${phone}" />
                     <input type="hidden" name="address" value="${address}" />
-                    <input type="hidden" name="paymentMethod" value="${paymentMethodName}" />
+                    <input type="hidden" name="paymentMethodId" value="${paymentMethodId}" />
 
                     <button type="submit" class="btn btn-success">Xác nhận & Thanh toán</button>
                 </form>

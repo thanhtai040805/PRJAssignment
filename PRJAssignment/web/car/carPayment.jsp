@@ -244,12 +244,10 @@
                 <input type="email" id="email" name="email" required 
                        value="${loggedInCustomer != null ? loggedInCustomer.email : ''}">
 
-                <label for="paymentMethod">Phương thức thanh toán:</label>
-                <select id="paymentMethod" name="paymentMethod" required>
-                    <c:forEach var="method" items="${paymentMethods}">
-                        <option value="${method.paymentMethodName}">
-                            ${method.paymentMethodName}
-                        </option>
+                <label>Phương thức thanh toán:</label>
+                <select name="paymentMethodId" required>
+                    <c:forEach var="pm" items="${paymentMethods}">
+                        <option value="${pm.paymentMethodId}">${pm.paymentMethodName}</option>
                     </c:forEach>
                 </select>
 

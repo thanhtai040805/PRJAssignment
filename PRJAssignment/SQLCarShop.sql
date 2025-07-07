@@ -484,3 +484,31 @@ VALUES
 ('phanthihoa', '123456', N'nhanvien', 4),
 ('dangvantuan', '123456', N'nhanvien', 5),
 ('buithimai', '123456', N'nhanvien', 6);
+
+-- Xe yêu thích
+CREATE TABLE FavoriteCars (
+    UserID INT NOT NULL,
+    GlobalKey NVARCHAR(100) NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+	PRIMARY KEY (UserID, GlobalKey)
+);
+
+-- Lịch sử trang đã truy cập (theo path)
+CREATE TABLE PageHistory (
+    UserID INT NOT NULL,
+    Path NVARCHAR(255) NOT NULL,
+    CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (UserID, Path),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+
+-- Lịch sử xe đã xem (theo GlobalKey)
+CREATE TABLE ViewedCars (
+    UserID INT NOT NULL,
+    GlobalKey NVARCHAR(100) NOT NULL,
+    ViewedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (UserID, GlobalKey),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);

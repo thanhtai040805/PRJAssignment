@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import model.FavoriteCars;
+import model.User;
+import userDao.FavoriteCarDAO;
 
 @WebServlet("/detail/*")
 public class CarDetailServlet extends HttpServlet {
@@ -59,14 +62,20 @@ public class CarDetailServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         List<Car> viewedCars = (List<Car>) session.getAttribute("viewedCars");
-        if (viewedCars == null) viewedCars = new ArrayList<>();
+        if (viewedCars == null) {
+            viewedCars = new ArrayList<>();
+        }
         viewedCars.removeIf(c -> c.getCarId().equals(car.getCarId()));
         viewedCars.add(0, car);
-        if (viewedCars.size() > 5) viewedCars.remove(viewedCars.size() - 1);
+        if (viewedCars.size() > 5) {
+            viewedCars.remove(viewedCars.size() - 1);
+        }
         session.setAttribute("viewedCars", viewedCars);
 
         List<Car> favoriteCars = (List<Car>) session.getAttribute("favoriteCars");
-        if (favoriteCars == null) favoriteCars = new ArrayList<>();
+        if (favoriteCars == null) {
+            favoriteCars = new ArrayList<>();
+        }
         session.setAttribute("favoriteCars", favoriteCars);
 
         List<Car> suggestions = SmartSuggestion.suggest(viewedCars, favoriteCars);
@@ -74,7 +83,23 @@ public class CarDetailServlet extends HttpServlet {
 
         request.setAttribute("carDetail", car);
         request.setAttribute("suggestionCars", suggestions);
+
+        List<String> favoriteGlobalKeys = new ArrayList<>();
+        session = request.getSession(false);
+        Object currentUser = (session != null) ? session.getAttribute("currentUser") : null;
+        if (currentUser != null) {
+            User user = (User) currentUser;
+            int userId = user.getUserId();
+            FavoriteCarDAO favoriteCarDAO = new FavoriteCarDAO();
+            favoriteCarDAO.setEntityManager(em);
+            List<FavoriteCars> favorites = favoriteCarDAO.findByUserId(userId);
+            for (FavoriteCars f : favorites) {
+                favoriteGlobalKeys.add(f.getFavoriteCarsPK().getGlobalKey());
+            }
+        }
+        request.setAttribute("favoriteGlobalKeys", favoriteGlobalKeys);
         em.close();
+
         request.getRequestDispatcher("/car/carDetail.jsp").forward(request, response);
     }
 }
