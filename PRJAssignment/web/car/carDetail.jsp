@@ -9,7 +9,6 @@
         <title>Chi tiết xe - ${carDetail.carName}</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
-            /* ...giữ nguyên toàn bộ CSS như file gốc... */
             :root {
                 --primary-color: #007bff;
                 --secondary-color: #6c757d;
@@ -102,28 +101,83 @@
             }
             /* Thêm style cho favorite button */
             .favorite-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 8px;
+                background: linear-gradient(to right, #4facfe, #00f2fe);
+                color: #ff6b6b;
+                font-weight: 600;
+                font-size: 1em;
+                cursor: pointer;
+                transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+                min-width: 150px;
+                border: 1.5px solid #ff6b6b;
+                box-shadow: 0 2px 8px rgba(255,107,107,0.08);
+                position: relative;
+            }
+            .favorite-btn .heart-icon {
+                width: 22px;
+                height: 22px;
+                display: inline-block;
+                background: url("data:image/svg+xml;utf8,\
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+                    <path fill='white' stroke='%23ff6b6b' stroke-width='2' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
+                    2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
+                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+                    </svg>") no-repeat center center;
+                background-size: contain;
+                transition: background 0.3s;
+            }
+            .favorite-btn .favorite-text {
+                font-size: 1em;
+                font-weight: 600;
+                color: #ff6b6b;
+                transition: color 0.3s;
+            }
+
+            /* Trạng thái đã yêu thích */
+            .favorite-btn.favorited {
                 background: #fff;
                 color: #ff6b6b;
-                border: 1px solid #ff6b6b;
-                border-radius: 20px;
-                padding: 8px 18px;
-                font-size: 15px;
-                font-weight: 600;
-                cursor: pointer;
-                margin-top: 10px;
-                transition: background 0.2s, color 0.2s;
+                border: 2px solid #ff6b6b;
+                box-shadow: 0 2px 8px rgba(255,107,107,0.12);
             }
-            .favorite-btn:hover {
+            .favorite-btn.favorited .heart-icon {
+                background: url("data:image/svg+xml;utf8,\
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+                    <path fill='%23ff6b6b' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
+                    2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
+                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+                    </svg>") no-repeat center center;
+                background-size: contain;
+            }
+            .favorite-btn.favorited .favorite-text {
+                color: #ff6b6b;
+            }
+
+            /* Hover hiệu ứng */
+            .favorite-btn:hover, .favorite-btn.favorited:hover {
                 background: #ff6b6b;
                 color: #fff;
             }
-            .favorite-status {
-                margin-left: 10px;
-                font-size: 15px;
-                color: #28a745;
-                font-weight: 600;
-                display: none;
+            .favorite-btn:hover .favorite-text,
+            .favorite-btn.favorited:hover .favorite-text {
+                color: #fff;
             }
+            .favorite-btn:hover .heart-icon,
+            .favorite-btn.favorited:hover .heart-icon {
+                background: url("data:image/svg+xml;utf8,\
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+                    <path fill='white' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
+                    2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
+                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+                    </svg>") no-repeat center center;
+                background-size: contain;
+            }
+
             .suggestions {
                 max-width: 1200px;
                 margin: 50px auto;
@@ -297,11 +351,18 @@
                 <div class="buttons">
                     <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${carDetail.carId}'">Làm khoản vay</button>
                     <button onclick="location.href = '${pageContext.request.contextPath}/payment/${carDetail.globalKey}'">Mua xe</button>
-                    <button type="button" class="favorite-btn" onclick="addToFavorite('${carDetail.globalKey}', this)">
-                        Thêm vào yêu thích
-                    </button>
-                    <span class="favorite-status">Đã thêm!</span>
+                    <div class="favorite-action">
+                        <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(carDetail.globalKey) ? ' favorited' : ''}"
+                                data-globalkey="${carDetail.globalKey}"
+                                onclick="toggleFavorite('${carDetail.globalKey}', this)">
+                            <span class="heart-icon"></span>
+                            <span class="favorite-text">
+                                Yêu thích
+                            </span>
+                        </button>
+                    </div>
                 </div>
+
             </div>
         </div>
         <div class="suggestions">
@@ -323,33 +384,63 @@
                                 <fmt:formatNumber value="${c.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
                             </p>
                         </a>
+                        <div class="buttons">
+                            <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${c.carId}'">Làm khoản vay</button>
+                            <button onclick="location.href = '${pageContext.request.contextPath}/payment/${c.globalKey}'">Mua xe</button>
+                            <div class="favorite-action">
+                                <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(c.globalKey) ? ' favorited' : ''}"
+                                        data-globalkey="${c.globalKey}"
+                                        onclick="toggleFavorite('${c.globalKey}', this)">
+                                    <span class="heart-icon"></span>
+                                    <span class="favorite-text">
+                                        Yêu thích
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </c:forEach>
             </div>
         </div>
-        <!-- Script AJAX cho nút yêu thích -->
         <script>
-        function addToFavorite(globalKey, btn) {
-            fetch('${pageContext.request.contextPath}/addFavorite', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'globalKey=' + encodeURIComponent(globalKey)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    btn.style.display = 'none';
-                    btn.nextElementSibling.style.display = 'inline';
-                } else {
-                    alert('Thêm vào yêu thích thất bại!');
-                }
-            })
-            .catch(() => {
-                alert('Có lỗi xảy ra!');
+            var contextPath = '${pageContext.request.contextPath}';
+        </script>
+        <script src="${pageContext.request.contextPath}/js/include.js"></script>
+        <script>
+            function toggleFavorite(globalKey, btn) {
+                fetch('${pageContext.request.contextPath}/updateFavorite', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'globalKey=' + encodeURIComponent(globalKey)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                btn.classList.toggle('favorited');
+                            } else {
+                                alert(data.message || 'Có lỗi xảy ra!');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Có lỗi xảy ra!');
+                        });
+            }
+            document.addEventListener("DOMContentLoaded", function () {
+            <c:if test="${empty sessionScope.currentUser}">
+                syncFavoriteFromCookie();
+            </c:if>
             });
-        }
+
+            var currentGlobalKey = '${carDetail.globalKey}';
+            document.addEventListener("DOMContentLoaded", function () {
+            <c:if test="${empty sessionScope.currentUser}">
+                saveViewedCar(currentGlobalKey);
+            </c:if>
+            <c:if test="${not empty sessionScope.currentUser}">
+                saveViewedCarToServer(currentGlobalKey);
+            </c:if>
+            });
         </script>
     </body>
 </html>

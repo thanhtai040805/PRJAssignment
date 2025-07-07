@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+
+
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -870,6 +874,52 @@
                     font-size: 14px;
                 }
             }
+            .favorite-action {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            /* Nút hình tròn */
+            .favorite-btn {
+                background: white;
+                border: none;
+                border-radius: 50%;
+                width: 48px;
+                height: 48px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                transition: all 0.3s ease;
+                box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            }
+
+            /* Trái tim trắng viền đen */
+            .heart-icon {
+                width: 22px;
+                height: 22px;
+                background: url("data:image/svg+xml;utf8,\
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+                    <path fill='white' stroke='black' stroke-width='2' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
+                    2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
+                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+                    </svg>") no-repeat center center;
+                background-size: contain;
+                transition: all 0.3s ease;
+            }
+
+            /* Trái tim hồng đặc khi đã yêu thích */
+            .favorite-btn.favorited .heart-icon {
+                background: url("data:image/svg+xml;utf8,\
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+                    <path fill='%23ff6b6b' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
+                    2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
+                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+                    </svg>") no-repeat center center;
+                background-size: contain;
+            }
+
         </style>
     </head>
     <body>
@@ -941,20 +991,34 @@
                 <h2 class="section-title">BEST SELLER</h2>
                 <div class="best-seller-grid">
                     <c:forEach var="car" items="${bestSellerCars}" begin="0" end="1">
-                        <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="car-card">
-                            <div class="car-image">
-                                <c:choose>
-                                    <c:when test="${not empty car.imageLink}">
-                                        <img src="${pageContext.request.contextPath}${car.imageLink}"
-                                             alt="${car.carName}" class="card-img-top">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="car-placeholder">Hình ảnh xe</div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                        <div class="car-card">
+                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
+                                <div class="car-image">
+                                    <c:choose>
+                                        <c:when test="${not empty car.imageLink}">
+                                            <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}" class="card-img-top">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="car-placeholder">Hình ảnh xe</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </a>
                             <div class="car-info">
-                                <h3>${car.carName}</h3>
+                                <div class="car-header" style="display: flex; align-items: center; justify-content: space-between;">
+                                    <h3 class="car-name" style="margin: 0;">
+                                        <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
+                                            ${car.carName}
+                                        </a>
+                                    </h3>
+                                    <div class="favorite-action">
+                                        <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
+                                                data-globalkey="${car.globalKey}"
+                                                onclick="toggleFavorite('${car.globalKey}', this)">
+                                            <span class="heart-icon"></span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="car-price">
                                     <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
                                 </div>
@@ -966,9 +1030,10 @@
                                     <p><strong>Tình trạng:</strong> ${car.condition}</p>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </c:forEach>
                 </div>
+
                 <div class="ranking-section">
                     <div class="ranking-title">
                         <span>📊</span>
@@ -1000,244 +1065,295 @@
             </div>
         </section>
 
+
         <section class="recommend-section">
             <div class="section-container">
                 <h2 class="section-title">Recommend Car</h2>
                 <div class="recommend-grid">
                     <c:forEach var="car" items="${recommendCars}">
-                        <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" class="recommend-card">
-                            <div class="recommend-image">
-                                <c:choose>
-                                    <c:when test="${not empty car.imageLink}">
-                                        <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="car-placeholder">Hình ảnh xe</div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                        <div class="recommend-card">
+                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
+                                <div class="recommend-image">
+                                    <c:choose>
+                                        <c:when test="${not empty car.imageLink}">
+                                            <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="car-placeholder">Hình ảnh xe</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </a>
                             <div class="recommend-info">
-                                <div class="recommend-name">${car.carName}</div>
+                                <div class="car-header" style="display: flex; align-items: center; justify-content: space-between;">
+                                    <h3 class="car-name" style="margin: 0;">
+                                        <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
+                                            ${car.carName}
+                                        </a>
+                                    </h3>
+                                    <div class="favorite-action">
+                                        <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
+                                                data-globalkey="${car.globalKey}"
+                                                onclick="toggleFavorite('${car.globalKey}', this)">
+                                            <span class="heart-icon"></span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="recommend-price">
                                     <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
                                 </div>
                                 <div class="recommend-type">Type: ${car.condition}</div>
                             </div>
-                        </a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
         </section>
 
-        <section class="filter-section" id="filter-section">
-            <div class="section-container">
-                <h2 class="section-title">🔧 Tìm Kiếm Nâng Cao</h2>
-                <form class="filter-form" action="${pageContext.request.contextPath}/search" method="get">
-                    <div class="filter-group">
-                        <label for="hangXe">Hãng xe</label>
-                        <select id="hangXe" name="maker">
-                            <option value="">Chọn hãng xe</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Honda">Honda</option>
-                            <option value="BMW">BMW</option>
-                            <option value="Mercedes">Mercedes</option>
-                            <option value="Audi">Audi</option>
-                            <option value="Hyundai">Hyundai</option>
-                            <option value="Kia">Kia</option>
-                            <option value="Mazda">Mazda</option>
-                            <option value="Ford">Ford</option>
-                            <option value="Volkswagen">Volkswagen</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="dongXe">Loại xe</label>
-                        <select id="dongXe" name="type">
-                            <option value="">Chọn loại xe</option>
-                            <option value="Sedan">Sedan</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Hatchback">Hatchback</option>
-                            <option value="Pickup">Pickup</option>
-                            <option value="Coupe">Coupe</option>
-                            <option value="Convertible">Convertible</option>
-                            <option value="Crossover">Crossover</option>
-                            <option value="Wagon">Wagon</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="namSanXuat">Năm sản xuất</label>
-                        <div class="year-range">
-                            <select name="minYear">
-                                <option value="">Từ năm</option>
-                                <option value="2020">2020</option>
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                            </select>
-                            <span class="range-separator">-</span>
-                            <select name="maxYear">
-                                <option value="">Đến năm</option>
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <label for="mauSac">Màu sắc</label>
-                        <select id="mauSac" name="color">
-                            <option value="">Chọn màu sắc</option>
-                            <option value="Trắng">Trắng</option>
-                            <option value="Trắng ngọc trai">Trắng ngọc trai</option>
-                            <option value="Đen">Đen</option>
-                            <option value="Bạc">Bạc</option>
-                            <option value="Xám">Xám</option>
-                            <option value="Đỏ">Đỏ</option>
-                            <option value="Xanh">Xanh</option>
-                            <option value="Xanh dương">Xanh dương</option>
-                            <option value="Xanh rêu">Xanh rêu</option>
-                            <option value="Cam">Cam</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="hopSo">Hộp số</label>
-                        <select id="hopSo" name="transmission">
-                            <option value="">Chọn hộp số</option>
-                            <option value="Số sàn">Số sàn</option>
-                            <option value="Số tự động">Số tự động</option>
-                            <option value="CVT">CVT</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="tinhTrang">Tình trạng</label>
-                        <select id="tinhTrang" name="condition">
-                            <option value="">Chọn tình trạng</option>
-                            <option value="Mới">Xe mới</option>
-                            <option value="Cũ">Xe cũ</option>
-                            <option value="Tân trang">Xe tân trang</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="dungTichDongCo">Dung tích động cơ (cc)</label>
-                        <div class="engine-range">
-                            <select name="minEngine">
-                                <option value="">Từ</option>
-                                <option value="1000">1.0L (1000cc)</option>
-                                <option value="1200">1.2L (1200cc)</option>
-                                <option value="1400">1.4L (1400cc)</option>
-                                <option value="1500">1.5L (1500cc)</option>
-                                <option value="1600">1.6L (1600cc)</option>
-                                <option value="1800">1.8L (1800cc)</option>
-                                <option value="2000">2.0L (2000cc)</option>
-                            </select>
-                            <span class="range-separator">-</span>
-                            <select name="maxEngine">
-                                <option value="">Đến</option>
-                                <option value="1500">1.5L (1500cc)</option>
-                                <option value="2000">2.0L (2000cc)</option>
-                                <option value="2500">2.5L (2500cc)</option>
-                                <option value="3000">3.0L (3000cc)</option>
-                                <option value="4000">4.0L (4000cc)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <label for="congSuat">Công suất (HP)</label>
-                        <div class="power-range">
-                            <select name="minPower">
-                                <option value="">Từ</option>
-                                <option value="100">100 HP</option>
-                                <option value="150">150 HP</option>
-                                <option value="200">200 HP</option>
-                                <option value="250">250 HP</option>
-                            </select>
-                            <span class="range-separator">-</span>
-                            <select name="maxPower">
-                                <option value="">Đến</option>
-                                <option value="200">200 HP</option>
-                                <option value="300">300 HP</option>
-                                <option value="400">400 HP</option>
-                                <option value="500">500+ HP</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-group price-group">
-                        <label for="giaBan">Khoảng giá bán</label>
-                        <div class="price-range">
-                            <select name="minPrice">
-                                <option value="">Giá từ</option>
-                                <option value="400000000">400 triệu</option>
-                                <option value="600000000">600 triệu</option>
-                                <option value="800000000">800 triệu</option>
-                                <option value="1000000000">1 tỷ</option>
-                                <option value="1500000000">1.5 tỷ</option>
-                                <option value="2000000000">2 tỷ</option>
-                                <option value="3000000000">3 tỷ</option>
-                            </select>
-                            <span class="range-separator">-</span>
-                            <select name="maxPrice">
-                                <option value="">Giá đến</option>
-                                <option value="800000000">800 triệu</option>
-                                <option value="1000000000">1 tỷ</option>
-                                <option value="1500000000">1.5 tỷ</option>
-                                <option value="2000000000">2 tỷ</option>
-                                <option value="3000000000">3 tỷ</option>
-                                <option value="5000000000">5 tỷ</option>
-                                <option value="10000000000">10 tỷ+</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <label for="kmDaDi">Số km đã đi</label>
-                        <select id="kmDaDi" name="maxKm">
-                            <option value="">Chọn số km</option>
-                            <option value="0">Xe mới (0 km)</option>
-                            <option value="5000">Dưới 5,000 km</option>
-                            <option value="10000">Dưới 10,000 km</option>
-                            <option value="20000">Dưới 20,000 km</option>
-                            <option value="50000">Dưới 50,000 km</option>
-                            <option value="100000">Dưới 100,000 km</option>
-                        </select>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="submit" class="filter-btn">
-                            <span class="search-icon">🔍</span>
-                            Tìm Kiếm
-                        </button>
-                        <button type="reset" class="reset-btn">
-                            <span class="reset-icon">🔄</span>
-                            Đặt Lại
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
+    </section>
 
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="logo">
-                        <div class="logo-icon">🚗</div>
-                        <h3>DriveDreams</h3>
+    <section class="filter-section" id="filter-section">
+        <div class="section-container">
+            <h2 class="section-title">🔧 Tìm Kiếm Nâng Cao</h2>
+            <form class="filter-form" action="${pageContext.request.contextPath}/search" method="get">
+                <div class="filter-group">
+                    <label for="hangXe">Hãng xe</label>
+                    <select id="hangXe" name="maker">
+                        <option value="">Chọn hãng xe</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Mazda">Mazda</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="dongXe">Loại xe</label>
+                    <select id="dongXe" name="type">
+                        <option value="">Chọn loại xe</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Pickup">Pickup</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Convertible">Convertible</option>
+                        <option value="Crossover">Crossover</option>
+                        <option value="Wagon">Wagon</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="namSanXuat">Năm sản xuất</label>
+                    <div class="year-range">
+                        <select name="minYear">
+                            <option value="">Từ năm</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                        <span class="range-separator">-</span>
+                        <select name="maxYear">
+                            <option value="">Đến năm</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
                     </div>
-                    <p>Chúng tôi là showroom ô tô uy tín hàng đầu, cung cấp các dòng xe chất lượng cao với dịch vụ tốt nhất.</p>
                 </div>
-                <div class="footer-section">
-                    <h3>Liên hệ</h3>
-                    <p>Email: drivedreams@gmail.com</p>
-                    <p>Phone: 0123456789.OK</p>
-                    <p>Address: 112 Trần Duy Hưng</p>
+                <div class="filter-group">
+                    <label for="mauSac">Màu sắc</label>
+                    <select id="mauSac" name="color">
+                        <option value="">Chọn màu sắc</option>
+                        <option value="Trắng">Trắng</option>
+                        <option value="Trắng ngọc trai">Trắng ngọc trai</option>
+                        <option value="Đen">Đen</option>
+                        <option value="Bạc">Bạc</option>
+                        <option value="Xám">Xám</option>
+                        <option value="Đỏ">Đỏ</option>
+                        <option value="Xanh">Xanh</option>
+                        <option value="Xanh dương">Xanh dương</option>
+                        <option value="Xanh rêu">Xanh rêu</option>
+                        <option value="Cam">Cam</option>
+                    </select>
                 </div>
-                <div class="footer-section">
-                    <h3>Giới thiệu</h3>
-                    <p>Group 4 SE119405</p>
-                    <p>FPT University</p>
-                    <p>© 2024 DriveDreams. All rights reserved.</p>
+                <div class="filter-group">
+                    <label for="hopSo">Hộp số</label>
+                    <select id="hopSo" name="transmission">
+                        <option value="">Chọn hộp số</option>
+                        <option value="Số sàn">Số sàn</option>
+                        <option value="Số tự động">Số tự động</option>
+                        <option value="CVT">CVT</option>
+                    </select>
                 </div>
+                <div class="filter-group">
+                    <label for="tinhTrang">Tình trạng</label>
+                    <select id="tinhTrang" name="condition">
+                        <option value="">Chọn tình trạng</option>
+                        <option value="Mới">Xe mới</option>
+                        <option value="Cũ">Xe cũ</option>
+                        <option value="Tân trang">Xe tân trang</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="dungTichDongCo">Dung tích động cơ (cc)</label>
+                    <div class="engine-range">
+                        <select name="minEngine">
+                            <option value="">Từ</option>
+                            <option value="1000">1.0L (1000cc)</option>
+                            <option value="1200">1.2L (1200cc)</option>
+                            <option value="1400">1.4L (1400cc)</option>
+                            <option value="1500">1.5L (1500cc)</option>
+                            <option value="1600">1.6L (1600cc)</option>
+                            <option value="1800">1.8L (1800cc)</option>
+                            <option value="2000">2.0L (2000cc)</option>
+                        </select>
+                        <span class="range-separator">-</span>
+                        <select name="maxEngine">
+                            <option value="">Đến</option>
+                            <option value="1500">1.5L (1500cc)</option>
+                            <option value="2000">2.0L (2000cc)</option>
+                            <option value="2500">2.5L (2500cc)</option>
+                            <option value="3000">3.0L (3000cc)</option>
+                            <option value="4000">4.0L (4000cc)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="congSuat">Công suất (HP)</label>
+                    <div class="power-range">
+                        <select name="minPower">
+                            <option value="">Từ</option>
+                            <option value="100">100 HP</option>
+                            <option value="150">150 HP</option>
+                            <option value="200">200 HP</option>
+                            <option value="250">250 HP</option>
+                        </select>
+                        <span class="range-separator">-</span>
+                        <select name="maxPower">
+                            <option value="">Đến</option>
+                            <option value="200">200 HP</option>
+                            <option value="300">300 HP</option>
+                            <option value="400">400 HP</option>
+                            <option value="500">500+ HP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group price-group">
+                    <label for="giaBan">Khoảng giá bán</label>
+                    <div class="price-range">
+                        <select name="minPrice">
+                            <option value="">Giá từ</option>
+                            <option value="400000000">400 triệu</option>
+                            <option value="600000000">600 triệu</option>
+                            <option value="800000000">800 triệu</option>
+                            <option value="1000000000">1 tỷ</option>
+                            <option value="1500000000">1.5 tỷ</option>
+                            <option value="2000000000">2 tỷ</option>
+                            <option value="3000000000">3 tỷ</option>
+                        </select>
+                        <span class="range-separator">-</span>
+                        <select name="maxPrice">
+                            <option value="">Giá đến</option>
+                            <option value="800000000">800 triệu</option>
+                            <option value="1000000000">1 tỷ</option>
+                            <option value="1500000000">1.5 tỷ</option>
+                            <option value="2000000000">2 tỷ</option>
+                            <option value="3000000000">3 tỷ</option>
+                            <option value="5000000000">5 tỷ</option>
+                            <option value="10000000000">10 tỷ+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="kmDaDi">Số km đã đi</label>
+                    <select id="kmDaDi" name="maxKm">
+                        <option value="">Chọn số km</option>
+                        <option value="0">Xe mới (0 km)</option>
+                        <option value="5000">Dưới 5,000 km</option>
+                        <option value="10000">Dưới 10,000 km</option>
+                        <option value="20000">Dưới 20,000 km</option>
+                        <option value="50000">Dưới 50,000 km</option>
+                        <option value="100000">Dưới 100,000 km</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="filter-btn">
+                        <span class="search-icon">🔍</span>
+                        Tìm Kiếm
+                    </button>
+                    <button type="reset" class="reset-btn">
+                        <span class="reset-icon">🔄</span>
+                        Đặt Lại
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="logo">
+                    <div class="logo-icon">🚗</div>
+                    <h3>DriveDreams</h3>
+                </div>
+                <p>Chúng tôi là showroom ô tô uy tín hàng đầu, cung cấp các dòng xe chất lượng cao với dịch vụ tốt nhất.</p>
             </div>
-        </footer>
-    </body>
+            <div class="footer-section">
+                <h3>Liên hệ</h3>
+                <p>Email: drivedreams@gmail.com</p>
+                <p>Phone: 0123456789.OK</p>
+                <p>Address: 112 Trần Duy Hưng</p>
+            </div>
+            <div class="footer-section">
+                <h3>Giới thiệu</h3>
+                <p>Group 4 SE119405</p>
+                <p>FPT University</p>
+                <p>© 2024 DriveDreams. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <script src="${pageContext.request.contextPath}/js/include.js"></script>
+    <script>
+        
+        function toggleFavorite(globalKey, btn) {
+            fetch('${pageContext.request.contextPath}/updateFavorite', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'globalKey=' + encodeURIComponent(globalKey)
+            })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            btn.classList.toggle('favorited');
+                        } else {
+                            alert(data.message || 'Có lỗi xảy ra!');
+                        }
+                    })
+                    .catch(() => {
+                        alert('Có lỗi xảy ra!');
+                    });
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+        <c:if test="${empty sessionScope.currentUser}">
+            syncFavoriteFromCookie();
+        </c:if>
+        });
+    </script>
+
+</body>
 </html>

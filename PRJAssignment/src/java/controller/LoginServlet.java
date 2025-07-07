@@ -92,7 +92,25 @@ public class LoginServlet extends HttpServlet {
 
                 LOGGER.log(Level.INFO, "User logged in successfully: {0} with role {1}. Redirecting to home.",
                            new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
+
+                // XÓA COOKIE favoriteCars khi login thành công
+                Cookie cookie = new Cookie("favoriteCars", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
+                response.addCookie(cookie);
                 
+                // XÓA COOKIE searchHistory khi login thành công
+                cookie = new Cookie("searchHistory", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                
+                // XÓA COOKIE viewedCar khi login thành công
+                cookie = new Cookie("viewedCars", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath("/");
+                response.addCookie(cookie);
+
                 // Chuyển hướng tất cả về trang chủ
                 response.sendRedirect(request.getContextPath() + "/");
 
