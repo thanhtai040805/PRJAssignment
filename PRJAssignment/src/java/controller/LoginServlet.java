@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import model.User;
+import model.Customer;
 import userDao.UserDao;
 
 import java.io.IOException;
@@ -26,8 +27,8 @@ public class LoginServlet extends HttpServlet {
 
         if (emf == null) {
             try {
-                LOGGER.warning("EntityManagerFactory not found in ServletContext. Creating a new one in LoginServlet.init(). " +
-                               "Consider using a ServletContextListener for EMF lifecycle management.");
+                LOGGER.warning("EntityManagerFactory not found in ServletContext. Creating a new one in LoginServlet.init(). "
+                        + "Consider using a ServletContextListener for EMF lifecycle management.");
                 emf = Persistence.createEntityManagerFactory("PRJPU");
                 getServletContext().setAttribute("emf", emf);
             } catch (Exception e) {
@@ -90,21 +91,30 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("isLoggedIn", true);
                 session.setAttribute("userId", authenticatedUser.getUserId());
 
+                // 👉 Thêm phần lấy Customer nếu user là khách hàng
+                if ("customer".equalsIgnoreCase(authenticatedUser.getRole())) {
+                    Customer customer = em.find(Customer.class, authenticatedUser.getUserId());
+                    if (customer != null) {
+                        session.setAttribute("loggedInCustomer", customer);
+                        LOGGER.info("Customer info loaded into session.");
+                    }
+                }
+
                 LOGGER.log(Level.INFO, "User logged in successfully: {0} with role {1}. Redirecting to home.",
-                           new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
+                        new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
 
                 // XÓA COOKIE favoriteCars khi login thành công
                 Cookie cookie = new Cookie("favoriteCars", "");
                 cookie.setMaxAge(0); // Xóa ngay lập tức
                 cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
                 response.addCookie(cookie);
-                
+
                 // XÓA COOKIE searchHistory khi login thành công
                 cookie = new Cookie("searchHistory", "");
                 cookie.setMaxAge(0); // Xóa ngay lập tức
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                
+
                 // XÓA COOKIE viewedCar khi login thành công
                 cookie = new Cookie("viewedCars", "");
                 cookie.setMaxAge(0); // Xóa ngay lập tức
