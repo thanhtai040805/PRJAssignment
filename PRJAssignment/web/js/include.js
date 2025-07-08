@@ -4,6 +4,7 @@
  */
 
 function saveSearchHistoryToServer(path) {
+    // Gửi path đã encode lên server (server sẽ decode lại)
     fetch(contextPath + '/saveSearchHistory', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -12,7 +13,9 @@ function saveSearchHistoryToServer(path) {
 }
 
 function saveSearchHistory(path) {
-    var contextPath = window.contextPath || ''; // Đảm bảo đã gán contextPath từ server
+    console.log(path);
+    // Chuẩn hóa path nếu cần
+    var contextPath = window.contextPath || '';
     if (typeof contextPath === "undefined") contextPath = '';
     if (path.startsWith(contextPath)) {
         path = path.substring(contextPath.length);
@@ -23,19 +26,36 @@ function saveSearchHistory(path) {
     if (!path.startsWith("/")) {
         path = "/" + path;
     }
+
     const name = "searchHistory";
-    const value = "; " + document.cookie;
-    const parts = value.split("; " + name + "=");
     let arr = [];
+
+    // Lấy giá trị cookie hiện tại, tách theo ký tự phân tách "|"
+    const cookieValue = "; " + document.cookie;
+    const parts = cookieValue.split("; " + name + "=");
     if (parts.length === 2) {
-        arr = decodeURIComponent(parts.pop().split(";").shift()).split(",");
+        arr = parts.pop().split(";").shift().split("|")
+            .map(item => item.trim())
+            .filter(item => item !== "");
     }
+
+    // Xóa nếu path đã tồn tại (so sánh trực tiếp vì đều là dạng encode)
     arr = arr.filter(item => item !== path);
+
+    // Thêm path mới lên đầu
     arr.unshift(path);
-    if (arr.length > 10)
-        arr = arr.slice(0, 10);
-    document.cookie = name + "=" + encodeURIComponent(arr.join(",")) + ";path=/;max-age=" + (60 * 60 * 24 * 30);
+
+    // Giới hạn tối đa 10 phần tử
+    if (arr.length > 10) arr = arr.slice(0, 10);
+
+    // Lưu lại cookie, không encode nữa
+    document.cookie = name + "=" + arr.join("|") + ";path=/;max-age=" + (60 * 60 * 24 * 30);
 }
+
+
+
+
+
 
 function saveViewedCar(globalKey) {
     const name = "viewedCars";

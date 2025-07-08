@@ -344,6 +344,10 @@ public class SearchServlet extends HttpServlet {
                         throw new IllegalArgumentException("Số km không hợp lệ: " + value);
                     }
                     break;
+                case "fuel":
+                case "nhienlieu":
+                    criteria.setFuel(decodeUrlParam(value));
+                    break;
                 default:
                     LOGGER.log(Level.WARNING, "Unknown search parameter: {0}", key);
                     break;
@@ -463,6 +467,24 @@ public class SearchServlet extends HttpServlet {
         private Integer minPower;
         private Integer maxPower;
         private Integer maxKm;
+        private Integer seat;
+        private String fuel;
+
+        public String getFuel() {
+            return fuel;
+        }
+
+        public void setFuel(String fuel) {
+            this.fuel = fuel;
+        }
+
+        public Integer getSeat() {
+            return seat;
+        }
+
+        public void setSeat(Integer seat) {
+            this.seat = seat;
+        }
 
         public String getKeyword() {
             return keyword;
