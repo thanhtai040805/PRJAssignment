@@ -1,63 +1,133 @@
-package util; // Đảm bảo đúng package
+package util;
 
 import model.Car;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SmartSuggestion {
 
-    public static List<Car> suggest(List<Car> viewedCars, List<Car> favoriteCars) {
-        // Sử dụng LinkedHashMap để duy trì thứ tự và đảm bảo không trùng lặp
-        Map<Integer, Car> uniqueSuggestions = new LinkedHashMap<>();
+    // Gợi ý từ danh sách yêu thích - home.jsp
+    public static List<Car> suggestFromFavorite(List<Car> favorites, List<Car> allCars) {
+        Set<Integer> favoriteIds = favorites.stream()
+                .map(Car::getCarId)
+                .collect(Collectors.toSet());
 
-        // Ưu tiên xe đã yêu thích
-        for (Car car : favoriteCars) {
-            uniqueSuggestions.put(car.getCarId(), car);
+        // Map để lưu: candidateId -> số điểm trùng khớp
+        Map<Car, Integer> matchMap = new HashMap<>();
+
+        for (Car candidate : allCars) {
+            if (favoriteIds.contains(candidate.getCarId())) {
+                continue;
+            }
+
+            if (candidate.getStockQuantity() <= 0) {
+                continue;
+            }
+
+            int matchScore = 0;
+            for (Car fav : favorites) {
+                if (Objects.equals(candidate.getCarBrandName(), fav.getCarBrandName())) {
+                    matchScore++;
+                }
+                if (Objects.equals(candidate.getCarModelName(), fav.getCarModelName())) {
+                    matchScore++;
+                }
+                if (Objects.equals(candidate.getFuelType(), fav.getFuelType())) {
+                    matchScore++;
+                }
+                if (Objects.equals(candidate.getTransmission(), fav.getTransmission())) {
+                    matchScore++;
+                }
+            }
+
+            if (matchScore >= 1) { // Ít nhất có điểm tương đồng
+                matchMap.put(candidate, matchMap.getOrDefault(candidate, 0) + matchScore);
+            }
         }
 
-        // Tiếp theo là xe đã xem, nhưng vẫn ưu tiên các xe được xem gần đây hơn (đầu danh sách)
-        for (Car car : viewedCars) {
-            // Chỉ thêm nếu chưa có trong danh sách gợi ý (để ưu tiên xe yêu thích)
-            uniqueSuggestions.putIfAbsent(car.getCarId(), car);
+        return matchMap.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue())) // Giảm dần theo điểm
+                .limit(6)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    // Gợi ý từ 1 xe cụ thể - carDetail.jsp
+    public static List<Car> suggestFromCar(Car target, List<Car> allCars) {
+        Map<Car, Integer> matchMap = new HashMap<>();
+
+        for (Car candidate : allCars) {
+            if (candidate.getCarId().equals(target.getCarId())) {
+                continue;
+            }
+
+            if (candidate.getStockQuantity() <= 0) {
+                continue;
+            }
+
+            int matchScore = 0;
+            if (Objects.equals(candidate.getCarBrandName(), target.getCarBrandName())) {
+                matchScore++;
+            }
+            if (Objects.equals(candidate.getCarModelName(), target.getCarModelName())) {
+                matchScore++;
+            }
+            if (Objects.equals(candidate.getFuelType(), target.getFuelType())) {
+                matchScore++;
+            }
+            if (Objects.equals(candidate.getTransmission(), target.getTransmission())) {
+                matchScore++;
+            }
+
+            if (matchScore >= 1) {
+                matchMap.put(candidate, matchScore);
+            }
         }
 
-        // Lấy danh sách từ map
-        List<Car> suggestions = new ArrayList<>(uniqueSuggestions.values());
-
-        // Lấy thêm một số xe ngẫu nhiên nếu danh sách gợi ý chưa đủ
-        // (Bạn cần một CarDao hoặc cách khác để lấy danh sách xe tổng thể)
-        // Ví dụ: Giả sử có một phương thức getAllCars() từ CarDao
-        // CarDao carDao = new CarDao(); // Bạn sẽ cần một instance của CarDao ở đây
-        // List<Car> allCars = carDao.getAllCars(); // Lấy tất cả xe
-
-        // Nếu muốn thêm logic gợi ý phức tạp hơn (ví dụ: theo hãng, loại, v.v.),
-        // bạn sẽ cần truyền thêm dữ liệu hoặc truy vấn database từ đây.
-        // Hiện tại, chúng ta chỉ trả về các xe từ viewed/favorite.
-
-        // Nếu bạn muốn sắp xếp gợi ý theo một tiêu chí nào đó (ví dụ: giá giảm dần)
-        // Collections.sort(suggestions, Comparator.comparing(Car::getGiaBan).reversed());
-
-        return suggestions;
+        return matchMap.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+                .limit(4)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
-    // Bạn có thể thêm các phương thức gợi ý khác nếu cần, ví dụ dựa trên thuộc tính xe
-    public static List<Car> suggestByBrand(String brandName) {
-        // Logic để lấy xe theo hãng từ database
-        // Ví dụ: return CarDao.getCarsByBrand(brandName);
-        return new ArrayList<>(); // Placeholder
-    }
+    public static List<Car> suggestFromViewed(List<Car> viewed, List<Car> allCars, int max) {
+        Map<Car, Integer> carMatchScores = new HashMap<>();
 
-    public static List<Car> suggestByType(String carType) {
-        // Logic để lấy xe theo loại từ database
-        // Ví dụ: return CarDao.getCarsByType(carType);
-        return new ArrayList<>(); // Placeholder
+        for (Car candidate : allCars) {
+            if (viewed.stream().anyMatch(v -> v.getCarId().equals(candidate.getCarId()))) {
+                continue;
+            }
+
+            if (candidate.getStockQuantity() <= 0) {
+                continue;
+            }
+
+            int score = 0;
+            for (Car v : viewed) {
+                if (Objects.equals(candidate.getCarBrandName(), v.getCarBrandName())) {
+                    score++;
+                }
+                if (Objects.equals(candidate.getCarModelName(), v.getCarModelName())) {
+                    score++;
+                }
+                if (Objects.equals(candidate.getFuelType(), v.getFuelType())) {
+                    score++;
+                }
+                if (Objects.equals(candidate.getTransmission(), v.getTransmission())) {
+                    score++;
+                }
+            }
+
+            if (score >= 2) {
+                carMatchScores.put(candidate, score);
+            }
+        }
+
+        return carMatchScores.entrySet().stream()
+                .sorted((a, b) -> b.getValue() - a.getValue()) // Sắp xếp giảm dần theo độ tương đồng
+                .map(Map.Entry::getKey)
+                .limit(max)
+                .toList();
     }
 }
-
-
