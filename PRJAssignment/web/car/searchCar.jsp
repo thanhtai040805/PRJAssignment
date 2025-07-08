@@ -13,19 +13,16 @@
                 padding: 0;
                 box-sizing: border-box;
             }
-
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background-color: #f5f5f5;
             }
-
             /* Header Styles */
             .header {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 padding: 15px 0;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             }
-
             .header-content {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -34,20 +31,17 @@
                 align-items: center;
                 padding: 0 20px;
             }
-
             .logo {
                 display: flex;
                 align-items: center;
                 gap: 10px;
             }
-
             .logo h1 {
                 color: white;
                 font-size: 28px;
                 font-weight: 300;
                 font-style: italic;
             }
-
             .logo-icon {
                 width: 40px;
                 height: 40px;
@@ -59,13 +53,11 @@
                 color: white;
                 font-size: 20px;
             }
-
             .auth-links {
                 display: flex;
                 gap: 15px;
                 align-items: center;
             }
-
             .auth-links a {
                 color: white;
                 text-decoration: none;
@@ -73,11 +65,9 @@
                 border-radius: 20px;
                 transition: background-color 0.3s;
             }
-
             .auth-links a:hover {
                 background-color: rgba(255,255,255,0.2);
             }
-
             /* Search Section - Tương tự home.jsp */
             .search-section {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -85,7 +75,6 @@
                 position: relative;
                 overflow: hidden;
             }
-
             .search-section::before {
                 content: '';
                 position: absolute;
@@ -97,7 +86,6 @@
                     radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
                 pointer-events: none;
             }
-
             .search-container {
                 max-width: 900px;
                 margin: 0 auto;
@@ -106,7 +94,6 @@
                 z-index: 2;
                 padding: 0 20px;
             }
-
             .search-title {
                 color: white;
                 font-size: 32px;
@@ -115,7 +102,6 @@
                 text-shadow: 0 2px 4px rgba(0,0,0,0.3);
                 letter-spacing: -1px;
             }
-
             .search-subtitle {
                 color: rgba(255,255,255,0.9);
                 font-size: 16px;
@@ -123,7 +109,6 @@
                 font-weight: 300;
                 line-height: 1.6;
             }
-
             .search-form {
                 display: flex;
                 justify-content: center;
@@ -139,12 +124,10 @@
                 margin-bottom: 25px;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
-
             .search-form:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             }
-
             .search-input {
                 flex: 1;
                 padding: 18px 25px;
@@ -155,12 +138,10 @@
                 color: #333;
                 font-weight: 400;
             }
-
             .search-input::placeholder {
                 color: #999;
                 font-style: italic;
             }
-
             .search-btn {
                 padding: 18px 35px;
                 background: linear-gradient(135deg, #ff6b6b, #ee5a24);
@@ -175,7 +156,6 @@
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
-
             .search-btn::before {
                 content: '';
                 position: absolute;
@@ -186,16 +166,13 @@
                 background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
                 transition: left 0.6s;
             }
-
             .search-btn:hover::before {
                 left: 100%;
             }
-
             .search-btn:hover {
                 background: linear-gradient(135deg, #ff5252, #d84315);
                 transform: translateY(-1px);
             }
-
             /* Advanced Search Form */
             .advanced-search-form {
                 background: rgba(255,255,255,0.1);
@@ -205,7 +182,6 @@
                 border: 1px solid rgba(255,255,255,0.2);
                 margin-top: 20px;
             }
-
             .advanced-search-title {
                 color: white;
                 font-size: 18px;
@@ -213,26 +189,22 @@
                 margin-bottom: 20px;
                 text-align: center;
             }
-
             .filter-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 15px;
                 margin-bottom: 20px;
             }
-
             .filter-group {
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
             }
-
             .filter-group label {
                 color: rgba(255,255,255,0.9);
                 font-size: 14px;
                 font-weight: 500;
             }
-
             .filter-group select {
                 padding: 10px 12px;
                 border: 1px solid rgba(255,255,255,0.3);
@@ -242,34 +214,28 @@
                 font-size: 14px;
                 transition: all 0.3s ease;
             }
-
             .filter-group select:focus {
                 outline: none;
                 border-color: #ff6b6b;
                 box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
             }
-
             .range-group {
                 display: flex;
                 gap: 8px;
                 align-items: center;
             }
-
             .range-group select {
                 flex: 1;
             }
-
             .range-separator {
                 color: rgba(255,255,255,0.9);
                 font-weight: 500;
             }
-
             .filter-actions {
                 display: flex;
                 justify-content: center;
                 gap: 15px;
             }
-
             .filter-btn, .reset-btn {
                 padding: 12px 25px;
                 border: none;
@@ -281,50 +247,41 @@
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
-
             .filter-btn {
                 background: linear-gradient(135deg, #ff6b6b, #ee5a24);
                 color: white;
             }
-
             .filter-btn:hover {
                 background: linear-gradient(135deg, #ff5252, #d84315);
                 transform: translateY(-2px);
             }
-
             .reset-btn {
                 background: rgba(255,255,255,0.2);
                 color: white;
                 border: 1px solid rgba(255,255,255,0.3);
             }
-
             .reset-btn:hover {
                 background: rgba(255,255,255,0.3);
                 transform: translateY(-2px);
             }
-
             /* Search Results Section */
             .search-results-section {
                 padding: 40px 0;
                 background: white;
             }
-
             .container {
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 0 20px;
             }
-
             .search-header {
                 margin-bottom: 30px;
                 text-align: center;
             }
-
             .search-info {
                 color: #666;
                 font-size: 16px;
             }
-
             /* Results Grid */
             .results-grid {
                 display: grid;
@@ -332,7 +289,6 @@
                 gap: 30px;
                 margin-bottom: 40px;
             }
-
             .car-card {
                 background: white;
                 border-radius: 15px;
@@ -343,14 +299,12 @@
                 color: inherit;
                 display: block;
             }
-
             .car-card:hover {
                 transform: translateY(-5px);
                 box-shadow: 0 15px 35px rgba(0,0,0,0.15);
                 text-decoration: none;
                 color: inherit;
             }
-
             .car-image {
                 width: 100%;
                 height: 220px;
@@ -361,19 +315,16 @@
                 overflow: hidden;
                 position: relative;
             }
-
             .car-image img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
-
             .car-placeholder {
                 color: #999;
                 font-size: 14px;
                 text-align: center;
             }
-
             .car-badge {
                 position: absolute;
                 top: 15px;
@@ -385,51 +336,42 @@
                 font-size: 12px;
                 font-weight: 600;
             }
-
             .car-badge.new {
                 background: #51cf66;
             }
-
             .car-badge.used {
                 background: #ffd43b;
                 color: #333;
             }
-
             .car-info {
                 padding: 25px;
             }
-
             .car-name {
                 font-size: 20px;
                 font-weight: 600;
                 color: #333;
                 margin-bottom: 10px;
             }
-
             .car-price {
                 font-size: 24px;
                 font-weight: bold;
                 color: #667eea;
                 margin-bottom: 15px;
             }
-
             .car-details {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
                 margin-bottom: 15px;
             }
-
             .car-detail-item {
                 font-size: 14px;
                 color: #666;
             }
-
             .car-detail-label {
                 font-weight: 600;
                 color: #333;
             }
-
             .car-specs {
                 display: flex;
                 justify-content: space-between;
@@ -437,48 +379,40 @@
                 padding-top: 15px;
                 border-top: 1px solid #eee;
             }
-
             .spec-item {
                 text-align: center;
                 flex: 1;
             }
-
             .spec-value {
                 font-weight: 600;
                 color: #333;
                 font-size: 14px;
             }
-
             .spec-label {
                 font-size: 12px;
                 color: #666;
                 margin-top: 2px;
             }
-
             /* No Results */
             .no-results {
                 text-align: center;
                 padding: 60px 20px;
             }
-
             .no-results-icon {
                 font-size: 64px;
                 color: #ddd;
                 margin-bottom: 20px;
             }
-
             .no-results-title {
                 font-size: 24px;
                 color: #333;
                 margin-bottom: 10px;
             }
-
             .no-results-text {
                 color: #666;
                 font-size: 16px;
                 margin-bottom: 30px;
             }
-
             .back-btn {
                 display: inline-block;
                 background: #667eea;
@@ -489,13 +423,11 @@
                 font-weight: 600;
                 transition: background-color 0.3s;
             }
-
             .back-btn:hover {
                 background: #5a6fd8;
                 text-decoration: none;
                 color: white;
             }
-
             /* Responsive */
             @media (max-width: 768px) {
                 .search-form {
@@ -513,7 +445,6 @@
                     border-radius: 0 0 15px 15px;
                     padding: 15px 20px;
                 }
-
                 .filter-grid {
                     grid-template-columns: 1fr;
                 }
@@ -522,20 +453,18 @@
                     flex-direction: column;
                     gap: 10px;
                 }
-
                 .range-separator {
                     display: none;
                 }
-
                 .results-grid {
                     grid-template-columns: 1fr;
                     gap: 20px;
                 }
-
                 .car-details {
                     grid-template-columns: 1fr;
                 }
             }
+
             .favorite-action {
                 text-align: center;
                 margin-top: 15px;
@@ -581,20 +510,6 @@
                     </svg>") no-repeat center center;
                 background-size: contain;
             }
-            .car-name-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 10px;
-            }
-
-            .car-name {
-                font-size: 20px;
-                font-weight: 600;
-                color: #333;
-                margin: 0;
-            }
-
         </style>
     </head>
     <body>
@@ -622,18 +537,151 @@
                            placeholder="🔍 Tìm kiếm theo tên xe, hãng, dòng xe, giá cả...">
                     <button type="submit" class="search-btn">Tìm Kiếm</button>
                 </form>
+
+                <!-- Advanced Search Form -->
                 <div class="advanced-search-form">
                     <h3 class="advanced-search-title">🔧 Tìm Kiếm Nâng Cao</h3>
-                    <form id="advancedSearchForm">
-                        <!-- ... giữ nguyên phần filter ... -->
-                        <div class="filter-actions">
-                            <button type="button" class="filter-btn" onclick="buildAdvancedSearchUrl()">
-                                🔍 Tìm Kiếm
-                            </button>
-                            <button type="reset" class="reset-btn" onclick="resetForm()">
-                                🔄 Đặt Lại
-                            </button>
-                        </div>
+                    <form id="advancedSearchForm" autocomplete="off">
+                        <div class="filter-grid">
+                            <!-- Hãng xe -->
+                            <div class="filter-group">
+                                <label for="maker">Hãng xe</label>
+                                <select id="hangXe" name="maker">
+                                    <option value="">Chọn hãng xe</option>
+                                    <option value="Toyota" <c:if test="${searchCriteria.maker == 'Toyota'}">selected</c:if>>Toyota</option>
+                                    <option value="Honda" <c:if test="${searchCriteria.maker == 'Honda'}">selected</c:if>>Honda</option>
+                                    <option value="BMW" <c:if test="${searchCriteria.maker == 'BMW'}">selected</c:if>>BMW</option>
+                                    <option value="Mercedes" <c:if test="${searchCriteria.maker == 'Mercedes'}">selected</c:if>>Mercedes</option>
+                                    <option value="Audi" <c:if test="${searchCriteria.maker == 'Audi'}">selected</c:if>>Audi</option>
+                                    <option value="Hyundai" <c:if test="${searchCriteria.maker == 'Hyundai'}">selected</c:if>>Hyundai</option>
+                                    <option value="Kia" <c:if test="${searchCriteria.maker == 'Kia'}">selected</c:if>>Kia</option>
+                                    <option value="Mazda" <c:if test="${searchCriteria.maker == 'Mazda'}">selected</c:if>>Mazda</option>
+                                    <option value="Ford" <c:if test="${searchCriteria.maker == 'Ford'}">selected</c:if>>Ford</option>
+                                    <option value="Volkswagen" <c:if test="${searchCriteria.maker == 'Volkswagen'}">selected</c:if>>Volkswagen</option>
+                                    </select>
+                                </div>
+                                <!-- Dòng xe -->
+                                <div class="filter-group">
+                                    <label for="model">Dòng xe</label>
+                                    <select id="dongXe" name="type">
+                                        <option value="">Chọn loại xe</option>
+                                        <option value="Sedan" <c:if test="${searchCriteria.carType == 'Sedan'}">selected</c:if>>Sedan</option>
+                                    <option value="SUV" <c:if test="${searchCriteria.carType == 'SUV'}">selected</c:if>>SUV</option>
+                                    <option value="Hatchback" <c:if test="${searchCriteria.carType == 'Hatchback'}">selected</c:if>>Hatchback</option>
+                                    <option value="Pickup" <c:if test="${searchCriteria.carType == 'Pickup'}">selected</c:if>>Pickup</option>
+                                    <option value="Coupe" <c:if test="${searchCriteria.carType == 'Coupe'}">selected</c:if>>Coupe</option>
+                                    <option value="Convertible" <c:if test="${searchCriteria.carType == 'Convertible'}">selected</c:if>>Convertible</option>
+                                    <option value="Crossover" <c:if test="${searchCriteria.carType == 'Crossover'}">selected</c:if>>Crossover</option>
+                                    <option value="Wagon" <c:if test="${searchCriteria.carType == 'Wagon'}">selected</c:if>>Wagon</option>
+                                    </select>
+                                </div>
+                                <!-- Số chỗ -->
+                                <div class="filter-group">
+                                    <label for="seat">Số chỗ</label>
+                                    <select name="seat" id="seat">
+                                        <option value="">Tất cả</option>
+                                        <option value="4" <c:if test="${searchCriteria.seat == 4}">selected</c:if>>4</option>
+                                    <option value="5" <c:if test="${searchCriteria.seat == 5}">selected</c:if>>5</option>
+                                    <option value="7" <c:if test="${searchCriteria.seat == 7}">selected</c:if>>7</option>
+                                    </select>
+                                </div>
+                                <!-- Nhiên liệu -->
+                                <div class="filter-group">
+                                    <label for="fuel">Nhiên liệu</label>
+                                    <select name="fuel" id="fuel">
+                                        <option value="">Tất cả</option>
+                                        <option value="Xăng" <c:if test="${searchCriteria.fuel == 'Xăng'}">selected</c:if>>Xăng</option>
+                                    <option value="Dầu" <c:if test="${searchCriteria.fuel == 'Dầu'}">selected</c:if>>Dầu</option>
+                                    <option value="Hybrid" <c:if test="${searchCriteria.fuel == 'Hybrid'}">selected</c:if>>Hybrid</option>
+                                    <option value="Điện" <c:if test="${searchCriteria.fuel == 'Điện'}">selected</c:if>>Điện</option>
+                                    <option value="Khác" <c:if test="${searchCriteria.fuel == 'Khác'}">selected</c:if>>Khác</option>
+                                    </select>
+                                </div>
+                                <!-- Năm sản xuất -->
+                                <div class="filter-group">
+                                    <label>Năm sản xuất</label>
+                                    <div class="range-group">
+                                        <select name="minYear">
+                                            <option value="">Từ</option>
+                                        <c:forEach var="y" begin="2015" end="2025">
+                                            <option value="${y}" <c:if test="${searchCriteria.minYear == y}">selected</c:if>>${y}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <span class="range-separator">-</span>
+                                    <select name="maxYear">
+                                        <option value="">Đến</option>
+                                        <c:forEach var="y" begin="2015" end="2025">
+                                            <option value="${y}" <c:if test="${searchCriteria.maxYear == y}">selected</c:if>>${y}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Màu sắc -->
+                            <div class="filter-group">
+                                <label for="color">Màu sắc</label>
+                                <select name="color" id="color">
+                                    <option value="">Tất cả</option>
+                                    <option value="Trắng" <c:if test="${searchCriteria.color == 'Trắng'}">selected</c:if>>Trắng</option>
+                                    <option value="Đen" <c:if test="${searchCriteria.color == 'Đen'}">selected</c:if>>Đen</option>
+                                    <option value="Đỏ" <c:if test="${searchCriteria.color == 'Đỏ'}">selected</c:if>>Đỏ</option>
+                                    <option value="Xám" <c:if test="${searchCriteria.color == 'Xám'}">selected</c:if>>Xám</option>
+                                    <option value="Bạc" <c:if test="${searchCriteria.color == 'Bạc'}">selected</c:if>>Bạc</option>
+                                    <option value="Xanh" <c:if test="${searchCriteria.color == 'Xanh'}">selected</c:if>>Xanh</option>
+                                    <option value="Cam" <c:if test="${searchCriteria.color == 'Cam'}">selected</c:if>>Cam</option>
+                                    <option value="Khác" <c:if test="${searchCriteria.color == 'Khác'}">selected</c:if>>Khác</option>
+                                    </select>
+                                </div>
+                                <!-- Hộp số -->
+                                <div class="filter-group">
+                                    <label for="transmission">Hộp số</label>
+                                    <select name="transmission" id="transmission">
+                                        <option value="">Tất cả</option>
+                                        <option value="Số sàn" <c:if test="${searchCriteria.transmission == 'Số sàn'}">selected</c:if>>Số sàn</option>
+                                    <option value="Số tự động" <c:if test="${searchCriteria.transmission == 'Số tự động'}">selected</c:if>>Số tự động</option>
+                                    <option value="CVT" <c:if test="${searchCriteria.transmission == 'CVT'}">selected</c:if>>CVT</option>
+                                    </select>
+                                </div>
+                                <!-- Tình trạng -->
+                                <div class="filter-group">
+                                    <label for="condition">Tình trạng</label>
+                                    <select name="condition" id="condition">
+                                        <option value="">Tất cả</option>
+                                        <option value="Mới" <c:if test="${searchCriteria.condition == 'Mới'}">selected</c:if>>Mới</option>
+                                    <option value="Cũ" <c:if test="${searchCriteria.condition == 'Cũ'}">selected</c:if>>Cũ</option>
+                                    <option value="Tân trang" <c:if test="${searchCriteria.condition == 'Tân trang'}">selected</c:if>>Tân trang</option>
+                                    </select>
+                                </div>
+                                <!-- Khoảng giá -->
+                                <div class="filter-group">
+                                    <label>Khoảng giá (VNĐ)</label>
+                                    <div class="range-group">
+                                        <select name="minPrice">
+                                            <option value="">Từ</option>
+                                            <option value="200000000" <c:if test="${searchCriteria.minPrice == 200000000}">selected</c:if>>200 triệu</option>
+                                        <option value="500000000" <c:if test="${searchCriteria.minPrice == 500000000}">selected</c:if>>500 triệu</option>
+                                        <option value="700000000" <c:if test="${searchCriteria.minPrice == 700000000}">selected</c:if>>700 triệu</option>
+                                        <option value="1000000000" <c:if test="${searchCriteria.minPrice == 1000000000}">selected</c:if>>1 tỷ</option>
+                                        <option value="1500000000" <c:if test="${searchCriteria.minPrice == 1500000000}">selected</c:if>>1.5 tỷ</option>
+                                        <option value="2000000000" <c:if test="${searchCriteria.minPrice == 2000000000}">selected</c:if>>2 tỷ</option>
+                                        </select>
+                                        <span class="range-separator">-</span>
+                                        <select name="maxPrice">
+                                            <option value="">Đến</option>
+                                            <option value="500000000" <c:if test="${searchCriteria.maxPrice == 500000000}">selected</c:if>>500 triệu</option>
+                                        <option value="700000000" <c:if test="${searchCriteria.maxPrice == 700000000}">selected</c:if>>700 triệu</option>
+                                        <option value="1000000000" <c:if test="${searchCriteria.maxPrice == 1000000000}">selected</c:if>>1 tỷ</option>
+                                        <option value="1500000000" <c:if test="${searchCriteria.maxPrice == 1500000000}">selected</c:if>>1.5 tỷ</option>
+                                        <option value="2000000000" <c:if test="${searchCriteria.maxPrice == 2000000000}">selected</c:if>>2 tỷ</option>
+                                        <option value="5000000000" <c:if test="${searchCriteria.maxPrice == 5000000000}">selected</c:if>>5 tỷ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="filter-btn" onclick="buildAdvancedSearchUrl()">🔍 Tìm Kiếm</button>
+                        <button type="reset" class="reset-btn" onclick="resetForm()">🔄 Đặt Lại</button>
+                    </div>
                     </form>
                 </div>
             </div>
@@ -641,198 +689,200 @@
 
         <section class="search-results-section">
             <div class="container">
-                <c:choose>
-                    <c:when test="${not empty searchResults and totalResults > 0}">
-                        <div class="results-grid">
-                            <c:forEach var="car" items="${searchResults}">
-                                <div class="car-card">
-                                    <!-- Link chỉ bọc phần hình ảnh -->
-                                    <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
-                                        <div class="car-image">
-                                            <c:choose>
-                                                <c:when test="${not empty car.imageLink}">
-                                                    <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="car-placeholder">Hình ảnh xe</div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <span class="car-badge <c:if test='${car.condition eq "Mới"}'>new</c:if><c:if test='${car.condition eq "Cũ"}'>used</c:if>">
-                                                ${car.condition}
-                                            </span>
+            <c:choose>
+                <c:when test="${not empty searchResults and totalResults > 0}">
+                    <div class="results-grid">
+                        <c:forEach var="car" items="${searchResults}">
+                            <div class="car-card">
+                                <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
+                                    <div class="car-image">
+                                        <c:choose>
+                                            <c:when test="${not empty car.imageLink}">
+                                                <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="car-placeholder">Hình ảnh xe</div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span class="car-badge <c:if test='${car.condition eq "Mới"}'>new</c:if><c:if test='${car.condition eq "Cũ"}'>used</c:if>">
+                                            ${car.condition}
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="car-info">
+                                    <div class="car-name-row" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h3 class="car-name" style="margin: 0;">
+                                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
+                                                ${car.carName}
+                                            </a>
+                                        </h3>
+                                        <div class="favorite-action">
+                                            <button type="button" class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
+                                                    data-globalkey="${car.globalKey}"
+                                                    onclick="toggleFavorite('${car.globalKey}', this)">
+                                                <span class="heart-icon"></span>
+                                            </button>
                                         </div>
-                                    </a>
-
-                                    <div class="car-info">
-                                        <div class="car-name-row" style="display: flex; justify-content: space-between; align-items: center;">
-                                            <h3 class="car-name" style="margin: 0;">
-                                                <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
-                                                    ${car.carName}
-                                                </a>
-                                            </h3>
-                                            <div class="favorite-action">
-                                                <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
-                                                        data-globalkey="${car.globalKey}"
-                                                        onclick="toggleFavorite('${car.globalKey}', this)">
-                                                    <span class="heart-icon"></span>
-                                                </button>
-                                            </div>
-
+                                    </div>
+                                    <div class="car-price">
+                                        <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/> VNĐ
+                                    </div>
+                                    <div class="car-details">
+                                        <div class="car-detail-item"><span class="car-detail-label">Hãng:</span> ${car.carBrandName}</div>
+                                        <div class="car-detail-item"><span class="car-detail-label">Dòng:</span> ${car.carModelName}</div>
+                                        <div class="car-detail-item"><span class="car-detail-label">Năm:</span> ${car.year}</div>
+                                        <div class="car-detail-item"><span class="car-detail-label">Màu:</span> ${car.color}</div>
+                                        <div class="car-detail-item"><span class="car-detail-label">Hộp số:</span> ${car.transmission}</div>
+                                        <div class="car-detail-item"><span class="car-detail-label">Km:</span> <fmt:formatNumber value="${car.mileage}" pattern="#,###"/> km</div>
+                                    </div>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <div class="spec-value">${car.engineCapacity}cc</div>
+                                            <div class="spec-label">Động cơ</div>
                                         </div>
-
-                                        <div class="car-price">
-                                            <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/> VNĐ
+                                        <div class="spec-item">
+                                            <div class="spec-value">${car.power}HP</div>
+                                            <div class="spec-label">Công suất</div>
                                         </div>
-
-                                        <div class="car-details">
-                                            <div class="car-detail-item"><span class="car-detail-label">Hãng:</span> ${car.carBrandName}</div>
-                                            <div class="car-detail-item"><span class="car-detail-label">Dòng:</span> ${car.carModelName}</div>
-                                            <div class="car-detail-item"><span class="car-detail-label">Năm:</span> ${car.year}</div>
-                                            <div class="car-detail-item"><span class="car-detail-label">Màu:</span> ${car.color}</div>
-                                            <div class="car-detail-item"><span class="car-detail-label">Hộp số:</span> ${car.transmission}</div>
-                                            <div class="car-detail-item"><span class="car-detail-label">Km:</span> <fmt:formatNumber value="${car.mileage}" pattern="#,###"/> km</div>
-                                        </div>
-
-                                        <div class="car-specs">
-                                            <div class="spec-item">
-                                                <div class="spec-value">${car.engineCapacity}cc</div>
-                                                <div class="spec-label">Động cơ</div>
-                                            </div>
-                                            <div class="spec-item">
-                                                <div class="spec-value">${car.power}HP</div>
-                                                <div class="spec-label">Công suất</div>
-                                            </div>
-                                            <div class="spec-item">
-                                                <div class="spec-value">${car.seatCount}</div>
-                                                <div class="spec-label">Chỗ ngồi</div>
-                                            </div>
+                                        <div class="spec-item">
+                                            <div class="spec-value">${car.seatCount}</div>
+                                            <div class="spec-label">Chỗ ngồi</div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <h2 class="no-results-title">Không tìm thấy kết quả</h2>
+                        <p class="no-results-text">
+                            Xin lỗi, chúng tôi không tìm thấy xe nào phù hợp với tiêu chí tìm kiếm của bạn.<br>
+                            Vui lòng thử lại với các tiêu chí khác.
+                        </p>
+                        <a href="${pageContext.request.contextPath}/" class="back-btn">Về trang chủ</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </section>
 
-                            </c:forEach>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="no-results">
-                            <div class="no-results-icon">🔍</div>
-                            <h2 class="no-results-title">Không tìm thấy kết quả</h2>
-                            <p class="no-results-text">
-                                Xin lỗi, chúng tôi không tìm thấy xe nào phù hợp với tiêu chí tìm kiếm của bạn.<br>
-                                Vui lòng thử lại với các tiêu chí khác.
-                            </p>
-                            <a href="${pageContext.request.contextPath}/" class="back-btn">Về trang chủ</a>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </section>
-
-        <script>
-            var contextPath = '${pageContext.request.contextPath}';
-        </script>
-        <script src="${pageContext.request.contextPath}/js/include.js"></script>                   
-
-        <script>
-            function handleKeywordSearch(event) {
-                event.preventDefault();
-                const keyword = document.getElementById('keywordInput').value.trim();
-                if (keyword) {
-                    const searchUrl = '${pageContext.request.contextPath}/search/result/Keyword/' + encodeURIComponent(keyword);
-                    window.location.href = searchUrl;
-                } else {
-                    window.location.href = '${pageContext.request.contextPath}/';
-                }
-                return false;
-            }
-            function buildAdvancedSearchUrl() {
-                const form = document.getElementById('advancedSearchForm');
-                const formData = new FormData(form);
-                let urlParts = [];
-                const currentKeyword = document.getElementById('keywordInput').value.trim();
-                if (currentKeyword) {
-                    urlParts.push('Keyword', encodeURIComponent(currentKeyword));
-                }
-                if (formData.get('maker')) {
-                    urlParts.push('Maker', encodeURIComponent(formData.get('maker')));
-                }
-                if (formData.get('type')) {
-                    urlParts.push('Type', encodeURIComponent(formData.get('type')));
-                }
-                if (formData.get('color')) {
-                    urlParts.push('Color', encodeURIComponent(formData.get('color')));
-                }
-                const minYear = formData.get('minYear');
-                const maxYear = formData.get('maxYear');
-                if (minYear || maxYear) {
-                    if (minYear && maxYear) {
-                        urlParts.push('Year', minYear + '-' + maxYear);
-                    } else if (minYear) {
-                        urlParts.push('Year', minYear + '-2025');
-                    } else if (maxYear) {
-                        urlParts.push('Year', '2020-' + maxYear);
-                    }
-                }
-                const minPrice = formData.get('minPrice');
-                const maxPrice = formData.get('maxPrice');
-                if (minPrice || maxPrice) {
-                    if (minPrice && maxPrice) {
-                        urlParts.push('Price', minPrice + '-' + maxPrice);
-                    } else if (minPrice) {
-                        urlParts.push('Price', minPrice + '-10000000000');
-                    } else if (maxPrice) {
-                        urlParts.push('Price', '0-' + maxPrice);
-                    }
-                }
-                if (formData.get('condition')) {
-                    urlParts.push('Condition', encodeURIComponent(formData.get('condition')));
-                }
-                let searchUrl = '${pageContext.request.contextPath}/search/result';
-                if (urlParts.length > 0) {
-                    searchUrl += '/' + urlParts.join('/');
-                }
+    <script>
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <script src="${pageContext.request.contextPath}/js/include.js"></script>
+    <script>
+        function handleKeywordSearch(event) {
+            event.preventDefault();
+            const keyword = document.getElementById('keywordInput').value.trim();
+            if (keyword) {
+                const searchUrl = '${pageContext.request.contextPath}/search/result/Keyword/' + encodeURIComponent(keyword);
                 window.location.href = searchUrl;
-            }
-            function resetForm() {
-                document.getElementById('advancedSearchForm').reset();
-                document.getElementById('keywordInput').value = '';
+            } else {
                 window.location.href = '${pageContext.request.contextPath}/';
             }
-
-            // Chỉ lưu lịch sử bằng cookie khi chưa đăng nhập
-            <c:if test="${empty sessionScope.currentUser}">
-            saveSearchHistory(window.location.pathname + window.location.search);
-            </c:if>
-
-            <c:if test="${not empty sessionScope.currentUser}">
-            saveSearchHistoryToServer(window.location.pathname + window.location.search);
-            </c:if>
-
-            // AJAX yêu thích
-            function toggleFavorite(globalKey, btn) {
-                fetch('${pageContext.request.contextPath}/updateFavorite', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: 'globalKey=' + encodeURIComponent(globalKey)
-                })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                btn.classList.toggle('favorited');
-                            } else {
-                                alert(data.message || 'Có lỗi xảy ra!');
-                            }
-                        })
-                        .catch(() => {
-                            alert('Có lỗi xảy ra!');
-                        });
+            return false;
+        }
+        function buildAdvancedSearchUrl() {
+            const form = document.getElementById('advancedSearchForm');
+            const formData = new FormData(form);
+            let urlParts = [];
+            const currentKeyword = document.getElementById('keywordInput').value.trim();
+            if (currentKeyword) {
+                urlParts.push('Keyword', encodeURIComponent(currentKeyword));
+            }
+            if (formData.get('maker')) {
+                urlParts.push('Maker', encodeURIComponent(formData.get('maker')));
+            }
+            if (formData.get('type')) {
+                urlParts.push('Type', encodeURIComponent(formData.get('type')));
+            }
+            if (formData.get('color')) {
+                urlParts.push('Color', encodeURIComponent(formData.get('color')));
             }
 
-            document.addEventListener("DOMContentLoaded", function () {
-            <c:if test="${empty sessionScope.currentUser}">
-                syncFavoriteFromCookie();
-            </c:if>
-            });
-        </script>
-    </body>
+            if (formData.get('fuel')) {
+                urlParts.push('Fuel', encodeURIComponent(formData.get('fuel')));
+            }
+            if (formData.get('transmission')) {
+                urlParts.push('Transmission', encodeURIComponent(formData.get('transmission')));
+            }
+            if (formData.get('seat')) {
+                urlParts.push('Seat', encodeURIComponent(formData.get('seat')));
+            }
+
+            const minYear = formData.get('minYear');
+            const maxYear = formData.get('maxYear');
+            if (minYear || maxYear) {
+                if (minYear && maxYear) {
+                    urlParts.push('Year', minYear + '-' + maxYear);
+                } else if (minYear) {
+                    urlParts.push('Year', minYear + '-2025');
+                } else if (maxYear) {
+                    urlParts.push('Year', '2020-' + maxYear);
+                }
+            }
+            const minPrice = formData.get('minPrice');
+            const maxPrice = formData.get('maxPrice');
+            if (minPrice || maxPrice) {
+                if (minPrice && maxPrice) {
+                    urlParts.push('Price', minPrice + '-' + maxPrice);
+                } else if (minPrice) {
+                    urlParts.push('Price', minPrice + '-10000000000');
+                } else if (maxPrice) {
+                    urlParts.push('Price', '0-' + maxPrice);
+                }
+            }
+            if (formData.get('condition')) {
+                urlParts.push('Condition', encodeURIComponent(formData.get('condition')));
+            }
+            let searchUrl = '${pageContext.request.contextPath}/search/result';
+            if (urlParts.length > 0) {
+                searchUrl += '/' + urlParts.join('/');
+            }
+            window.location.href = searchUrl;
+        }
+
+        function resetForm() {
+            window.location.href = '${pageContext.request.contextPath}/search/result/';
+        }
+
+        // Chỉ lưu lịch sử bằng cookie khi chưa đăng nhập
+        <c:if test="${empty sessionScope.currentUser}">
+        saveSearchHistory(window.location.pathname + window.location.search);
+        </c:if>
+
+        <c:if test="${not empty sessionScope.currentUser}">
+        saveSearchHistoryToServer(window.location.pathname + window.location.search);
+        </c:if>
+
+        // AJAX yêu thích
+        function toggleFavorite(globalKey, btn) {
+            fetch('${pageContext.request.contextPath}/updateFavorite', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'globalKey=' + encodeURIComponent(globalKey)
+            })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            btn.classList.toggle('favorited');
+                        } else {
+                            alert(data.message || 'Có lỗi xảy ra!');
+                        }
+                    })
+                    .catch(() => {
+                        alert('Có lỗi xảy ra!');
+                    });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+        <c:if test="${empty sessionScope.currentUser}">
+            syncFavoriteFromCookie();
+        </c:if>
+        });
+    </script>
+</body>
 </html>

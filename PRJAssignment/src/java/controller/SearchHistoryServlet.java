@@ -30,7 +30,7 @@ public class SearchHistoryServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Object currentUser = (session != null) ? session.getAttribute("currentUser") : null;
 
-        // Lấy path tìm kiếm từ client gửi lên (nên là URL search hoặc keyword)
+        // Lấy path tìm kiếm từ client gửi lên (có thể đã encodeURIComponent)
         String path = request.getParameter("path");
         String contextPath = request.getContextPath();
 
@@ -40,6 +40,9 @@ public class SearchHistoryServlet extends HttpServlet {
             response.getWriter().write("{\"success\":false, \"error\":\"User chưa đăng nhập hoặc path rỗng\"}");
             return;
         }
+
+        // GIẢI MÃ PATH nếu client gửi encodeURIComponent
+        path = java.net.URLDecoder.decode(path, "UTF-8");
 
         // Xử lý path để chỉ lưu phần sau contextPath, bắt đầu bằng 1 dấu /
         if (path.startsWith(contextPath)) {

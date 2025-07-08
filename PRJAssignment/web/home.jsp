@@ -1119,7 +1119,7 @@
     <section class="filter-section" id="filter-section">
         <div class="section-container">
             <h2 class="section-title">🔧 Tìm Kiếm Nâng Cao</h2>
-            <form class="filter-form" action="${pageContext.request.contextPath}/search" method="get">
+            <form class="filter-form" method="get" onsubmit="buildAdvancedSearchUrl(event)">
                 <div class="filter-group">
                     <label for="hangXe">Hãng xe</label>
                     <select id="hangXe" name="maker">
@@ -1294,7 +1294,7 @@
                         <span class="search-icon">🔍</span>
                         Tìm Kiếm
                     </button>
-                    <button type="reset" class="reset-btn">
+                    <button type="reset" class="reset-btn" onclick="resetForm()">
                         <span class="reset-icon">🔄</span>
                         Đặt Lại
                     </button>
@@ -1332,7 +1332,102 @@
     </script>
     <script src="${pageContext.request.contextPath}/js/include.js"></script>
     <script>
+        function buildAdvancedSearchUrl(event) {
+            if (event)
+                event.preventDefault(); // Ngăn submit mặc định
 
+            // Lấy form theo class
+            const form = document.getElementsByClassName('filter-form')[0];
+            const formData = new FormData(form);
+            let urlParts = [];
+
+            // Lấy keyword nếu có
+            const keywordInput = document.getElementById('search-input');
+            if (keywordInput && keywordInput.value.trim()) {
+                urlParts.push('Keyword', encodeURIComponent(keywordInput.value.trim()));
+            }
+
+            // Các trường lọc cơ bản
+            if (formData.get('maker'))
+                urlParts.push('Maker', encodeURIComponent(formData.get('maker')));
+            if (formData.get('type'))
+                urlParts.push('Type', encodeURIComponent(formData.get('type')));
+            if (formData.get('color'))
+                urlParts.push('Color', encodeURIComponent(formData.get('color')));
+            if (formData.get('transmission'))
+                urlParts.push('Transmission', encodeURIComponent(formData.get('transmission')));
+            if (formData.get('condition'))
+                urlParts.push('Condition', encodeURIComponent(formData.get('condition')));
+
+            // Năm sản xuất
+            const minYear = formData.get('minYear');
+            const maxYear = formData.get('maxYear');
+            if (minYear || maxYear) {
+                if (minYear && maxYear) {
+                    urlParts.push('Year', minYear + '-' + maxYear);
+                } else if (minYear) {
+                    urlParts.push('Year', minYear + '-2025');
+                } else if (maxYear) {
+                    urlParts.push('Year', '2020-' + maxYear);
+                }
+            }
+
+            // Dung tích động cơ
+            const minEngine = formData.get('minEngine');
+            const maxEngine = formData.get('maxEngine');
+            if (minEngine || maxEngine) {
+                if (minEngine && maxEngine) {
+                    urlParts.push('Engine', minEngine + '-' + maxEngine);
+                } else if (minEngine) {
+                    urlParts.push('Engine', minEngine + '-4000');
+                } else if (maxEngine) {
+                    urlParts.push('Engine', '1000-' + maxEngine);
+                }
+            }
+
+            // Công suất
+            const minPower = formData.get('minPower');
+            const maxPower = formData.get('maxPower');
+            if (minPower || maxPower) {
+                if (minPower && maxPower) {
+                    urlParts.push('Power', minPower + '-' + maxPower);
+                } else if (minPower) {
+                    urlParts.push('Power', minPower + '-500');
+                } else if (maxPower) {
+                    urlParts.push('Power', '100-' + maxPower);
+                }
+            }
+
+            // Giá bán
+            const minPrice = formData.get('minPrice');
+            const maxPrice = formData.get('maxPrice');
+            if (minPrice || maxPrice) {
+                if (minPrice && maxPrice) {
+                    urlParts.push('Price', minPrice + '-' + maxPrice);
+                } else if (minPrice) {
+                    urlParts.push('Price', minPrice + '-10000000000');
+                } else if (maxPrice) {
+                    urlParts.push('Price', '0-' + maxPrice);
+                }
+            }
+
+            // Số km đã đi
+            if (formData.get('maxKm')) {
+                urlParts.push('Km', encodeURIComponent(formData.get('maxKm')));
+            }
+
+            // Build URL
+            let searchUrl = '${pageContext.request.contextPath}/search/result';
+            if (urlParts.length > 0) {
+                searchUrl += '/' + urlParts.join('/');
+            }
+            window.location.href = searchUrl;
+        }
+
+        function resetForm() {
+            document.getElementByClass('filter-form').reset();
+            window.location.href = '${pageContext.request.contextPath}/';
+        }
         function toggleFavorite(globalKey, btn) {
             fetch('${pageContext.request.contextPath}/updateFavorite', {
                 method: 'POST',
