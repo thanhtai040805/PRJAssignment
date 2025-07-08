@@ -1066,49 +1066,53 @@
         </section>
 
 
-        <section class="recommend-section">
-            <div class="section-container">
-                <h2 class="section-title">Recommend Car</h2>
-                <div class="recommend-grid">
-                    <c:forEach var="car" items="${recommendCars}">
-                        <div class="recommend-card">
-                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
-                                <div class="recommend-image">
-                                    <c:choose>
-                                        <c:when test="${not empty car.imageLink}">
-                                            <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="car-placeholder">Hình ảnh xe</div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </a>
-                            <div class="recommend-info">
-                                <div class="car-header" style="display: flex; align-items: center; justify-content: space-between;">
-                                    <h3 class="car-name" style="margin: 0;">
-                                        <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
-                                            ${car.carName}
-                                        </a>
-                                    </h3>
-                                    <div class="favorite-action">
-                                        <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
-                                                data-globalkey="${car.globalKey}"
-                                                onclick="toggleFavorite('${car.globalKey}', this)">
-                                            <span class="heart-icon"></span>
-                                        </button>
+        <%-- Recommend Cars based on favorite --%>
+        <c:if test="${not empty suggestionCars}">
+            <section class="recommend-section">
+                <div class="section-container">
+                    <h2 class="section-title">Recommend Car for You</h2>
+                    <div class="recommend-grid">
+                        <c:forEach var="car" items="${suggestionCars}">
+                            <div class="recommend-card">
+                                <a href="${pageContext.request.contextPath}/detail/${car.globalKey}">
+                                    <div class="recommend-image">
+                                        <c:choose>
+                                            <c:when test="${not empty car.imageLink}">
+                                                <img src="${pageContext.request.contextPath}${car.imageLink}" alt="${car.carName}">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="car-placeholder">Hình ảnh xe</div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
+                                </a>
+                                <div class="recommend-info">
+                                    <div class="car-header" style="display: flex; align-items: center; justify-content: space-between;">
+                                        <h3 class="car-name" style="margin: 0;">
+                                            <a href="${pageContext.request.contextPath}/detail/${car.globalKey}" style="text-decoration: none; color: inherit;">
+                                                ${car.carName}
+                                            </a>
+                                        </h3>
+                                        <div class="favorite-action">
+                                            <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(car.globalKey) ? ' favorited' : ''}"
+                                                    data-globalkey="${car.globalKey}"
+                                                    onclick="toggleFavorite('${car.globalKey}', this)">
+                                                <span class="heart-icon"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="recommend-price">
+                                        <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
+                                    </div>
+                                    <div class="recommend-type">Type: ${car.condition}</div>
                                 </div>
-                                <div class="recommend-price">
-                                    <fmt:formatNumber value="${car.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
-                                </div>
-                                <div class="recommend-type">Type: ${car.condition}</div>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </c:if>
+
 
     </section>
 
@@ -1328,7 +1332,7 @@
     </script>
     <script src="${pageContext.request.contextPath}/js/include.js"></script>
     <script>
-        
+
         function toggleFavorite(globalKey, btn) {
             fetch('${pageContext.request.contextPath}/updateFavorite', {
                 method: 'POST',
@@ -1347,7 +1351,7 @@
                         alert('Có lỗi xảy ra!');
                     });
         }
-        
+
         document.addEventListener("DOMContentLoaded", function () {
         <c:if test="${empty sessionScope.currentUser}">
             syncFavoriteFromCookie();

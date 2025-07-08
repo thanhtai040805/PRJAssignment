@@ -1,4 +1,3 @@
-// CarDetailServlet.java
 package controller;
 
 import carDao.CarDao;
@@ -11,8 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import model.FavoriteCars;
 import model.User;
@@ -45,6 +43,7 @@ public class CarDetailServlet extends HttpServlet {
             response.sendRedirect(contextPath + "/home");
             return;
         }
+
         String globalKey = pathInfo.substring(1);
         if (globalKey.isEmpty()) {
             em.close();
@@ -72,21 +71,20 @@ public class CarDetailServlet extends HttpServlet {
         }
         session.setAttribute("viewedCars", viewedCars);
 
-        List<Car> favoriteCars = (List<Car>) session.getAttribute("favoriteCars");
-        if (favoriteCars == null) {
-            favoriteCars = new ArrayList<>();
-        }
-        session.setAttribute("favoriteCars", favoriteCars);
-
-        List<Car> suggestions = SmartSuggestion.suggest(viewedCars, favoriteCars);
+        List<Car> allCars = carDao.getAllCarsAvailable();
+        List<Car> suggestions = SmartSuggestion.suggestFromCar(car, allCars);
         suggestions.removeIf(s -> s.getCarId().equals(car.getCarId()));
+
+        // Lọc số lượng suggestion
+        if (suggestions.size() > 4) {
+            suggestions = suggestions.subList(0, 4);
+        }
 
         request.setAttribute("carDetail", car);
         request.setAttribute("suggestionCars", suggestions);
 
         List<String> favoriteGlobalKeys = new ArrayList<>();
-        session = request.getSession(false);
-        Object currentUser = (session != null) ? session.getAttribute("currentUser") : null;
+        Object currentUser = session.getAttribute("currentUser");
         if (currentUser != null) {
             User user = (User) currentUser;
             int userId = user.getUserId();
@@ -97,9 +95,9 @@ public class CarDetailServlet extends HttpServlet {
                 favoriteGlobalKeys.add(f.getFavoriteCarsPK().getGlobalKey());
             }
         }
+
         request.setAttribute("favoriteGlobalKeys", favoriteGlobalKeys);
         em.close();
-
         request.getRequestDispatcher("/car/carDetail.jsp").forward(request, response);
     }
 }
