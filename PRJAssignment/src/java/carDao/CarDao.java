@@ -108,7 +108,6 @@ public class CarDao extends GenericDAO<Car, Integer> {
     public Car findById(int carId) {
         return em.find(Car.class, carId);
     }
-
     public List<Car> getAllCarsAvailable() {
         String jpql = "SELECT c FROM Car c "
                 + "JOIN FETCH c.carModel m "
