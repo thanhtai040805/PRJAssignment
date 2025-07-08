@@ -365,44 +365,45 @@
 
             </div>
         </div>
-        <div class="suggestions">
-            <h2>Xe gợi ý</h2>
-            <div class="suggestion-grid">
-                <c:forEach var="c" items="${suggestionCars}">
-                    <div class="car-suggestion">
-                        <a href="${pageContext.request.contextPath}/detail/${c.globalKey}">
-                            <c:choose>
-                                <c:when test="${not empty c.imageLink}">
-                                    <img src="${pageContext.request.contextPath}${c.imageLink}" alt="Xe gợi ý">
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Xe gợi ý">
-                                </c:otherwise>
-                            </c:choose>
-                            <p>${c.carName}</p>
-                            <p>
-                                <fmt:formatNumber value="${c.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
-                            </p>
-                        </a>
-                        <div class="buttons">
-                            <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${c.carId}'">Làm khoản vay</button>
-                            <button onclick="location.href = '${pageContext.request.contextPath}/payment/${c.globalKey}'">Mua xe</button>
-                            <div class="favorite-action">
-                                <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(c.globalKey) ? ' favorited' : ''}"
-                                        data-globalkey="${c.globalKey}"
-                                        onclick="toggleFavorite('${c.globalKey}', this)">
-                                    <span class="heart-icon"></span>
-                                    <span class="favorite-text">
-                                        Yêu thích
-                                    </span>
-                                </button>
+        <c:if test="${not empty suggestionCars}">
+            <section class="suggestions">
+                <h2 class="section-title">Xe gợi ý dựa trên sở thích của bạn</h2>
+                <div class="suggestion-grid">
+                    <c:forEach var="c" items="${suggestionCars}">
+                        <div class="car-suggestion">
+                            <a href="${pageContext.request.contextPath}/detail/${c.globalKey}">
+                                <c:choose>
+                                    <c:when test="${not empty c.imageLink}">
+                                        <img src="${pageContext.request.contextPath}${c.imageLink}" alt="Xe gợi ý">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Xe gợi ý">
+                                    </c:otherwise>
+                                </c:choose>
+                                <p>${c.carName}</p>
+                                <p>
+                                    <fmt:formatNumber value="${c.salePrice}" type="currency" currencyCode="VND" pattern="#,###"/>
+                                </p>
+                            </a>
+                            <div class="buttons">
+                                <button onclick="location.href = '${pageContext.request.contextPath}/payment/${c.globalKey}'">Mua xe</button>
+                                <div class="favorite-action">
+                                    <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(c.globalKey) ? ' favorited' : ''}"
+                                            data-globalkey="${c.globalKey}"
+                                            onclick="toggleFavorite('${c.globalKey}', this)">
+                                        <span class="heart-icon"></span>
+                                        <span class="favorite-text">
+                                            Yêu thích
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                    </c:forEach>
+                </div>
+            </section>
+        </c:if>
 
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
         <script>
             var contextPath = '${pageContext.request.contextPath}';
         </script>

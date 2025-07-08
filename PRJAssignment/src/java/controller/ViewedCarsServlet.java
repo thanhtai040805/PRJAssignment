@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.FavoriteCars;
 import userDao.FavoriteCarDAO;
+import util.SmartSuggestion;
 
 @WebServlet(name = "ViewedCarsHistoryServlet", urlPatterns = {"/viewedCars"})
 public class ViewedCarsServlet extends HttpServlet {
@@ -100,6 +101,17 @@ public class ViewedCarsServlet extends HttpServlet {
                 request.setAttribute("favoriteGlobalKeys", favoriteGlobalKeys);
             }
             request.setAttribute("favoriteGlobalKeys", favoriteGlobalKeys);
+
+            List<Car> availableViewed = viewedCarsList.stream()
+                    .filter(car -> car.getStockQuantity() > 0)
+                    .toList();
+
+            CarDao carDao = new CarDao();
+            carDao.setEntityManager(em);
+            List<Car> allCars = carDao.getAllCarsAvailable(); // Chỉ những xe còn hàng
+
+            List<Car> suggestions = SmartSuggestion.suggestFromViewed(availableViewed, allCars, 4);
+            request.setAttribute("suggestedCars", suggestions);
         } finally {
             em.close();
         }

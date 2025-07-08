@@ -108,4 +108,13 @@ public class CarDao extends GenericDAO<Car, Integer> {
     public Car findById(int carId) {
         return em.find(Car.class, carId);
     }
+    public List<Car> getAllCarsAvailable() {
+        String jpql = "SELECT c FROM Car c "
+                + "JOIN FETCH c.carModel m "
+                + "JOIN FETCH m.carBrand "
+                + "WHERE c.status = :status";
+        return em.createQuery(jpql, Car.class)
+                .setParameter("status", "Có sẵn")
+                .getResultList();
+    }
 }

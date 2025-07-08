@@ -42,6 +42,18 @@ public class FavoriteCars implements Serializable {
     @ManyToOne(optional = false)
     private User user;
 
+    @JoinColumn(name = "GlobalKey", referencedColumnName = "GlobalKey", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Car car;
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
     public FavoriteCars() {
     }
 
@@ -101,5 +113,5 @@ public class FavoriteCars implements Serializable {
     public String toString() {
         return "model.FavoriteCars[ favoriteCarsPK=" + favoriteCarsPK + " ]";
     }
-    
+
 }
