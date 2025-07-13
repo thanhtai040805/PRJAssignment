@@ -510,3 +510,15 @@ CREATE TABLE ViewedCars (
     PRIMARY KEY (UserID, GlobalKey),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
+
+CREATE TABLE ConversationHistory (
+    HistoryID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    MessageRole NVARCHAR(20) NOT NULL CHECK (MessageRole IN (N'user', N'assistant')),
+    MessageContent NVARCHAR(MAX) NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    SessionID NVARCHAR(100) NULL,
+
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+GO

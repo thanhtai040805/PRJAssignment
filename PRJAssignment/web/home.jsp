@@ -924,6 +924,7 @@
     </head>
     <body>
         <jsp:include page="/header.jsp" />
+        <jsp:include page="/agent-chat.jsp" />
         <section class="search-section">
             <div class="search-container">
                 <h1 class="search-title">Tìm Kiếm Xe Mơ Ước</h1>
