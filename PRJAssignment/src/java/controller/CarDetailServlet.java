@@ -74,8 +74,6 @@ public class CarDetailServlet extends HttpServlet {
         List<Car> allCars = carDao.getAllCarsAvailable();
         List<Car> suggestions = SmartSuggestion.suggestFromCar(car, allCars);
         suggestions.removeIf(s -> s.getCarId().equals(car.getCarId()));
-
-        // Lọc số lượng suggestion
         if (suggestions.size() > 4) {
             suggestions = suggestions.subList(0, 4);
         }
@@ -87,7 +85,7 @@ public class CarDetailServlet extends HttpServlet {
         Object currentUser = session.getAttribute("currentUser");
         if (currentUser != null) {
             User user = (User) currentUser;
-            int userId = user.getUserId();
+int userId = user.getUserId();
             FavoriteCarDAO favoriteCarDAO = new FavoriteCarDAO();
             favoriteCarDAO.setEntityManager(em);
             List<FavoriteCars> favorites = favoriteCarDAO.findByUserId(userId);
@@ -100,4 +98,34 @@ public class CarDetailServlet extends HttpServlet {
         em.close();
         request.getRequestDispatcher("/car/carDetail.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String globalKey = request.getParameter("globalKey");
+
+        // Nếu không gửi qua body, thì lấy từ URL
+        if ((globalKey == null || globalKey.isEmpty()) && request.getPathInfo() != null) {
+            globalKey = request.getPathInfo().substring(1); // Bỏ dấu "/"
+        }
+
+        if (globalKey == null || globalKey.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        EntityManager em = emf.createEntityManager();
+        CarDao carDao = new CarDao();
+        carDao.setEntityManager(em);
+
+        Car car = carDao.getCarByGlobalKey(globalKey);
+        em.close();
+
+        boolean isAvailable = car != null && car.getStockQuantity() > 0;
+
+        response.setContentType("application/json");
+        response.getWriter().write("{\"available\":" + isAvailable + "}");
+    }
+
 }

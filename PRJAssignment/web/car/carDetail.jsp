@@ -84,7 +84,7 @@
             .buttons button {
                 padding: 12px 25px;
                 border: none;
-                border-radius: 8px;
+border-radius: 8px;
                 background: linear-gradient(to right, #4facfe, #00f2fe);
                 color: white;
                 font-weight: 600;
@@ -150,7 +150,7 @@
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
                     <path fill='%23ff6b6b' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 \
                     2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 \
-                    20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
+20.01 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/>\
                     </svg>") no-repeat center center;
                 background-size: contain;
             }
@@ -228,7 +228,7 @@
             }
             .car-suggestion p {
                 margin: 5px 0;
-                font-weight: 500;
+font-weight: 500;
                 font-size: 0.95em;
             }
             .car-suggestion p:last-child {
@@ -322,7 +322,7 @@
             <div class="car-image">
                 <c:choose>
                     <c:when test="${not empty carDetail.imageLink}">
-                        <img src="${pageContext.request.contextPath}${carDetail.imageLink}" alt="Ảnh xe">
+<img src="${pageContext.request.contextPath}${carDetail.imageLink}" alt="Ảnh xe">
                     </c:when>
                     <c:otherwise>
                         <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Ảnh xe">
@@ -349,8 +349,7 @@
                 <p><strong>Số chỗ ngồi:</strong> <span>${carDetail.seatCount}</span></p>
                 <p><strong>Mô tả:</strong> <span>${carDetail.description}</span></p>
                 <div class="buttons">
-                    <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${carDetail.carId}'">Làm khoản vay</button>
-                    <button onclick="location.href = '${pageContext.request.contextPath}/payment/${carDetail.globalKey}'">Mua xe</button>
+                    <button onclick="checkStockBeforeBuy('${carDetail.globalKey}', '${carDetail.carName}')">Mua xe</button>
                     <div class="favorite-action">
                         <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(carDetail.globalKey) ? ' favorited' : ''}"
                                 data-globalkey="${carDetail.globalKey}"
@@ -375,7 +374,7 @@
                                 <c:choose>
                                     <c:when test="${not empty c.imageLink}">
                                         <img src="${pageContext.request.contextPath}${c.imageLink}" alt="Xe gợi ý">
-                                    </c:when>
+</c:when>
                                     <c:otherwise>
                                         <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Xe gợi ý">
                                     </c:otherwise>
@@ -386,7 +385,7 @@
                                 </p>
                             </a>
                             <div class="buttons">
-                                <button onclick="location.href = '${pageContext.request.contextPath}/payment/${c.globalKey}'">Mua xe</button>
+                                <button onclick="checkStockBeforeBuy('${c.globalKey}', '${c.carName}')">Mua xe</button>
                                 <div class="favorite-action">
                                     <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(c.globalKey) ? ' favorited' : ''}"
                                             data-globalkey="${c.globalKey}"
@@ -434,7 +433,7 @@
             });
 
             var currentGlobalKey = '${carDetail.globalKey}';
-            document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
             <c:if test="${empty sessionScope.currentUser}">
                 saveViewedCar(currentGlobalKey);
             </c:if>
@@ -442,6 +441,45 @@
                 saveViewedCarToServer(currentGlobalKey);
             </c:if>
             });
+        </script>
+        <!-- Modal hết hàng -->
+        <div id="outOfStockModal" style="display: none;
+             position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
+             background: white; padding: 25px 30px; border-radius: 12px;
+             box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 9999;
+             max-width: 400px; text-align: center;">
+            <p id="outOfStockMessage" style="font-size: 1.1em; margin-bottom: 20px;"></p>
+            <button onclick="closeOutOfStockModal()" style="
+                    padding: 10px 20px; background: #007bff; color: white;
+                    border: none; border-radius: 6px; font-weight: 600;
+                    cursor: pointer;">OK</button>
+        </div>
+
+        <script>
+            function checkStockBeforeBuy(globalKey, carName) {
+                fetch('${pageContext.request.contextPath}/detail/' + globalKey, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'globalKey=' + encodeURIComponent(globalKey)
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.available) {
+                                window.location.href = '${pageContext.request.contextPath}/payment/' + globalKey;
+                            } else {
+                                document.getElementById('outOfStockMessage').innerHTML =
+                                        'Sản phẩm <strong>' + carName + '</strong> hiện tại đang <strong>hết hàng</strong>.<br>Xin quý khách vui lòng thông cảm. Chúng tôi sẽ cố gắng bổ sung sớm nhất!';
+                                document.getElementById('outOfStockModal').style.display = 'block';
+                            }
+                        })
+                        .catch(err => {
+                            alert("Không thể kiểm tra tồn kho. Vui lòng thử lại sau.");
+                        });
+            }
+
+            function closeOutOfStockModal() {
+                document.getElementById('outOfStockModal').style.display = 'none';
+            }
         </script>
     </body>
 </html>
