@@ -161,7 +161,6 @@
                 <a href="${pageContext.request.contextPath}/dashboard/menuDashboard.jsp" class="dashboard-link" title="Quản lý hệ thống">
                     <span style="font-size: 18px;">🛠️</span> Dashboard
                 </a>
-
                 <a href="${pageContext.request.contextPath}/dashboard/revenue" class="revenue-link" title="Xem doanh thu">
                     <span style="font-size: 18px;">📈</span> Doanh thu
                 </a>

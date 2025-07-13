@@ -348,7 +348,6 @@ font-weight: 500;
                 <p><strong>Màu sắc:</strong> <span>${carDetail.color}</span></p>
                 <p><strong>Số chỗ ngồi:</strong> <span>${carDetail.seatCount}</span></p>
                 <p><strong>Mô tả:</strong> <span>${carDetail.description}</span></p>
-                <div class="buttons">
                     <button onclick="checkStockBeforeBuy('${carDetail.globalKey}', '${carDetail.carName}')">Mua xe</button>
                     <div class="favorite-action">
                         <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(carDetail.globalKey) ? ' favorited' : ''}"

@@ -9,5 +9,4 @@ public class SupplierDAO extends GenericDAO<Supplier, Integer> {
     protected Class<Supplier> getEntityClass() {
         return Supplier.class;
     }
-
 }
