@@ -1,216 +1,139 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import carDao.CarDao;
+import model.Car;
+import model.FavoriteCars;
+import model.User;
+import model.ViewedCars;
+import model.ViewedCarsPK;
+import userDao.FavoriteCarDAO;
+import userDao.ViewedCarsDAO;
+import util.SmartSuggestion;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
-import model.Car;
-import util.DBConnection;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/", "/home"})
 public class HomeServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
-    // Các câu lệnh SQL được tách ra làm biến toàn cục
-    private static final String SQL_GET_SHOWCASE_CARS = """
-        SELECT TOP 7 x.MaXe, x.TenXe, x.HinhAnh, h.TenHang, d.TenDong
-        FROM XeOTo x
-        INNER JOIN DongXe d ON x.MaDong = d.MaDong
-        INNER JOIN HangXe h ON d.MaHang = h.MaHang
-        WHERE x.TrangThai = N'Có sẵn'
-        ORDER BY x.NgayNhap DESC
-        """;
+    private EntityManagerFactory emf;
 
-    private static final String SQL_GET_BEST_SELLER_CARS = """
-        SELECT TOP 2 x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                       x.GiaBan, x.HinhAnh, h.TenHang, d.TenDong, d.LoaiXe
-        FROM XeOTo x
-        INNER JOIN DongXe d ON x.MaDong = d.MaDong
-        INNER JOIN HangXe h ON d.MaHang = h.MaHang
-        LEFT JOIN ChiTietHoaDon ct ON x.MaXe = ct.MaXe
-        WHERE x.TrangThai = N'Có sẵn'
-        GROUP BY x.MaXe, x.TenXe, x.NamSanXuat, x.MauSac, x.TinhTrang,
-                 x.GiaBan, x.HinhAnh, h.TenHang, d.TenDong, d.LoaiXe
-        ORDER BY COUNT(ct.MaXe) DESC, x.GiaBan DESC
-        """;
-
-    private static final String SQL_GET_RANKING_CARS = """
-        SELECT TOP 4 x.MaXe, x.TenXe, h.TenHang, d.TenDong
-        FROM XeOTo x
-        INNER JOIN DongXe d ON x.MaDong = d.MaDong
-        INNER JOIN HangXe h ON d.MaHang = h.MaHang
-        WHERE x.TrangThai = N'Có sẵn'
-        ORDER BY x.GiaBan DESC
-        """;
-
-    private static final String SQL_GET_RECOMMEND_CARS = """
-        SELECT TOP 4 x.MaXe, x.TenXe, x.GiaBan, x.TinhTrang, x.HinhAnh
-        FROM XeOTo x
-        WHERE x.TrangThai = N'Có sẵn'
-        ORDER BY x.NgayNhap DESC
-        """;
-
-    private static final String SQL_GET_PROVIDERS = """
-        SELECT MaNCC, TenNCC FROM NhaCungCap WHERE TrangThai = N'Hoạt động'
-        """;
+    @Override
+    public void init() {
+        emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        EntityManager em = emf.createEntityManager();
+        CarDao carDao = new CarDao();
+        carDao.setEntityManager(em);
+
         try {
-            List<Car> showcaseCars = getShowcaseCars();
-            List<Car> bestSellerCars = getBestSellerCars();
-            List<Car> rankingCars = getRankingCars();
-            List<Car> recommendCars = getRecommendCars();
-            List<Map<String, Object>> providers = getProviders();
+            // ==== Section: Hiển thị chính ====
+            request.setAttribute("showcaseCars", carDao.getShowcaseCars());
+            request.setAttribute("bestSellerCars", carDao.getBestSellerCars());
+            request.setAttribute("rankingCars", carDao.getRankingCars());
+            request.setAttribute("recommendCars", carDao.getRecommendCars());
+            request.setAttribute("providers", carDao.getActiveProviders());
 
-            request.setAttribute("showcaseCars", showcaseCars);
-            request.setAttribute("bestSellerCars", bestSellerCars);
-            request.setAttribute("rankingCars", rankingCars);
-            request.setAttribute("recommendCars", recommendCars);
-            request.setAttribute("providers", providers);
+            List<String> favoriteGlobalKeys = new ArrayList<>();
+            List<Car> suggestionCars = new ArrayList<>();
+            List<Car> referenceCars = new ArrayList<>();  // dùng để gợi ý
 
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
+            HttpSession session = request.getSession(false);
+            Object currentUser = (session != null) ? session.getAttribute("currentUser") : null;
+            List<Car> allCars = carDao.getAllCarsAvailable(); // chỉ xe còn hàng
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Lỗi khi tải dữ liệu trang chủ: " + e.getMessage());
-        }
-    }
+            if (currentUser != null) {
+                // ĐÃ ĐĂNG NHẬP
+                User user = (User) currentUser;
+                int userId = user.getUserId();
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+                // Lấy xe yêu thích
+                FavoriteCarDAO favoriteCarDAO = new FavoriteCarDAO();
+                favoriteCarDAO.setEntityManager(em);
+                List<FavoriteCars> favorites = favoriteCarDAO.findByUserId(userId);
+                for (FavoriteCars f : favorites) {
+                    Car car = f.getCar();
+                    if (car != null && car.getStockQuantity() > 0) {
+                        referenceCars.add(car);
+                        favoriteGlobalKeys.add(f.getFavoriteCarsPK().getGlobalKey());
+                    }
+                }
 
-    private List<Car> getShowcaseCars() {
-        List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_SHOWCASE_CARS);
-             ResultSet rs = stmt.executeQuery()) {
+                // Lấy xe đã xem
+                ViewedCarsDAO viewedCarsDAO = new ViewedCarsDAO();
+                viewedCarsDAO.setEntityManager(em);
+                List<ViewedCars> viewedList = viewedCarsDAO.findByUserId(userId);
+                for (ViewedCars v : viewedList) {
+                    Car car = carDao.getCarByGlobalKey(v.getViewedCarsPK().getGlobalKey());
+                    if (car != null && car.getStockQuantity() > 0) {
+                        referenceCars.add(car);
+                    }
+                }
 
-            while (rs.next()) {
-                Car car = new Car();
-                car.setMaXe(rs.getInt("MaXe"));
-                car.setTenXe(rs.getString("TenXe"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
-                car.setTenHang(rs.getString("TenHang"));
-                car.setTenDong(rs.getString("TenDong"));
-                cars.add(car);
+            } else {
+                // CHƯA ĐĂNG NHẬP: lấy từ cookie
+                Cookie[] cookies = request.getCookies();
+                Set<String> globalKeys = new LinkedHashSet<>();
+
+                if (cookies != null) {
+                    for (Cookie c : cookies) {
+                        if ("favoriteCars".equals(c.getName()) || "viewedCars".equals(c.getName())) {
+                            String value = URLDecoder.decode(c.getValue(), "UTF-8");
+                            if (value != null && !value.isEmpty()) {
+                                String[] arr = value.split(",");
+                                for (String s : arr) {
+                                    if (!s.trim().isEmpty()) {
+                                        globalKeys.add(s.trim());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (String key : globalKeys) {
+                    Car car = carDao.getCarByGlobalKey(key);
+                    if (car != null && car.getStockQuantity() > 0) {
+                        referenceCars.add(car);
+                    }
+                }
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return cars;
-    }
-
-    private List<Car> getBestSellerCars() {
-        List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_BEST_SELLER_CARS);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Car car = new Car();
-                car.setMaXe(rs.getInt("MaXe"));
-                car.setTenXe(rs.getString("TenXe"));
-                car.setNamSanXuat(rs.getInt("NamSanXuat"));
-                car.setMauSac(rs.getString("MauSac"));
-                car.setTinhTrang(rs.getString("TinhTrang"));
-                car.setGiaBan(rs.getBigDecimal("GiaBan"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
-                car.setTenHang(rs.getString("TenHang"));
-                car.setTenDong(rs.getString("TenDong"));
-                car.setLoaiXe(rs.getString("LoaiXe"));
-                cars.add(car);
+            // ==== Section: Gợi ý xe ====
+            // Gộp và loại trùng theo carId
+            Map<Integer, Car> uniqueRefCars = new LinkedHashMap<>();
+            for (Car c : referenceCars) {
+                uniqueRefCars.putIfAbsent(c.getCarId(), c);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            List<Car> uniqueRefList = new ArrayList<>(uniqueRefCars.values());
 
-        return cars;
-    }
+            suggestionCars = SmartSuggestion.suggestFromFavorite(uniqueRefList, allCars);
 
-    private List<Car> getRankingCars() {
-        List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_RANKING_CARS);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Car car = new Car();
-                car.setMaXe(rs.getInt("MaXe"));
-                car.setTenXe(rs.getString("TenXe"));
-                car.setTenHang(rs.getString("TenHang"));
-                car.setTenDong(rs.getString("TenDong"));
-                cars.add(car);
+            if (suggestionCars.size() > 6) {
+                suggestionCars = suggestionCars.subList(0, 6);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            // ==== Section: setAttribute để hiển thị ====
+            request.setAttribute("suggestionCars", suggestionCars);
+            request.setAttribute("favoriteGlobalKeys", favoriteGlobalKeys);
+        } finally {
+            em.close();
         }
 
-        return cars;
-    }
-
-    private List<Car> getRecommendCars() {
-        List<Car> cars = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_RECOMMEND_CARS);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Car car = new Car();
-                car.setMaXe(rs.getInt("MaXe"));
-                car.setTenXe(rs.getString("TenXe"));
-                car.setGiaBan(rs.getBigDecimal("GiaBan"));
-                car.setTinhTrang(rs.getString("TinhTrang"));
-                car.setHinhAnh(rs.getString("HinhAnh"));
-                cars.add(car);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return cars;
-    }
-
-    private List<Map<String, Object>> getProviders() {
-        List<Map<String, Object>> providers = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SQL_GET_PROVIDERS);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Map<String, Object> provider = new HashMap<>();
-                provider.put("maNCC", rs.getInt("MaNCC"));
-                provider.put("tenNCC", rs.getString("TenNCC"));
-                providers.add(provider);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return providers;
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 }
+
