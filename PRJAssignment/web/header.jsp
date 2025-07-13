@@ -99,6 +99,35 @@
         font-weight: 300;
         font-size: 14px;
     }
+    .auth-links .dashboard-link {
+        background: #fff;
+        color: #28a745;
+        border: 1px solid #28a745;
+        padding: 8px 18px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px rgba(40,167,69,0.08);
+    }
+    .auth-links .dashboard-link:hover {
+        background: #28a745;
+        color: #fff;
+    }
+
+    .auth-links .revenue-link {
+        background: #fff;
+        color: #ffc107;
+        border: 1px solid #ffc107;
+        padding: 8px 18px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px rgba(255,193,7,0.08);
+    }
+    .auth-links .revenue-link:hover {
+        background: #ffc107;
+        color: #fff;
+    }
     @media (max-width: 768px) {
         .header-content {
             flex-direction: column;
@@ -121,13 +150,21 @@
 
 <header class="header">
     <div class="header-content">
-        <div class="logo">
-            <a href="${pageContext.request.contextPath}">
+        <div class="logo" style="display: flex; align-items: center;">
+            <a href="${pageContext.request.contextPath}" style="display: flex; align-items: center; text-decoration: none;">
                 <div class="logo-icon">🚗</div>
-                <h1>DriveDreams</h1>
+                <h1 style="margin-right: 20px;">DriveDreams</h1>
             </a>
         </div>
         <div class="auth-links">
+            <c:if test="${sessionScope.currentUser != null && sessionScope.currentUser.role == 'admin'}">
+                <a href="${pageContext.request.contextPath}/dashboard/car" class="dashboard-link" title="Quản lý xe">
+                    <span style="font-size: 18px;">🛠️</span> Dashboard
+                </a>
+                <a href="${pageContext.request.contextPath}/dashboard/revenue" class="revenue-link" title="Xem doanh thu">
+                    <span style="font-size: 18px;">📈</span> Doanh thu
+                </a>
+            </c:if>
             <a href="${pageContext.request.contextPath}/favoriteCar" class="favorite-link" title="Xe yêu thích">
                 <span style="font-size: 18px;">❤️</span> Xe yêu thích
             </a>

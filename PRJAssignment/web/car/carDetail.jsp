@@ -349,8 +349,7 @@
                 <p><strong>Số chỗ ngồi:</strong> <span>${carDetail.seatCount}</span></p>
                 <p><strong>Mô tả:</strong> <span>${carDetail.description}</span></p>
                 <div class="buttons">
-                    <button onclick="location.href = '${pageContext.request.contextPath}/loanForm?carId=${carDetail.carId}'">Làm khoản vay</button>
-                    <button onclick="location.href = '${pageContext.request.contextPath}/payment/${carDetail.globalKey}'">Mua xe</button>
+                    <button onclick="checkStockBeforeBuy('${c.globalKey}', '${c.carName}')">Mua xe</button>
                     <div class="favorite-action">
                         <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(carDetail.globalKey) ? ' favorited' : ''}"
                                 data-globalkey="${carDetail.globalKey}"
@@ -386,7 +385,7 @@
                                 </p>
                             </a>
                             <div class="buttons">
-                                <button onclick="location.href = '${pageContext.request.contextPath}/payment/${c.globalKey}'">Mua xe</button>
+                                <button onclick="checkStockBeforeBuy('${c.globalKey}', '${c.carName}')">Mua xe</button>
                                 <div class="favorite-action">
                                     <button class="favorite-btn${favoriteGlobalKeys != null && favoriteGlobalKeys.contains(c.globalKey) ? ' favorited' : ''}"
                                             data-globalkey="${c.globalKey}"
@@ -442,6 +441,45 @@
                 saveViewedCarToServer(currentGlobalKey);
             </c:if>
             });
+        </script>
+        <!-- Modal hết hàng -->
+        <div id="outOfStockModal" style="display: none;
+             position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
+             background: white; padding: 25px 30px; border-radius: 12px;
+             box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 9999;
+             max-width: 400px; text-align: center;">
+            <p id="outOfStockMessage" style="font-size: 1.1em; margin-bottom: 20px;"></p>
+            <button onclick="closeOutOfStockModal()" style="
+                    padding: 10px 20px; background: #007bff; color: white;
+                    border: none; border-radius: 6px; font-weight: 600;
+                    cursor: pointer;">OK</button>
+        </div>
+
+        <script>
+            function checkStockBeforeBuy(globalKey, carName) {
+                fetch('${pageContext.request.contextPath}/detail/' + globalKey, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'globalKey=' + encodeURIComponent(globalKey)
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.available) {
+                                window.location.href = '${pageContext.request.contextPath}/payment/' + globalKey;
+                            } else {
+                                document.getElementById('outOfStockMessage').innerHTML =
+                                        'Sản phẩm <strong>' + carName + '</strong> hiện tại đang <strong>hết hàng</strong>.<br>Xin quý khách vui lòng thông cảm. Chúng tôi sẽ cố gắng bổ sung sớm nhất!';
+                                document.getElementById('outOfStockModal').style.display = 'block';
+                            }
+                        })
+                        .catch(err => {
+                            alert("Không thể kiểm tra tồn kho. Vui lòng thử lại sau.");
+                        });
+            }
+
+            function closeOutOfStockModal() {
+                document.getElementById('outOfStockModal').style.display = 'none';
+            }
         </script>
     </body>
 </html>

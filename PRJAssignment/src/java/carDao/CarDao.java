@@ -108,6 +108,7 @@ public class CarDao extends GenericDAO<Car, Integer> {
     public Car findById(int carId) {
         return em.find(Car.class, carId);
     }
+
     public List<Car> getAllCarsAvailable() {
         String jpql = "SELECT c FROM Car c "
                 + "JOIN FETCH c.carModel m "
@@ -117,4 +118,65 @@ public class CarDao extends GenericDAO<Car, Integer> {
                 .setParameter("status", "Có sẵn")
                 .getResultList();
     }
+
+    public List<Car> searchAndSort(String keyword, String sortField, String sortOrder) {
+        String jpql = "SELECT c FROM Car c JOIN FETCH c.carModel m JOIN FETCH m.carBrand WHERE c.status = 'Có sẵn'";
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            jpql += " AND (LOWER(c.carName) LIKE :kw OR LOWER(c.globalKey) LIKE :kw)";
+        }
+
+        if (sortField != null && !sortField.isEmpty()) {
+            jpql += " ORDER BY c." + sortField + ("desc".equalsIgnoreCase(sortOrder) ? " DESC" : " ASC");
+        }
+
+        TypedQuery<Car> query = em.createQuery(jpql, Car.class);
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            query.setParameter("kw", "%" + keyword.toLowerCase() + "%");
+        }
+
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean remove(Integer id) {
+        try {
+            Car car = em.find(getEntityClass(), id);
+            if (car != null) {
+                em.getTransaction().begin();
+
+                // Lấy globalKey từ xe cần xoá
+                String globalKey = car.getGlobalKey();
+
+                // ❌ Xoá các bản ghi liên quan trong bảng FavoriteCars (dựa vào globalKey)
+                em.createQuery("DELETE FROM FavoriteCars f WHERE f.favoriteCarsPK.globalKey = :globalKey")
+                        .setParameter("globalKey", globalKey)
+                        .executeUpdate();
+
+                // ❌ Xoá các bản ghi liên quan trong bảng ViewedCars (dựa vào globalKey)
+                em.createQuery("DELETE FROM ViewedCars v WHERE v.viewedCarsPK.globalKey = :globalKey")
+                        .setParameter("globalKey", globalKey)
+                        .executeUpdate();
+
+                // ❌ Xoá các bản ghi liên quan trong bảng InvoiceDetail (dựa vào carId)
+                em.createQuery("DELETE FROM InvoiceDetail i WHERE i.carId = :carId")
+                        .setParameter("carId", id)
+                        .executeUpdate();
+
+                // ✅ Cuối cùng xoá Car
+                em.remove(car);
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            return false;
+        }
+    }
+
 }
