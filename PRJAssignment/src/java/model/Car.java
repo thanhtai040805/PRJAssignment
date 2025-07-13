@@ -78,7 +78,8 @@ public class Car {
     public Car() {
     }
 
-    public Car(Integer carId, CarModel carModel, Supplier supplier, String carName, Integer year, String color,
+
+    public Car(Integer carId, CarModel carModel, Integer supplierId, String carName, Integer year, String color,
             String chassisNumber, String engineNumber, Integer engineCapacity, Integer power, String transmission,
             Integer mileage, String condition, Long importPrice, Long salePrice, Integer stockQuantity,
             Date importDate, String status, String description, String imageLink, String globalKey) {
@@ -292,4 +293,31 @@ public class Car {
     public String getCarType() {
         return carModel != null ? carModel.getCarType() : "";
     }
+
+    public String toPromptString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Tên xe: ").append(carName != null ? carName : "N/A");
+        sb.append(", Hãng: ").append(getCarBrandName());
+        sb.append(", Dòng xe: ").append(getCarModelName());
+        sb.append(", Năm sản xuất: ").append(year != null ? year : "N/A");
+        sb.append(", Màu sắc: ").append(color != null ? color : "N/A");
+        sb.append(", Số khung: ").append(chassisNumber != null ? chassisNumber : "N/A");
+        sb.append(", Số máy: ").append(engineNumber != null ? engineNumber : "N/A");
+        sb.append(", Dung tích động cơ: ").append(engineCapacity != null ? engineCapacity + " cc" : "N/A");
+        sb.append(", Công suất: ").append(power != null ? power + " HP" : "N/A");
+        sb.append(", Hộp số: ").append(transmission != null ? transmission : "N/A");
+        sb.append(", Số km đã đi: ").append(mileage != null ? mileage + " km" : "N/A");
+        sb.append(", Loại nhiên liệu: ").append(getFuelType());
+        sb.append(", Số chỗ ngồi: ").append(getSeatCount() != null ? getSeatCount() : "N/A");
+        sb.append(", Kiểu xe: ").append(getCarType());
+        sb.append(", Tình trạng: ").append(condition != null ? condition : "N/A");
+        sb.append(", Giá nhập: ").append(importPrice != null ? String.format("%,d", importPrice) + " VNĐ" : "N/A");
+        sb.append(", Giá bán: ").append(salePrice != null ? String.format("%,d", salePrice) + " VNĐ" : "N/A");
+        sb.append(", Số lượng tồn: ").append(stockQuantity != null ? stockQuantity : "N/A");
+        sb.append(", Trạng thái: ").append(status != null ? status : "N/A");
+        sb.append(", Mô tả: ").append(description != null ? description : "N/A");
+        sb.append(", GlobalKey: ").append(globalKey != null ? globalKey : "N/A");
+        return sb.toString();
+    }
+
 }

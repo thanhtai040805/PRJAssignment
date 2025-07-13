@@ -5,6 +5,7 @@
     <class>model.FavoriteCars</class>
     <class>model.ViewedCars</class>
     <class>model.PageHistory</class>
+    <class>model.ConversationHistory</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!-- SQL Server Configuration -->
