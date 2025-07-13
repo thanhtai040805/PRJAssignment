@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/supplierDAO/SupplierDAO.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/FavoriteCars.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/dashboard/carDashboard/insertCar.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/dashboard/carDashboard/editCar.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/CarBrand.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/User.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/controller/CarServlet.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/conf/persistence.xml</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/util/SmartSuggestion.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/car/searchCar.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/header.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/Car.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/util/GenericDAO.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/Supplier.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/controller/HistoryServlet.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/InvoiceDetail.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/car/carDetail.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/dashboard/carDashboard/viewCars.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/controller/CarDetailServlet.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/ViewedCars.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/CarModel.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/dashboard/revenue.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/ViewedCarsPK.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/controller/FavoriteServlet.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/controller/RevenueServlet.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/web/home.jsp</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/model/FavoriteCarsPK.java</file>
+            <file>file:/D:/FPT_Uni/SUMMER25/PRJ301/PRJAssignment/PRJAssignment/PRJAssignment/src/java/carDao/CarDao.java</file>
+        </group>
+    </open-files>
+</project-private>
