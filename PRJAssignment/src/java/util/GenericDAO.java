@@ -21,39 +21,51 @@ public abstract class GenericDAO<T, ID> {
         return em;
     }
 
-    // Thêm mới
     public boolean add(T entity) {
         try {
+            em.getTransaction().begin();
             em.persist(entity);
+            em.getTransaction().commit();
             return true;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error adding entity", e);
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             return false;
         }
     }
 
-    // Xóa theo id
     public boolean remove(ID id) {
         try {
             T entity = em.find(getEntityClass(), id);
             if (entity != null) {
+                em.getTransaction().begin();
                 em.remove(entity);
+                em.getTransaction().commit();
                 return true;
             }
             return false;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error removing entity with id: " + id, e);
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             return false;
         }
     }
 
-    // Cập nhật
     public boolean update(T entity) {
         try {
+            em.getTransaction().begin();
             em.merge(entity);
+            em.getTransaction().commit();
             return true;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating entity", e);
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             return false;
         }
     }

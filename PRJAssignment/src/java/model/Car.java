@@ -12,13 +12,13 @@ public class Car {
     @Column(name = "MaXe")
     private Integer carId;
 
-    // Quan hệ tới CarModel
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MaDong", referencedColumnName = "MaDong")
     private CarModel carModel;
 
-    @Column(name = "MaNCC")
-    private Integer supplierId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MaNCC", referencedColumnName = "MaNCC")
+    private Supplier supplier;
 
     @Column(name = "TenXe")
     private String carName;
@@ -75,15 +75,16 @@ public class Car {
     @Column(name = "GlobalKey")
     private String globalKey;
 
-    public Car() {}
+    public Car() {
+    }
 
-    public Car(Integer carId, CarModel carModel, Integer supplierId, String carName, Integer year, String color,
-               String chassisNumber, String engineNumber, Integer engineCapacity, Integer power, String transmission,
-               Integer mileage, String condition, Long importPrice, Long salePrice, Integer stockQuantity,
-               Date importDate, String status, String description, String imageLink, String globalKey) {
+    public Car(Integer carId, CarModel carModel, Supplier supplier, String carName, Integer year, String color,
+            String chassisNumber, String engineNumber, Integer engineCapacity, Integer power, String transmission,
+            Integer mileage, String condition, Long importPrice, Long salePrice, Integer stockQuantity,
+            Date importDate, String status, String description, String imageLink, String globalKey) {
         this.carId = carId;
         this.carModel = carModel;
-        this.supplierId = supplierId;
+        this.supplier = supplier;
         this.carName = carName;
         this.year = year;
         this.color = color;
@@ -120,12 +121,12 @@ public class Car {
         this.carModel = carModel;
     }
 
-    public Integer getSupplierId() {
-        return supplierId;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public String getCarName() {
@@ -272,7 +273,6 @@ public class Car {
         this.globalKey = globalKey;
     }
 
-    // Getter cho JSP dùng trực tiếp
     public String getCarBrandName() {
         return (carModel != null && carModel.getCarBrand() != null) ? carModel.getCarBrand().getCarBrandName() : "";
     }
