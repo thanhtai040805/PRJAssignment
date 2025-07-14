@@ -1,47 +1,54 @@
 package model;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "Users")
 public class User {
-    private int maUser;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "UserID")
+    private Integer userId;
+
+    @Column(name = "Username", unique = true)
     private String username;
+
+    @Column(name = "Password")
     private String password;
-    private String email;
-    private String hoTen;
-    private Date ngaySinh;
-    private String gioiTinh;
-    private String diaChi;
-    private String soDienThoai;
-    private String cccd;
+
+    @Column(name = "Role")
     private String role;
-    private Date ngayTao;
-    private String trangThai;
-    
-    // Profile information
-    private CustomerProfile customerProfile;
-    private EmployeeProfile employeeProfile;
-    private AdminProfile adminProfile;
 
-    // Constructors
-    public User() {}
+    @Column(name = "MaKH")
+    private Integer customerId;
 
-    public User(String username, String password, String email, String hoTen, String role) {
+    @Column(name = "MaNV")
+    private Integer employeeId;
+
+    @Column(name = "TrangThai")
+    private String status;
+
+    public User() {
+    }
+
+    public User(Integer userId, String username, String password, String role, Integer customerId, Integer employeeId,
+            String status) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.hoTen = hoTen;
         this.role = role;
-        this.ngayTao = new Date();
-        this.trangThai = "Hoạt động";
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.status = status;
     }
 
-    // Getters and Setters
-    public int getMaUser() {
-        return maUser;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setMaUser(int maUser) {
-        this.maUser = maUser;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -60,62 +67,6 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHoTen() {
-        return hoTen;
-    }
-
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
-    }
-
-    public Date getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
-
-    public String getGioiTinh() {
-        return gioiTinh;
-    }
-
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
-    }
-
-    public String getCccd() {
-        return cccd;
-    }
-
-    public void setCccd(String cccd) {
-        this.cccd = cccd;
-    }
-
     public String getRole() {
         return role;
     }
@@ -124,72 +75,27 @@ public class User {
         this.role = role;
     }
 
-    public Date getNgayTao() {
-        return ngayTao;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public CustomerProfile getCustomerProfile() {
-        return customerProfile;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCustomerProfile(CustomerProfile customerProfile) {
-        this.customerProfile = customerProfile;
-    }
-
-    public EmployeeProfile getEmployeeProfile() {
-        return employeeProfile;
-    }
-
-    public void setEmployeeProfile(EmployeeProfile employeeProfile) {
-        this.employeeProfile = employeeProfile;
-    }
-
-    public AdminProfile getAdminProfile() {
-        return adminProfile;
-    }
-
-    public void setAdminProfile(AdminProfile adminProfile) {
-        this.adminProfile = adminProfile;
-    }
-
-    // Utility methods
-    public boolean isAdmin() {
-        return "ADMIN".equals(this.role);
-    }
-
-    public boolean isEmployee() {
-        return "EMPLOYEE".equals(this.role);
-    }
-
-    public boolean isCustomer() {
-        return "CUSTOMER".equals(this.role);
-    }
-
-    public boolean isActive() {
-        return "Hoạt động".equals(this.trangThai);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "maUser=" + maUser +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", hoTen='" + hoTen + '\'' +
-                ", role='" + role + '\'' +
-                ", trangThai='" + trangThai + '\'' +
-                '}';
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

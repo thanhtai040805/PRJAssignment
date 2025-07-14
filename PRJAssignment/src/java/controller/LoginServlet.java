@@ -1,109 +1,153 @@
 package controller;
 
-import java.io.IOException;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import model.User;
-import userDao.IUserDao;
+import model.Customer;
 import userDao.UserDao;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private IUserDao userDao;
+
+    private static final Logger LOGGER = Logger.getLogger(LoginServlet.class.getName());
+    private EntityManagerFactory emf;
 
     @Override
     public void init() throws ServletException {
-        super.init();
-        userDao = new UserDao();
+        emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+
+        if (emf == null) {
+            try {
+                LOGGER.warning("EntityManagerFactory not found in ServletContext. Creating a new one in LoginServlet.init(). "
+                        + "Consider using a ServletContextListener for EMF lifecycle management.");
+                emf = Persistence.createEntityManagerFactory("PRJPU");
+                getServletContext().setAttribute("emf", emf);
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Failed to create EntityManagerFactory in LoginServlet.init().", e);
+                throw new ServletException("Failed to initialize LoginServlet due to EMF creation error", e);
+            }
+        }
+        LOGGER.info("LoginServlet initialized. EntityManagerFactory ready.");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Kiểm tra nếu đã đăng nhập
         HttpSession session = request.getSession(false);
+
         if (session != null && session.getAttribute("currentUser") != null) {
+            // Nếu người dùng đã đăng nhập, chuyển hướng đến trang chủ (/)
             User user = (User) session.getAttribute("currentUser");
-            redirectByRole(user, request, response);
-            return;
+            LOGGER.log(Level.INFO, "User {0} already logged in. Redirecting to home.", user.getUsername());
+            response.sendRedirect(request.getContextPath() + "/"); // Chuyển hướng về root context path
+        } else {
+            // Nếu chưa đăng nhập, hiển thị trang login JSP
+            request.getRequestDispatcher("/user/login.jsp").forward(request, response);
         }
-        
-        // Chuyển hướng đến trang login
-        request.getRequestDispatcher("/user/login.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // Lấy thông tin từ form
+        request.setCharacterEncoding("UTF-8");
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
-        // Validate input
-        if (username == null || username.trim().isEmpty() || 
-            password == null || password.trim().isEmpty()) {
+
+        if (username == null || username.trim().isEmpty()
+                || password == null || password.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
+            request.setAttribute("username", username != null ? username.trim() : "");
             request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             return;
         }
-        
+
+        EntityManager em = null;
+        User authenticatedUser = null;
+
         try {
-            // Xác thực người dùng thông qua DAO
-            User user = userDao.authenticate(username.trim(), password);
-            
-            if (user != null) {
-                // Đăng nhập thành công
+            em = emf.createEntityManager();
+            UserDao userDao = new UserDao();
+            userDao.setEntityManager(em);
+
+            em.getTransaction().begin();
+            authenticatedUser = userDao.authenticate(username.trim(), password);
+            em.getTransaction().commit();
+
+            if (authenticatedUser != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("currentUser", user);
-                session.setAttribute("username", user.getUsername());
-                session.setAttribute("userRole", user.getRole());
+                session.setAttribute("currentUser", authenticatedUser);
+                session.setAttribute("username", authenticatedUser.getUsername());
+                session.setAttribute("userRole", authenticatedUser.getRole());
                 session.setAttribute("isLoggedIn", true);
-                session.setAttribute("userId", user.getMaUser());
-                
-                // Log login activity (có thể thêm vào database)
-                System.out.println("User logged in: " + user.getUsername() + " - Role: " + user.getRole());
-                
-                // Chuyển hướng theo role
-                redirectByRole(user, request, response);
-                
+                session.setAttribute("userId", authenticatedUser.getUserId());
+
+                // 👉 Thêm phần lấy Customer nếu user là khách hàng
+                if ("customer".equalsIgnoreCase(authenticatedUser.getRole())) {
+                    Customer customer = em.find(Customer.class, authenticatedUser.getUserId());
+                    if (customer != null) {
+                        session.setAttribute("loggedInCustomer", customer);
+                        LOGGER.info("Customer info loaded into session.");
+                    }
+                }
+
+                LOGGER.log(Level.INFO, "User logged in successfully: {0} with role {1}. Redirecting to home.",
+                        new Object[]{authenticatedUser.getUsername(), authenticatedUser.getRole()});
+
+                // XÓA COOKIE favoriteCars khi login thành công
+                Cookie cookie = new Cookie("favoriteCars", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
+                response.addCookie(cookie);
+
+                // XÓA COOKIE searchHistory khi login thành công
+                cookie = new Cookie("searchHistory", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath("/");
+                response.addCookie(cookie);
+
+                // XÓA COOKIE viewedCar khi login thành công
+                cookie = new Cookie("viewedCars", "");
+                cookie.setMaxAge(0); // Xóa ngay lập tức
+                cookie.setPath("/");
+                response.addCookie(cookie);
+
+                // Chuyển hướng tất cả về trang chủ
+                response.sendRedirect(request.getContextPath() + "/");
+
             } else {
-                // Đăng nhập thất bại
-                request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không đúng!");
-                request.setAttribute("username", username); // Giữ lại username để user không phải nhập lại
+                request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không đúng hoặc tài khoản không hoạt động!");
+                request.setAttribute("username", username);
                 request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại!");
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+                LOGGER.log(Level.WARNING, "Transaction rolled back during login process.", e);
+            }
+            LOGGER.log(Level.SEVERE, "Login error for user: " + (username != null ? username : "null"), e);
+            request.setAttribute("errorMessage", "Lỗi hệ thống khi đăng nhập. Vui lòng thử lại sau.");
+            request.setAttribute("username", username);
             request.getRequestDispatcher("/user/login.jsp").forward(request, response);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
-    
-    private void redirectByRole(User user, HttpServletRequest request, HttpServletResponse response) 
-            throws IOException {
-        String contextPath = request.getContextPath();
-        
-        switch (user.getRole()) {
-            case "ADMIN":
-                response.sendRedirect(contextPath + "/");
-                break;
-            case "EMPLOYEE":
-                response.sendRedirect(contextPath + "/");
-                break;
-            case "CUSTOMER":
-                response.sendRedirect(contextPath + "/");
-                break;
-            default:
-                response.sendRedirect(contextPath + "/home");
-        }
+
+    @Override
+    public void destroy() {
+        LOGGER.info("LoginServlet destroyed.");
     }
 }
