@@ -1,0 +1,84 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 9, 2025, 5:10:13 PM
+    Author     : This PC
+*/
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 350px;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+.success-message {
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.social-btn svg {
+    vertical-align: middle;
+    margin-right: 8px;
+}

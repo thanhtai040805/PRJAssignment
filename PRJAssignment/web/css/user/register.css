@@ -1,0 +1,116 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 9, 2025, 5:11:39 PM
+    Author     : This PC
+*/
+
+/* ====== CSS cho form đăng ký User ====== */
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+/* Tiêu đề lớn của trang */
+h2 {
+    color: #007bff;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* Khung form */
+form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 40px auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* Tiêu đề bên trong form */
+form h2 {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+}
+
+/* Mỗi nhóm input */
+form div {
+    margin-bottom: 18px;
+}
+
+/* Label */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Input kiểu text/email/password */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.95em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Hiệu ứng khi focus */
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+
+/* Checkbox + label */
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Nút Đăng ký */
+button[type="submit"] {
+    width: 100%;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1.05em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #0056b3;
+}
+
+/* Link đăng nhập */
+p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Thông báo lỗi */
+p[style*="color:red"] {
+    text-align: center;
+    font-weight: 600;
+}

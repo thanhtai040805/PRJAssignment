@@ -1,0 +1,114 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 9, 2025, 5:04:09 PM
+    Author     : This PC
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0 10%;
+}
+
+.confirmation-box {
+    background-color: #fff;
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.confirmation-box h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.info-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.btn-group {
+    margin-top: 30px;
+}
+
+.c {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-success {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.bank-btn {
+    margin: 5px;
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.bank-btn.selected {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border-color: #4CAF50;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 6px 0 12px 0;
+}
+
